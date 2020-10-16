@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:clickable="true"
+    tools:context=".MisoboMembersFragment">
+
+    <ImageView
+        android:id="@+id/backIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        android:src="@drawable/ic_arrow_back_24px"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="17dp"
+        android:tint="@color/colorAccent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:backgroundTint="@color/colorAccent"
+        />
+
+    <ImageView
+        android:id="@+id/normalUsersCloud"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:src="@drawable/ic_fire_cloud"
+        app:layout_constraintEnd_toStartOf="@id/misoboUsersCloud"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/normalUsersTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/normalUsersCloud"
+        app:layout_constraintEnd_toEndOf="@id/normalUsersCloud"
+        android:text="Normal Users"
+        android:textColor="@color/colorAccent"
+        android:textSize="14sp"
+        android:fontFamily="@font/manrope_extra_bold"
+        app:layout_constraintTop_toBottomOf="@id/normalUsersCloud"/>
+
+    <ImageView
+        android:id="@+id/misoboUsersCloud"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_misobo_cloud"
+        app:layout_constraintBottom_toBottomOf="@id/normalUsersCloud"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/normalUsersCloud"
+        app:layout_constraintTop_toTopOf="@id/normalUsersCloud" />
+
+    <TextView
+        android:id="@+id/misoboUsersText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/misoboUsersCloud"
+        app:layout_constraintEnd_toEndOf="@id/misoboUsersCloud"
+        android:textColor="@color/colorAccent"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/normalUsersTextView"
+        android:text="Misobo Users"
+        android:fontFamily="@font/manrope_extra_bold"
+        app:layout_constraintTop_toTopOf="@id/normalUsersTextView"/>
+
+    <TextView
+        android:id="@+id/misoboMembersTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="misobo members"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/daysOfMisoboTextView"
+        android:layout_marginBottom="30dp"
+        android:textSize="35sp"
+        android:fontFamily="@font/manrope_extra_bold"
+        android:lineHeight="40sp"
+        android:gravity="center"
+        android:textColor="@color/colorAccent"
+        android:layout_marginStart="100dp"
+        android:layout_marginEnd="100dp"
+        />
+
+    <TextView
+        android:id="@+id/daysOfMisoboTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/astrologyTextView"
+        android:layout_marginBottom="31dp"
+        android:layout_marginStart="61dp"
+        android:layout_marginEnd="61dp"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:fontFamily="@font/manrope_regular"
+        android:textColor="@color/colorAccent"
+        android:lineHeight="30sp"
+        android:text="Just 15 days of misobo will increase your wellness score by 21%" />
+
+    <TextView
+        android:id="@+id/astrologyTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="33dp"
+        android:layout_marginEnd="33dp"
+        android:layout_marginBottom="49dp"
+        android:gravity="center"
+        android:text="Astrology &amp; science backed wellness program"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintBottom_toTopOf="@id/continueButton" />
+
+    <TextView
+        android:id="@+id/continueButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="27dp"
+        android:layout_marginEnd="27dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="@color/colorAccent"
+        android:fontFamily="@font/manrope_extra_bold"
+        android:gravity="center"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:text="Continue"
+        android:textColor="#ffffff"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

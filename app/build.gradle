@@ -32,6 +32,7 @@ android {
 dependencies {
 
     implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     def rxjava_version = "2.1.1"
     def retrofit_version = "2.5.0"
     def rxadapter_version = "1.0.0"
