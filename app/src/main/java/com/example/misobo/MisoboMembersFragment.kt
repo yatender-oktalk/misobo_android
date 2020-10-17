@@ -47,5 +47,14 @@ class MisoboMembersFragment : Fragment() {
         backIcon.setOnClickListener {
             activity?.onBackPressed()
         }
+
+        continueButton.setOnClickListener {
+            activity?.supportFragmentManager?.beginTransaction()
+                ?.replace(R.id.onBoardingFrameContainer, MisoboCategoriesFragment())
+                ?.addToBackStack(null)
+                ?.commitAllowingStateLoss()
+        }
+
+
     }
 }
