@@ -14,7 +14,8 @@ data class CategoriesModel(
         @SerializedName("desc")
         val description: String?,
         @SerializedName("sub_category")
-        val subCategory: List<SubCategory>?
+        val subCategory: List<SubCategory>?,
+        var isSelected:Boolean = false
     )
 
     data class SubCategory(

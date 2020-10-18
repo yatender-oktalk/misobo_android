@@ -9,18 +9,30 @@ import io.reactivex.schedulers.Schedulers
 class OnBoardingViewModel : ViewModel() {
     private val compositeDisposable = CompositeDisposable()
     val categoriesLiveData: MutableLiveData<CategoriesAction> = MutableLiveData()
+    val categorySelectedPosition: MutableLiveData<Int> = MutableLiveData(-1)
+    val subCategorySelectedPosition: MutableLiveData<Int> = MutableLiveData(-1)
+    val categories: MutableLiveData<CategoriesModel> = MutableLiveData()
 
     fun getOnBoardingCategories() {
         compositeDisposable.add(
             OnBoardingService.Creator.service
                 .getCategories(Util.token)
                 .subscribeOn(Schedulers.io())
-                .map { CategoriesAction.Success(it) as CategoriesAction }
-                .startWith (CategoriesAction.Loading)
+                .map {
+                    categories.postValue(it)
+                    CategoriesAction.Success(it) as CategoriesAction
+                }
+                .startWith(CategoriesAction.Loading)
                 .onErrorReturn { CategoriesAction.Failure(it.localizedMessage) }
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { categoriesLiveData.postValue(it) }
+                .subscribe {
+                    categoriesLiveData.postValue(it)
+                }
         )
+    }
+
+    fun getSubCategory(): List<CategoriesModel.SubCategory>? {
+        return categories.value?.data?.get(categorySelectedPosition.value?:-1)?.subCategory
     }
 
     override fun onCleared() {

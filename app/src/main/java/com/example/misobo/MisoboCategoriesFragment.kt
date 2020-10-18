@@ -55,36 +55,65 @@ class MisoboCategoriesFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         categoriesRecyclerView.adapter = groupAdapter
-        val categoryList =
-            listOf("Reduce Stress", "Worry less", "Feel Empowered", "Sound Sleep", "Horoscope")
-
-        categoryList.forEach { category ->
-
-        }
-
         categoriesBackIcon.setOnClickListener {
             activity?.onBackPressed()
+        }
+
+        categoriesContinueButton.setOnClickListener {
+            if (onBoardingViewModel.categorySelectedPosition.value != -1) {
+                activity?.supportFragmentManager?.beginTransaction()
+                    ?.replace(
+                        R.id.onBoardingFrameContainer,
+                        SubCategoriesFragment()
+                    )
+                    ?.addToBackStack(null)
+                    ?.commitAllowingStateLoss()
+            } else {
+
+            }
         }
 
         onBoardingViewModel.getOnBoardingCategories()
         onBoardingViewModel.categoriesLiveData.observe(viewLifecycleOwner, Observer { it ->
             when (it) {
                 is CategoriesAction.Success -> {
-                    groupAdapter.clear()
-                    val section  = Section()
-                    groupAdapter.add(section)
-                    it.categoryModel.data?.forEach {
-                        section.add(MisoboCategoriesItem(it.name.toString()))
-                    }
+                    inflateRecyclerView(it.categoryModel.data,onBoardingViewModel.categorySelectedPosition.value?:-1)
                 }
                 is CategoriesAction.Failure -> {
                     Log.i("fail", it.localizedMessage.toString())
-
                 }
                 is CategoriesAction.Loading -> {
-
                 }
             }
         })
+
+        onBoardingViewModel.categorySelectedPosition.observe(viewLifecycleOwner, Observer { position ->
+            if (position != -1) {
+                categoriesContinueButton.isEnabled = true
+                categoriesContinueButton.alpha = 1F
+            } else {
+                categoriesContinueButton.isEnabled = false
+                categoriesContinueButton.alpha = 0.7F
+            }
+        })
+    }
+
+    private fun inflateRecyclerView(
+        it: List<CategoriesModel.Category>?,
+        selectedPosition: Int = -1
+    ) {
+        groupAdapter.clear()
+        val section = Section()
+        groupAdapter.add(section)
+        it?.forEach { category ->
+            section.add(
+                MisoboCategoriesItem(
+                    category.name.toString(),
+                    selectedPosition
+                ) { position ->
+                    onBoardingViewModel.categorySelectedPosition.postValue(position)
+                    inflateRecyclerView(it, position)
+                })
+        }
     }
 }
