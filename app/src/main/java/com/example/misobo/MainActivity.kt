@@ -2,9 +2,15 @@ package com.example.misobo
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+
+    val onBoardingViewModel by lazy {
+        ViewModelProvider(this).get(OnBoardingViewModel::class.java)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -15,6 +21,5 @@ class MainActivity : AppCompatActivity() {
                 .addToBackStack(null)
                 .commitAllowingStateLoss()
         }
-
     }
 }

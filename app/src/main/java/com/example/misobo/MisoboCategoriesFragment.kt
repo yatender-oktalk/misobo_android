@@ -1,10 +1,13 @@
 package com.example.misobo
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
@@ -23,7 +26,7 @@ private const val ARG_PARAM2 = "param2"
 class MisoboCategoriesFragment : Fragment() {
 
     val groupAdapter = GroupAdapter<ViewHolder>()
-    val section = Section()
+    val onBoardingViewModel: OnBoardingViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,16 +55,36 @@ class MisoboCategoriesFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         categoriesRecyclerView.adapter = groupAdapter
-        groupAdapter.add(section)
         val categoryList =
             listOf("Reduce Stress", "Worry less", "Feel Empowered", "Sound Sleep", "Horoscope")
 
         categoryList.forEach { category ->
-            section.add(MisoboCategoriesItem(category))
+
         }
 
         categoriesBackIcon.setOnClickListener {
             activity?.onBackPressed()
         }
+
+        onBoardingViewModel.getOnBoardingCategories()
+        onBoardingViewModel.categoriesLiveData.observe(viewLifecycleOwner, Observer { it ->
+            when (it) {
+                is CategoriesAction.Success -> {
+                    groupAdapter.clear()
+                    val section  = Section()
+                    groupAdapter.add(section)
+                    it.categoryModel.data?.forEach {
+                        section.add(MisoboCategoriesItem(it.name.toString()))
+                    }
+                }
+                is CategoriesAction.Failure -> {
+                    Log.i("fail", it.localizedMessage.toString())
+
+                }
+                is CategoriesAction.Loading -> {
+
+                }
+            }
+        })
     }
 }
