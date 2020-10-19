@@ -1,4 +1,4 @@
-package com.example.misobo
+package com.example.misobo.onBoarding
 
 import com.google.gson.annotations.SerializedName
 

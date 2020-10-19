@@ -1,7 +1,8 @@
-package com.example.misobo
+package com.example.misobo.onBoarding
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.misobo.Util
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -23,7 +24,11 @@ class OnBoardingViewModel : ViewModel() {
                     CategoriesAction.Success(it) as CategoriesAction
                 }
                 .startWith(CategoriesAction.Loading)
-                .onErrorReturn { CategoriesAction.Failure(it.localizedMessage) }
+                .onErrorReturn {
+                    CategoriesAction.Failure(
+                        it.localizedMessage
+                    )
+                }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     categoriesLiveData.postValue(it)

@@ -1,10 +1,11 @@
-package com.example.misobo
+package com.example.misobo.onBoarding
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.misobo.R
 import kotlinx.android.synthetic.main.fragment_misobo_members.*
 
 private const val ARG_PARAM1 = "param1"
@@ -50,7 +51,10 @@ class MisoboMembersFragment : Fragment() {
 
         continueButton.setOnClickListener {
             activity?.supportFragmentManager?.beginTransaction()
-                ?.replace(R.id.onBoardingFrameContainer, MisoboCategoriesFragment())
+                ?.replace(
+                    R.id.onBoardingFrameContainer,
+                    MisoboCategoriesFragment()
+                )
                 ?.addToBackStack(null)
                 ?.commitAllowingStateLoss()
         }

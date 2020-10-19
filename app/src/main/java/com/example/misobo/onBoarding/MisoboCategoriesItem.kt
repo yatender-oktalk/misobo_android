@@ -1,7 +1,8 @@
-package com.example.misobo
+package com.example.misobo.onBoarding
 
 import android.view.View
 import androidx.core.content.ContextCompat
+import com.example.misobo.R
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.categories_recycler_item.view.*
@@ -29,5 +30,6 @@ class MisoboCategoriesItem(
         viewHolder.itemView.root.setOnClickListener { onClick.invoke(position) }
     }
 
-    override fun getLayout(): Int = R.layout.categories_recycler_item
+    override fun getLayout(): Int =
+        R.layout.categories_recycler_item
 }

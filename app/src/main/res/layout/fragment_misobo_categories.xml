@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     android:clickable="true"
-    tools:context=".MisoboCategoriesFragment">
+    tools:context=".onBoarding.MisoboCategoriesFragment">
 
     <ImageView
         android:id="@+id/categoriesBackIcon"

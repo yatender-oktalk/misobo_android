@@ -1,4 +1,4 @@
-package com.example.misobo
+package com.example.misobo.onBoarding
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import io.reactivex.Observable
