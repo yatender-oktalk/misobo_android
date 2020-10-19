@@ -27,6 +27,8 @@ class ReminderFragment : Fragment() {
         setNumberPicker(minutesPicker, 0, 59)
         setNumberPicker(amPmPicker,0,1)
         amPmPicker.displayedValues = arrayOf("AM", "PM")
+
+        reminderBackIcon.setOnClickListener { activity?.onBackPressed() }
     }
 
     private fun setNumberPicker(

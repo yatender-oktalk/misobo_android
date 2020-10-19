@@ -15,17 +15,11 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.fragment_sub_categories.*
 
 // TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "SUB_CAT"
 
 class SubCategoriesFragment : Fragment() {
 
     private val onBoardingViewModel: OnBoardingViewModel by activityViewModels()
-    val groupAdapter = GroupAdapter<ViewHolder>()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private val groupAdapter = GroupAdapter<ViewHolder>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,13 +33,17 @@ class SubCategoriesFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         subCategoriesRecyclerView.adapter = groupAdapter
-        Log.i("sub", onBoardingViewModel.getSubCategory().toString())
         val subCategory = onBoardingViewModel.getSubCategory()
         categoryNameTextView.text =
             onBoardingViewModel.categories.value?.data?.get(
                 onBoardingViewModel.categorySelectedPosition.value ?: -1
             )?.name ?: ""
-        inflateSubCategory(subCategory)
+        inflateSubCategory(subCategory, onBoardingViewModel.subCategorySelectedPosition.value ?: -1)
+
+        subCategoriesBackIcon.setOnClickListener {
+            onBoardingViewModel.subCategorySelectedPosition.postValue(-1)
+            activity?.onBackPressed()
+        }
 
         onBoardingViewModel.subCategorySelectedPosition.observe(
             viewLifecycleOwner,
@@ -83,7 +81,6 @@ class SubCategoriesFragment : Fragment() {
                     inflateSubCategory(subCategory, it)
                     onBoardingViewModel.subCategorySelectedPosition.postValue(it)
                 })
-
         }
     }
 }

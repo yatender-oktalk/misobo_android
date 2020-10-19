@@ -57,6 +57,7 @@ class MisoboCategoriesFragment : Fragment() {
 
         categoriesRecyclerView.adapter = groupAdapter
         categoriesBackIcon.setOnClickListener {
+            onBoardingViewModel.categorySelectedPosition.postValue(-1)
             activity?.onBackPressed()
         }
 

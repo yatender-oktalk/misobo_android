@@ -9,6 +9,15 @@
     tools:context=".onBoarding.MisoboMembersFragment">
 
     <ImageView
+        android:id="@+id/semiCircleImage"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_semi_circle"
+        android:scaleType="fitXY"
+        />
+
+    <ImageView
         android:id="@+id/backIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
