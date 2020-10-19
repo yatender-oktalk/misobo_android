@@ -23,12 +23,18 @@ class ReminderFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        setNumberPicker(hourPicker,0,12)
+        setNumberPicker(hourPicker, 0, 12)
         setNumberPicker(minutesPicker, 0, 59)
-        setNumberPicker(amPmPicker,0,1)
+        setNumberPicker(amPmPicker, 0, 1)
         amPmPicker.displayedValues = arrayOf("AM", "PM")
 
         reminderBackIcon.setOnClickListener { activity?.onBackPressed() }
+
+        saveReminderButton.setOnClickListener {
+            activity?.supportFragmentManager?.beginTransaction()
+                ?.replace(R.id.onBoardingFrameContainer, ReminderSuccessFragment())
+                ?.addToBackStack(null)?.commitAllowingStateLoss()
+        }
     }
 
     private fun setNumberPicker(
