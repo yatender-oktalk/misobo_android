@@ -1,14 +1,15 @@
 package com.example.misobo.onBoarding
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.misobo.R
+import com.example.misobo.SharedPreferenceManager
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
@@ -58,11 +59,33 @@ class SubCategoriesFragment : Fragment() {
             })
 
         subCategoriesContinueButton.setOnClickListener {
-            activity?.supportFragmentManager?.beginTransaction()
-                ?.replace(R.id.onBoardingFrameContainer, ReminderFragment())
-                ?.addToBackStack(null)
-                ?.commitAllowingStateLoss()
+            if (onBoardingViewModel.subCategorySelectedPosition.value != -1) {
+                onBoardingViewModel.saveSubCategories(
+                    SharedPreferenceManager.getUser(context)?.data?.token,
+                    CategoriesRequestModel(subCategories = listOf(onBoardingViewModel.subCategorySelectedPosition.value)),
+                    SharedPreferenceManager.getUser(context)?.data?.id ?: -1
+                )
+            } else {
+                Toast.makeText(context, "Please select a category", Toast.LENGTH_SHORT).show()
+            }
         }
+
+        onBoardingViewModel.subCategoryResponseAction.observe(viewLifecycleOwner, Observer { it ->
+            when (it) {
+                is ResponseAction.Success -> {
+                    subCategoriesContinueButton.isEnabled = true
+                    activity?.supportFragmentManager?.beginTransaction()
+                        ?.replace(R.id.onBoardingFrameContainer, ReminderFragment())
+                        ?.addToBackStack(null)
+                        ?.commitAllowingStateLoss()
+                }
+                is ResponseAction.Loading -> subCategoriesContinueButton.isEnabled = false
+                is ResponseAction.Failure -> {
+                    subCategoriesContinueButton.isEnabled = true
+                    Toast.makeText(context, "Please try again", Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
     }
 
     private fun inflateSubCategory(

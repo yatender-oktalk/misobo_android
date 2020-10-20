@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.misobo.*
@@ -63,23 +64,46 @@ class MisoboCategoriesFragment : Fragment() {
 
         categoriesContinueButton.setOnClickListener {
             if (onBoardingViewModel.categorySelectedPosition.value != -1) {
-                activity?.supportFragmentManager?.beginTransaction()
-                    ?.replace(
-                        R.id.onBoardingFrameContainer,
-                        SubCategoriesFragment()
-                    )
-                    ?.addToBackStack(null)
-                    ?.commitAllowingStateLoss()
+                onBoardingViewModel.saveCategories(
+                    SharedPreferenceManager.getUser(context)?.data?.token,
+                    CategoriesRequestModel(listOf(onBoardingViewModel.categorySelectedPosition.value)),
+                    SharedPreferenceManager.getUser(context)?.data?.id ?: -1
+                )
             } else {
-
+                Toast.makeText(context,"Please select a category" ,Toast.LENGTH_SHORT).show()
             }
         }
 
-        onBoardingViewModel.getOnBoardingCategories()
+        onBoardingViewModel.categoryResponseAction.observe(viewLifecycleOwner, Observer { it ->
+            when (it) {
+                is ResponseAction.Success -> {
+                    categoriesContinueButton.isEnabled = true
+                    activity?.supportFragmentManager?.beginTransaction()
+                        ?.replace(
+                            R.id.onBoardingFrameContainer,
+                            SubCategoriesFragment()
+                        )
+                        ?.addToBackStack(null)
+                        ?.commitAllowingStateLoss()
+                }
+                is ResponseAction.Loading -> categoriesContinueButton.isEnabled = false
+                is ResponseAction.Failure -> {
+                    categoriesContinueButton.isEnabled = true
+                    Toast.makeText(context,"Please try again" ,Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
+
+        onBoardingViewModel.getOnBoardingCategories(
+            SharedPreferenceManager.getUser(context)?.data?.token ?: ""
+        )
         onBoardingViewModel.categoriesLiveData.observe(viewLifecycleOwner, Observer { it ->
             when (it) {
                 is CategoriesAction.Success -> {
-                    inflateRecyclerView(it.categoryModel.data,onBoardingViewModel.categorySelectedPosition.value?:-1)
+                    inflateRecyclerView(
+                        it.categoryModel.data,
+                        onBoardingViewModel.categorySelectedPosition.value ?: -1
+                    )
                 }
                 is CategoriesAction.Failure -> {
                     Log.i("fail", it.localizedMessage.toString())
@@ -89,15 +113,17 @@ class MisoboCategoriesFragment : Fragment() {
             }
         })
 
-        onBoardingViewModel.categorySelectedPosition.observe(viewLifecycleOwner, Observer { position ->
-            if (position != -1) {
-                categoriesContinueButton.isEnabled = true
-                categoriesContinueButton.alpha = 1F
-            } else {
-                categoriesContinueButton.isEnabled = false
-                categoriesContinueButton.alpha = 0.7F
-            }
-        })
+        onBoardingViewModel.categorySelectedPosition.observe(
+            viewLifecycleOwner,
+            Observer { position ->
+                if (position != -1) {
+                    categoriesContinueButton.isEnabled = true
+                    categoriesContinueButton.alpha = 1F
+                } else {
+                    categoriesContinueButton.isEnabled = false
+                    categoriesContinueButton.alpha = 0.7F
+                }
+            })
     }
 
     private fun inflateRecyclerView(
