@@ -7,11 +7,14 @@ import android.view.ViewGroup
 import android.widget.NumberPicker
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.example.misobo.R
 import com.example.misobo.Util
 import kotlinx.android.synthetic.main.fragment_reminder.*
 
 class ReminderFragment : Fragment() {
+
+    val onBoardingViewModel: OnBoardingViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,6 +34,13 @@ class ReminderFragment : Fragment() {
         reminderBackIcon.setOnClickListener { activity?.onBackPressed() }
 
         saveReminderButton.setOnClickListener {
+            onBoardingViewModel.reminderTime.postValue(
+                ReminderTime.SelectedTime(
+                    String.format("%02d", hourPicker.value),
+                    String.format("%02d", minutesPicker.value),
+                    amPmPicker.value
+                ) as ReminderTime
+            )
             activity?.supportFragmentManager?.beginTransaction()
                 ?.replace(R.id.onBoardingFrameContainer, ReminderSuccessFragment())
                 ?.addToBackStack(null)?.commitAllowingStateLoss()
