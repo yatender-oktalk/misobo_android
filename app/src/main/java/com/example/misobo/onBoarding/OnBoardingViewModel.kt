@@ -18,10 +18,11 @@ class OnBoardingViewModel : ViewModel() {
     val userLiveData: MutableLiveData<User> = MutableLiveData()
     val categoryResponseAction: SingleLiveEvent<ResponseAction> = SingleLiveEvent()
     val subCategoryResponseAction: SingleLiveEvent<ResponseAction> = SingleLiveEvent()
+    var onBoardingService = OnBoardingService.Creator.service
 
     fun getOnBoardingCategories(token: String) {
         compositeDisposable.add(
-            OnBoardingService.Creator.service
+            onBoardingService
                 .getCategories(token)
                 .subscribeOn(Schedulers.io())
                 .map {
@@ -47,7 +48,7 @@ class OnBoardingViewModel : ViewModel() {
 
     fun registerUser(registrationModel: RegistrationModel) {
         compositeDisposable.add(
-            OnBoardingService.Creator.service.registerUser(registrationModel)
+            onBoardingService.registerUser(registrationModel)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { user -> userLiveData.postValue(user) }
@@ -60,7 +61,7 @@ class OnBoardingViewModel : ViewModel() {
         regId: Int
     ) {
         compositeDisposable.add(
-            OnBoardingService.Creator.service
+            onBoardingService
                 .saveCategories(
                     token = token ?: "",
                     categoriesRequestModel = categoryModel,
@@ -77,7 +78,7 @@ class OnBoardingViewModel : ViewModel() {
 
     fun saveSubCategories(token: String?,categoryModel: CategoriesRequestModel, regId: Int) {
         compositeDisposable.add(
-            OnBoardingService.Creator.service
+            onBoardingService
                 .saveSubCategories(token = token?:"",categoriesRequestModel = categoryModel, registrationId = regId)
                 .subscribeOn(Schedulers.io())
                 .map { ResponseAction.Success as ResponseAction }
