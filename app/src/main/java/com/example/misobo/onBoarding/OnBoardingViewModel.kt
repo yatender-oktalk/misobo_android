@@ -76,13 +76,17 @@ class OnBoardingViewModel : ViewModel() {
         )
     }
 
-    fun saveSubCategories(token: String?,categoryModel: CategoriesRequestModel, regId: Int) {
+    fun saveSubCategories(token: String?, categoryModel: CategoriesRequestModel, regId: Int) {
         compositeDisposable.add(
             onBoardingService
-                .saveSubCategories(token = token?:"",categoriesRequestModel = categoryModel, registrationId = regId)
+                .saveSubCategories(
+                    token = token ?: "",
+                    categoriesRequestModel = categoryModel,
+                    registrationId = regId
+                )
                 .subscribeOn(Schedulers.io())
                 .map { ResponseAction.Success as ResponseAction }
-                .startWith (ResponseAction.Loading )
+                .startWith(ResponseAction.Loading)
                 .onErrorReturn { ResponseAction.Failure }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { subCategoryResponseAction.postValue(it) }
