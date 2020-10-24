@@ -1,4 +1,4 @@
-package com.example.misobo.onBoarding
+package com.example.misobo.onBoarding.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.misobo.R
 import com.example.misobo.Util
+import com.example.misobo.onBoarding.viewModels.OnBoardingViewModel
+import com.example.misobo.onBoarding.viewModels.ReminderTime
 import kotlinx.android.synthetic.main.fragment_reminder.*
 
 class ReminderFragment : Fragment() {
@@ -42,7 +44,9 @@ class ReminderFragment : Fragment() {
                 ) as ReminderTime
             )
             activity?.supportFragmentManager?.beginTransaction()
-                ?.replace(R.id.onBoardingFrameContainer, ReminderSuccessFragment())
+                ?.replace(R.id.onBoardingFrameContainer,
+                    ReminderSuccessFragment()
+                )
                 ?.addToBackStack(null)?.commitAllowingStateLoss()
         }
     }

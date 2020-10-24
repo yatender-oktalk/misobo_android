@@ -2,7 +2,7 @@ package com.example.misobo
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.example.misobo.onBoarding.User
+import com.example.misobo.onBoarding.models.User
 import com.google.gson.Gson
 import io.reactivex.Completable
 

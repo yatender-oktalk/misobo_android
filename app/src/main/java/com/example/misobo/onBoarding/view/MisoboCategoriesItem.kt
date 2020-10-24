@@ -1,4 +1,4 @@
-package com.example.misobo.onBoarding
+package com.example.misobo.onBoarding.view
 
 import android.view.View
 import androidx.core.content.ContextCompat

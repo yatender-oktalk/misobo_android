@@ -1,4 +1,4 @@
-package com.example.misobo.onBoarding
+package com.example.misobo.onBoarding.view
 
 import android.animation.ObjectAnimator
 import android.os.Bundle
@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.misobo.R
+import com.example.misobo.onBoarding.viewModels.OnBoardingViewModel
+import com.example.misobo.onBoarding.viewModels.ReminderTime
 import kotlinx.android.synthetic.main.fragment_reminder_success.*
 
 class ReminderSuccessFragment : Fragment() {

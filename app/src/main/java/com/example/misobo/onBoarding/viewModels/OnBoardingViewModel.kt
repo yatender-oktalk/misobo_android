@@ -1,8 +1,13 @@
-package com.example.misobo.onBoarding
+package com.example.misobo.onBoarding.viewModels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.misobo.SingleLiveEvent
+import com.example.misobo.onBoarding.api.OnBoardingService
+import com.example.misobo.onBoarding.models.CategoriesModel
+import com.example.misobo.onBoarding.models.CategoriesRequestModel
+import com.example.misobo.onBoarding.models.RegistrationModel
+import com.example.misobo.onBoarding.models.User
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -18,7 +23,8 @@ class OnBoardingViewModel : ViewModel() {
     val userLiveData: MutableLiveData<User> = MutableLiveData()
     val categoryResponseAction: SingleLiveEvent<ResponseAction> = SingleLiveEvent()
     val subCategoryResponseAction: SingleLiveEvent<ResponseAction> = SingleLiveEvent()
-    var onBoardingService = OnBoardingService.Creator.service
+    var onBoardingService =
+        OnBoardingService.Creator.service
 
     fun getOnBoardingCategories(token: String) {
         compositeDisposable.add(
@@ -27,7 +33,9 @@ class OnBoardingViewModel : ViewModel() {
                 .subscribeOn(Schedulers.io())
                 .map {
                     categories.postValue(it)
-                    CategoriesAction.Success(it) as CategoriesAction
+                    CategoriesAction.Success(
+                        it
+                    ) as CategoriesAction
                 }
                 .startWith(CategoriesAction.Loading)
                 .onErrorReturn {

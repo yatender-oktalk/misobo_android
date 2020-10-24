@@ -3,7 +3,14 @@ package com.example.misobo.`on-boarding`
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.example.misobo.mock
-import com.example.misobo.onBoarding.*
+import com.example.misobo.onBoarding.api.OnBoardingService
+import com.example.misobo.onBoarding.models.CategoriesModel
+import com.example.misobo.onBoarding.models.CategoriesRequestModel
+import com.example.misobo.onBoarding.models.RegistrationModel
+import com.example.misobo.onBoarding.models.User
+import com.example.misobo.onBoarding.viewModels.CategoriesAction
+import com.example.misobo.onBoarding.viewModels.OnBoardingViewModel
+import com.example.misobo.onBoarding.viewModels.ResponseAction
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import io.reactivex.Observable
@@ -34,7 +41,8 @@ class OnBoardingViewModelTest {
 
     @Before
     fun setUp() {
-        onBoardingViewModel = OnBoardingViewModel()
+        onBoardingViewModel =
+            OnBoardingViewModel()
         onBoardingViewModel.onBoardingService = onBoardingService
         RxJavaPlugins.setIoSchedulerHandler { Schedulers.trampoline() }
         RxAndroidPlugins.setInitMainThreadSchedulerHandler { Schedulers.trampoline() }
@@ -44,8 +52,14 @@ class OnBoardingViewModelTest {
     fun `send device id should return user`() {
         //Arrange
         onBoardingViewModel.userLiveData.observeForever(userObserver)
-        val registrationModel = RegistrationModel(deviceId = "1234abcd")
-        val userResponse = User(data = User.Data(id = 7, token = "ABCDtesting1234"))
+        val registrationModel =
+            RegistrationModel(deviceId = "1234abcd")
+        val userResponse = User(
+            data = User.Data(
+                id = 7,
+                token = "ABCDtesting1234"
+            )
+        )
         Mockito.`when`(onBoardingService.registerUser(registrationModel))
             .thenReturn(Observable.just(userResponse))
 
@@ -69,7 +83,10 @@ class OnBoardingViewModelTest {
             1, "Stress", "",
             listOf(CategoriesModel.SubCategory(1, "sub")), false
         )
-        val categoriesModel = CategoriesModel(listOf(categoryList))
+        val categoriesModel =
+            CategoriesModel(
+                listOf(categoryList)
+            )
         Mockito.`when`(onBoardingService.getCategories(token))
             .thenReturn(Observable.just(categoriesModel))
 
@@ -106,14 +123,17 @@ class OnBoardingViewModelTest {
         Mockito.`when`(
             onBoardingService.saveCategories(
                 token,
-                CategoriesRequestModel(listOf(1)),
+                CategoriesRequestModel(
+                    listOf(1)
+                ),
                 1
             )
         )
             .thenReturn(Observable.just(Unit))
 
         //Act
-        onBoardingViewModel.saveCategories(token, CategoriesRequestModel(listOf(1)), 1)
+        onBoardingViewModel.saveCategories(token,
+            CategoriesRequestModel(listOf(1)), 1)
 
         //Assert
         verify(categoryResponseAction, times(1)).onChanged(ResponseAction.Loading)
@@ -128,14 +148,17 @@ class OnBoardingViewModelTest {
         Mockito.`when`(
             onBoardingService.saveCategories(
                 token,
-                CategoriesRequestModel(listOf(1)),
+                CategoriesRequestModel(
+                    listOf(1)
+                ),
                 1
             )
         )
             .thenReturn(Observable.error(Throwable("Random Exception")))
 
         //Act
-        onBoardingViewModel.saveCategories(token, CategoriesRequestModel(listOf(1)), 1)
+        onBoardingViewModel.saveCategories(token,
+            CategoriesRequestModel(listOf(1)), 1)
 
         //Assert
         verify(categoryResponseAction, times(1)).onChanged(ResponseAction.Loading)
@@ -150,14 +173,17 @@ class OnBoardingViewModelTest {
         Mockito.`when`(
             onBoardingService.saveSubCategories(
                 token,
-                CategoriesRequestModel(listOf(1)),
+                CategoriesRequestModel(
+                    listOf(1)
+                ),
                 1
             )
         )
             .thenReturn(Observable.just(Unit))
 
         //Act
-        onBoardingViewModel.saveSubCategories(token, CategoriesRequestModel(listOf(1)), 1)
+        onBoardingViewModel.saveSubCategories(token,
+            CategoriesRequestModel(listOf(1)), 1)
 
         //Assert
         verify(subCategoryResponseAction, times(1)).onChanged(ResponseAction.Loading)
@@ -172,14 +198,17 @@ class OnBoardingViewModelTest {
         Mockito.`when`(
             onBoardingService.saveSubCategories(
                 token,
-                CategoriesRequestModel(listOf(1)),
+                CategoriesRequestModel(
+                    listOf(1)
+                ),
                 1
             )
         )
             .thenReturn(Observable.error(Throwable("Random Exception")))
 
         //Act
-        onBoardingViewModel.saveSubCategories(token, CategoriesRequestModel(listOf(1)), 1)
+        onBoardingViewModel.saveSubCategories(token,
+            CategoriesRequestModel(listOf(1)), 1)
 
         //Assert
         verify(subCategoryResponseAction, times(1)).onChanged(ResponseAction.Loading)

@@ -1,5 +1,9 @@
-package com.example.misobo.onBoarding
+package com.example.misobo.onBoarding.api
 
+import com.example.misobo.onBoarding.models.CategoriesModel
+import com.example.misobo.onBoarding.models.CategoriesRequestModel
+import com.example.misobo.onBoarding.models.RegistrationModel
+import com.example.misobo.onBoarding.models.User
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import io.reactivex.Observable

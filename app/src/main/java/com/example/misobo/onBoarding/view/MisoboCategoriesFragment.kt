@@ -1,4 +1,4 @@
-package com.example.misobo.onBoarding
+package com.example.misobo.onBoarding.view
 
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +10,11 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.misobo.*
+import com.example.misobo.onBoarding.models.CategoriesModel
+import com.example.misobo.onBoarding.models.CategoriesRequestModel
+import com.example.misobo.onBoarding.viewModels.CategoriesAction
+import com.example.misobo.onBoarding.viewModels.OnBoardingViewModel
+import com.example.misobo.onBoarding.viewModels.ResponseAction
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
@@ -66,7 +71,11 @@ class MisoboCategoriesFragment : Fragment() {
             if (onBoardingViewModel.categorySelectedPosition.value != -1) {
                 onBoardingViewModel.saveCategories(
                     SharedPreferenceManager.getUser(context)?.data?.token,
-                    CategoriesRequestModel(listOf(onBoardingViewModel.categorySelectedPosition.value)),
+                    CategoriesRequestModel(
+                        listOf(
+                            onBoardingViewModel.categorySelectedPosition.value
+                        )
+                    ),
                     SharedPreferenceManager.getUser(context)?.data?.id ?: -1
                 )
             } else {

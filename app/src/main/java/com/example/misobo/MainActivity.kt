@@ -6,14 +6,14 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.misobo.onBoarding.MisoboMembersFragment
-import com.example.misobo.onBoarding.OnBoardingViewModel
-import com.example.misobo.onBoarding.RegistrationModel
+import com.example.misobo.onBoarding.view.MisoboMembersFragment
+import com.example.misobo.onBoarding.viewModels.OnBoardingViewModel
+import com.example.misobo.onBoarding.models.RegistrationModel
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    val onBoardingViewModel by lazy {
+    private val onBoardingViewModel by lazy {
         ViewModelProvider(this).get(OnBoardingViewModel::class.java)
     }
 
@@ -26,12 +26,13 @@ class MainActivity : AppCompatActivity() {
         })
 
         try {
-            val registrationModel = RegistrationModel(
-                Settings.Secure.getString(
-                    this.contentResolver,
-                    Settings.Secure.ANDROID_ID
+            val registrationModel =
+                RegistrationModel(
+                    Settings.Secure.getString(
+                        this.contentResolver,
+                        Settings.Secure.ANDROID_ID
+                    )
                 )
-            )
             if (SharedPreferenceManager.getUser(this) == null) {
                 onBoardingViewModel.registerUser(
                     registrationModel

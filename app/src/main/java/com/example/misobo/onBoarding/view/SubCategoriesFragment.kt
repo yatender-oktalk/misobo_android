@@ -1,4 +1,4 @@
-package com.example.misobo.onBoarding
+package com.example.misobo.onBoarding.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,6 +10,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.misobo.R
 import com.example.misobo.SharedPreferenceManager
+import com.example.misobo.onBoarding.models.CategoriesModel
+import com.example.misobo.onBoarding.models.CategoriesRequestModel
+import com.example.misobo.onBoarding.viewModels.OnBoardingViewModel
+import com.example.misobo.onBoarding.viewModels.ResponseAction
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
@@ -62,7 +66,9 @@ class SubCategoriesFragment : Fragment() {
             if (onBoardingViewModel.subCategorySelectedPosition.value != -1) {
                 onBoardingViewModel.saveSubCategories(
                     SharedPreferenceManager.getUser(context)?.data?.token,
-                    CategoriesRequestModel(subCategories = listOf(onBoardingViewModel.subCategorySelectedPosition.value)),
+                    CategoriesRequestModel(
+                        subCategories = listOf(onBoardingViewModel.subCategorySelectedPosition.value)
+                    ),
                     SharedPreferenceManager.getUser(context)?.data?.id ?: -1
                 )
             } else {
@@ -75,7 +81,9 @@ class SubCategoriesFragment : Fragment() {
                 is ResponseAction.Success -> {
                     subCategoriesContinueButton.isEnabled = true
                     activity?.supportFragmentManager?.beginTransaction()
-                        ?.replace(R.id.onBoardingFrameContainer, ReminderFragment())
+                        ?.replace(R.id.onBoardingFrameContainer,
+                            ReminderFragment()
+                        )
                         ?.addToBackStack(null)
                         ?.commitAllowingStateLoss()
                 }
