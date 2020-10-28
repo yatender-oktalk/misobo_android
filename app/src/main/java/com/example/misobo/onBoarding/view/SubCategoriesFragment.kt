@@ -65,11 +65,10 @@ class SubCategoriesFragment : Fragment() {
         subCategoriesContinueButton.setOnClickListener {
             if (onBoardingViewModel.subCategorySelectedPosition.value != -1) {
                 onBoardingViewModel.saveSubCategories(
-                    SharedPreferenceManager.getUser(context)?.data?.token,
                     CategoriesRequestModel(
                         subCategories = listOf(onBoardingViewModel.subCategorySelectedPosition.value)
                     ),
-                    SharedPreferenceManager.getUser(context)?.data?.id ?: -1
+                    SharedPreferenceManager.getUser()?.data?.id ?: -1
                 )
             } else {
                 Toast.makeText(context, "Please select a category", Toast.LENGTH_SHORT).show()
@@ -81,7 +80,8 @@ class SubCategoriesFragment : Fragment() {
                 is ResponseAction.Success -> {
                     subCategoriesContinueButton.isEnabled = true
                     activity?.supportFragmentManager?.beginTransaction()
-                        ?.replace(R.id.onBoardingFrameContainer,
+                        ?.replace(
+                            R.id.onBoardingFrameContainer,
                             ReminderFragment()
                         )
                         ?.addToBackStack(null)

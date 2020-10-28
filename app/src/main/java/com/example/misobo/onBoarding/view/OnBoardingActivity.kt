@@ -34,7 +34,7 @@ class OnBoardingActivity : AppCompatActivity() {
                         Settings.Secure.ANDROID_ID
                     )
                 )
-            if (SharedPreferenceManager.getUser(this) == null) {
+            if (SharedPreferenceManager.getUser() == null) {
                 onBoardingViewModel.registerUser(
                     registrationModel
                 )

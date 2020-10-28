@@ -9,21 +9,21 @@ import io.reactivex.Completable
 object SharedPreferenceManager {
 
     private const val USER = "user"
-    private var prefName: String? = null
+    private var sharedPreferences: SharedPreferences? = null
 
-    private fun initializePreferences(context: Context?): SharedPreferences? {
-        prefName = context?.getString(R.string.app_name)
-        return context?.getSharedPreferences(prefName, Context.MODE_PRIVATE)
+    fun init(context: Context) {
+        sharedPreferences = context.getSharedPreferences(
+            context.getString(R.string.app_name),
+            Context.MODE_PRIVATE
+        )
     }
 
-    fun getUser(context: Context?): User? {
-        val sharedPreferences = initializePreferences(context)
-        return Gson().fromJson(sharedPreferences?.getString(USER, null), User::class.java)
-    }
+    fun getUser(): User? =
+        Gson().fromJson(sharedPreferences?.getString(USER, null), User::class.java)
+
 
     fun setUser(context: Context?, user: User?): Completable {
         context?.let {
-            val sharedPreferences = initializePreferences(context)
             sharedPreferences?.edit()?.apply {
                 if (user == null) {
                     putString(USER, null)
@@ -34,5 +34,11 @@ object SharedPreferenceManager {
             }
         }
         return Completable.complete()
+    }
+
+    fun clear() {
+        val editor = sharedPreferences?.edit()
+        editor?.clear()
+        editor?.apply()
     }
 }

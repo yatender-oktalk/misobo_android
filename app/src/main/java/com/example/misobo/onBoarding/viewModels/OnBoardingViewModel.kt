@@ -26,10 +26,10 @@ class OnBoardingViewModel : ViewModel() {
     var onBoardingService =
         OnBoardingService.Creator.service
 
-    fun getOnBoardingCategories(token: String) {
+    fun getOnBoardingCategories() {
         compositeDisposable.add(
-            onBoardingService
-                .getCategories(token)
+            OnBoardingService.Creator.service
+                .getCategories()
                 .subscribeOn(Schedulers.io())
                 .map {
                     categories.postValue(it)
@@ -64,14 +64,12 @@ class OnBoardingViewModel : ViewModel() {
     }
 
     fun saveCategories(
-        token: String?,
         categoryModel: CategoriesRequestModel,
         regId: Int
     ) {
         compositeDisposable.add(
             onBoardingService
                 .saveCategories(
-                    token = token ?: "",
                     categoriesRequestModel = categoryModel,
                     registrationId = regId
                 )
@@ -84,11 +82,10 @@ class OnBoardingViewModel : ViewModel() {
         )
     }
 
-    fun saveSubCategories(token: String?, categoryModel: CategoriesRequestModel, regId: Int) {
+    fun saveSubCategories(categoryModel: CategoriesRequestModel, regId: Int) {
         compositeDisposable.add(
             onBoardingService
                 .saveSubCategories(
-                    token = token ?: "",
                     categoriesRequestModel = categoryModel,
                     registrationId = regId
                 )

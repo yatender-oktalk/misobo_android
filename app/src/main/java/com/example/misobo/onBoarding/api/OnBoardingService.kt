@@ -1,5 +1,8 @@
 package com.example.misobo.onBoarding.api
 
+import com.example.misobo.AuthInterceptor
+import com.example.misobo.Misobo
+import com.example.misobo.SharedPreferenceManager
 import com.example.misobo.onBoarding.models.CategoriesModel
 import com.example.misobo.onBoarding.models.CategoriesRequestModel
 import com.example.misobo.onBoarding.models.RegistrationModel
@@ -16,14 +19,11 @@ interface OnBoardingService {
 
     @Headers("Accept: application/json", "Content-Type: application/json")
     @GET("api/categories")
-    fun getCategories(
-        @Header("token") token: String
-    ): Observable<CategoriesModel>
+    fun getCategories(): Observable<CategoriesModel>
 
     @Headers("Accept: application/json", "Content-Type: application/json")
     @PUT("/api/registration/{registration_id}/categories")
     fun saveCategories(
-        @Header("token") token: String,
         @Body categoriesRequestModel: CategoriesRequestModel,
         @Path(value = "registration_id") registrationId: Int
     ): Observable<Unit>
@@ -31,7 +31,6 @@ interface OnBoardingService {
     @Headers("Accept: application/json", "Content-Type: application/json")
     @PUT("/api/registration/{registration_id}/sub_categories")
     fun saveSubCategories(
-        @Header("token") token: String,
         @Body categoriesRequestModel: CategoriesRequestModel,
         @Path(value = "registration_id") registrationId: Int
     ): Observable<Unit>
@@ -42,6 +41,7 @@ interface OnBoardingService {
 
     object Creator {
         private const val url: String = "http://143.110.176.70:4000/"
+        private val token = SharedPreferenceManager.getUser()?.data?.token ?: ""
         val service: OnBoardingService
             get() {
                 val retrofit = Retrofit.Builder()
@@ -49,6 +49,13 @@ interface OnBoardingService {
                     .client(
                         OkHttpClient.Builder()
                             .addNetworkInterceptor(StethoInterceptor())
+                            .addInterceptor {
+                                it.proceed(
+                                    it.request().newBuilder()
+                                        .addHeader("token", token)
+                                        .build()
+                                )
+                            }
                             .build()
                     )
                     .addConverterFactory(GsonConverterFactory.create())

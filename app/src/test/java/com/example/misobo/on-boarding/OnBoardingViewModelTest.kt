@@ -132,8 +132,10 @@ class OnBoardingViewModelTest {
             .thenReturn(Observable.just(Unit))
 
         //Act
-        onBoardingViewModel.saveCategories(token,
-            CategoriesRequestModel(listOf(1)), 1)
+        onBoardingViewModel.saveCategories(
+            token,
+            CategoriesRequestModel(listOf(1)), 1
+        )
 
         //Assert
         verify(categoryResponseAction, times(1)).onChanged(ResponseAction.Loading)
@@ -157,8 +159,10 @@ class OnBoardingViewModelTest {
             .thenReturn(Observable.error(Throwable("Random Exception")))
 
         //Act
-        onBoardingViewModel.saveCategories(token,
-            CategoriesRequestModel(listOf(1)), 1)
+        onBoardingViewModel.saveCategories(
+            token,
+            CategoriesRequestModel(listOf(1)), 1
+        )
 
         //Assert
         verify(categoryResponseAction, times(1)).onChanged(ResponseAction.Loading)
@@ -182,8 +186,10 @@ class OnBoardingViewModelTest {
             .thenReturn(Observable.just(Unit))
 
         //Act
-        onBoardingViewModel.saveSubCategories(token,
-            CategoriesRequestModel(listOf(1)), 1)
+        onBoardingViewModel.saveSubCategories(
+            token,
+            CategoriesRequestModel(listOf(1)), 1
+        )
 
         //Assert
         verify(subCategoryResponseAction, times(1)).onChanged(ResponseAction.Loading)
@@ -207,8 +213,10 @@ class OnBoardingViewModelTest {
             .thenReturn(Observable.error(Throwable("Random Exception")))
 
         //Act
-        onBoardingViewModel.saveSubCategories(token,
-            CategoriesRequestModel(listOf(1)), 1)
+        onBoardingViewModel.saveSubCategories(
+            token,
+            CategoriesRequestModel(listOf(1)), 1
+        )
 
         //Assert
         verify(subCategoryResponseAction, times(1)).onChanged(ResponseAction.Loading)
