@@ -1,16 +1,14 @@
 package com.example.misobo.onBoarding.view
 
+import android.content.Intent
 import android.os.Bundle
-import android.provider.Settings
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.misobo.MainActivity
 import com.example.misobo.R
 import com.example.misobo.utils.SharedPreferenceManager
 import com.example.misobo.onBoarding.viewModels.OnBoardingViewModel
-import com.example.misobo.onBoarding.models.RegistrationModel
-import kotlinx.android.synthetic.main.activity_onboarding.*
 
 class OnBoardingActivity : AppCompatActivity() {
 
@@ -21,36 +19,20 @@ class OnBoardingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_onboarding)
-
-        onBoardingViewModel.userLiveData.observe(this, Observer { user ->
-            SharedPreferenceManager.setUser(this, user)
-        })
-
-        try {
-            val registrationModel =
-                RegistrationModel(
-                    Settings.Secure.getString(
-                        this.contentResolver,
-                        Settings.Secure.ANDROID_ID
-                    )
-                )
-            if (SharedPreferenceManager.getUser() == null) {
-                onBoardingViewModel.registerUser(
-                    registrationModel
-                )
-            }
-        }catch (e:Exception){
-            Toast.makeText(this,e.localizedMessage,Toast.LENGTH_SHORT).show()
-        }
-
-        getStartedText.setOnClickListener {
+        if (SharedPreferenceManager.getUser() != null && SharedPreferenceManager.isOnBoarded()) {
+            startMainActivity()
+        } else {
             supportFragmentManager.beginTransaction()
-                .replace(
-                    R.id.onBoardingFrameContainer,
-                    MisoboMembersFragment()
-                )
-                .addToBackStack(null)
-                .commitAllowingStateLoss()
+                .replace(R.id.onBoardingFrameContainer, OnBoardingFragment())
+                .commit()
         }
+        onBoardingViewModel.startMainActivityTrigger.observe(this, Observer {
+            startMainActivity()
+        })
+    }
+
+    private fun startMainActivity(){
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
     }
 }

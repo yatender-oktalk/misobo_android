@@ -25,7 +25,7 @@ class BmiHomeFragment : Fragment() {
         activity?.bottomNavigationView?.visibility = View.GONE
         startedButton.setOnClickListener {
             activity?.supportFragmentManager?.beginTransaction()
-                ?.replace(R.id.mainContainer, HeightFragment())
+                ?.replace(R.id.bmiFrameContainer, HeightFragment())
                 ?.addToBackStack(null)?.commit()
         }
     }

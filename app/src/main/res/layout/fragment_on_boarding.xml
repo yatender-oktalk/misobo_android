@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:animateLayoutChanges="true"
+    tools:context=".onBoarding.view.OnBoardingActivity">
+
+    <ImageView
+        android:id="@+id/waveImage"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_wave"
+        android:scaleType="fitXY"
+        />
+
+    <ImageView
+        android:id="@+id/misoboCloud"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:src="@drawable/ic_misobo_close_eyes"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/misoboTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="49dp"
+        android:fontFamily="@font/manrope_extra_bold"
+        android:text="misobo"
+        android:textColor="@color/colorAccent"
+        android:textSize="35sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/misoboCloud" />
+
+    <TextView
+        android:id="@+id/mindSoulBodyTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/manrope_light"
+        android:text="mind. soul. body"
+        android:textColor="@color/colorAccent"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@id/misoboTitle"
+        app:layout_constraintStart_toStartOf="@id/misoboTitle"
+        app:layout_constraintTop_toBottomOf="@id/misoboTitle" />
+
+    <TextView
+        android:id="@+id/perfectCoachTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="87.1dp"
+        android:fontFamily="@font/manrope_extra_bold"
+        android:lineHeight="38sp"
+        android:text="A perfect coach"
+        android:textColor="@color/colorAccent"
+        android:textSize="26sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mindSoulBodyTextView" />
+
+    <TextView
+        android:id="@+id/forYourTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/manrope_extra_bold"
+        android:lineHeight="38dp"
+        android:text="for your"
+        android:textColor="@color/colorAccent"
+        android:textSize="26sp"
+        android:layout_marginStart="15dp"
+        app:layout_constraintStart_toStartOf="@id/perfectCoachTextView"
+        app:layout_constraintTop_toBottomOf="@id/perfectCoachTextView" />
+
+    <TextView
+        android:id="@+id/mindTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/manrope_extra_bold"
+        android:lineHeight="38sp"
+        android:text="mind"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="26sp"
+        app:layout_constraintBottom_toBottomOf="@id/forYourTextView"
+        app:layout_constraintEnd_toEndOf="@id/perfectCoachTextView"
+        app:layout_constraintStart_toEndOf="@id/forYourTextView"
+        app:layout_constraintTop_toTopOf="@id/forYourTextView" />
+
+    <TextView
+        android:id="@+id/scienceBackedTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="17dp"
+        android:text="Astrology &amp; science backed wellness program"
+        android:textColor="@color/colorAccent"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/forYourTextView" />
+
+    <TextView
+        android:id="@+id/getStartedText"
+        android:text="Get started"
+        app:layout_constraintBottom_toTopOf="@id/privacyTextView"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="@color/colorAccent"
+        android:layout_width="match_parent"
+        android:layout_marginStart="27dp"
+        android:layout_marginEnd="27dp"
+        android:gravity="center"
+        android:textColor="#ffffff"
+        android:textSize="16sp"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/privacyTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="By clicking here you agree to our terms of use and privacy policy"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="18.6dp"
+        android:layout_marginStart="55dp"
+        android:layout_marginEnd="55dp"
+        android:gravity="center"
+        android:textSize="12sp"
+        android:lineHeight="18sp"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

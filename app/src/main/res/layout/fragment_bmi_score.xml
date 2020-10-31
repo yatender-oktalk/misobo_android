@@ -5,21 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    android:layoutAnimation="@anim/layout_animation_fade_enter"
-    tools:context=".bmi.BmiHomeFragment">
+    android:clickable="true"
+    tools:context=".bmi.BmiScoreFragment">
 
     <ImageView
-        android:id="@+id/bmiBackButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="17dp"
-        android:src="@drawable/ic_arrow_back_24px"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/waveBackground"
+        android:id="@+id/waveView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="fitXY"
@@ -28,36 +18,57 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageView
-        android:id="@+id/misoboReading"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/bmiScore"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="98.7dp"
-        android:src="@drawable/ic_misobo_reading"
+        android:layout_marginTop="220dp"
+        android:fontFamily="@font/manrope_extra_bold"
+        android:gravity="center_horizontal"
+        android:lineSpacingExtra="18sp"
+        android:text="Your BMI Score is"
+        android:textColor="#4d426d"
+        android:textSize="20sp"
+        android:textStyle="normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/bmiText"
+        android:id="@+id/bmiValue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="66dp"
-        android:layout_marginTop="108dp"
-        android:layout_marginEnd="66dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/manrope_extra_bold"
         android:gravity="center_horizontal"
-        android:text="We would need some
-more details to analyse
-your BMI Score"
+        android:lineSpacingExtra="38sp"
         android:textColor="#4d426d"
-        android:textSize="20sp"
+        android:textSize="83sp"
+        android:textStyle="normal"
+        app:layout_constraintTop_toTopOf="@id/bmiScore"
+        tools:text="23.5" />
+
+    <TextView
+        android:id="@+id/bmiStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/manrope_extra_bold"
+        android:gravity="center_horizontal"
+        android:lineSpacingExtra="8sp"
+        android:textColor="#4d426d"
+        android:textSize="18sp"
+        android:layout_marginStart="73dp"
+        android:layout_marginEnd="73dp"
+        android:layout_marginTop="50dp"
+        android:textStyle="normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/misoboReading" />
+        app:layout_constraintTop_toBottomOf="@id/bmiValue"
+        tools:text="You’re in the overweight
+range " />
 
     <Button
-        android:id="@+id/startedButton"
+        android:id="@+id/calculateButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="27dp"
@@ -65,7 +76,7 @@ your BMI Score"
         android:layout_marginBottom="24dp"
         android:background="@drawable/rounded_button"
         android:backgroundTint="@color/colorAccent"
-        android:text="Get Started"
+        android:text="View Full Report"
         android:textAllCaps="false"
         android:textColor="#ffffff"
         app:layout_constraintBottom_toBottomOf="parent"

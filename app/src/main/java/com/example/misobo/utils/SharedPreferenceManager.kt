@@ -7,6 +7,8 @@ import com.example.misobo.onBoarding.models.User
 import com.google.gson.Gson
 import io.reactivex.Completable
 
+private const val ONBOARDED = "has_onboarded"
+
 object SharedPreferenceManager {
 
     private const val USER = "user"
@@ -22,7 +24,9 @@ object SharedPreferenceManager {
     fun getUser(): User? =
         Gson().fromJson(
             sharedPreferences?.getString(
-                USER, null), User::class.java)
+                USER, null
+            ), User::class.java
+        )
 
 
     fun setUser(context: Context?, user: User?): Completable {
@@ -37,6 +41,17 @@ object SharedPreferenceManager {
             }
         }
         return Completable.complete()
+    }
+
+    fun isOnBoarded(): Boolean =
+        sharedPreferences != null && sharedPreferences?.getBoolean(
+            ONBOARDED,
+            false
+        ) ?: false
+
+    fun setOnBoarded(value: Boolean) = sharedPreferences?.edit().apply {
+        this?.putBoolean(ONBOARDED,value)
+        this?.apply()
     }
 
     fun clear() {

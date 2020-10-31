@@ -6,21 +6,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import com.example.misobo.R
+import com.example.misobo.onBoarding.viewModels.OnBoardingViewModel
 import com.example.misobo.utils.RuleView
 import kotlinx.android.synthetic.main.fragment_height.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [HeightFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class HeightFragment : Fragment() {
+
+    val bmiViewModel: BmiViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,11 +35,22 @@ class HeightFragment : Fragment() {
                 feetValue.text = (ruleView.getCurrentValue() / 12).toString().substringBefore(".")
                 inchValue.text = "${ruleView.getCurrentValue().toInt() % 12}"
                 val footInch =
-                    (ruleView.getCurrentValue() / 12).toString().substringBefore(".")+ruleView.getCurrentValue().toInt() % 12
+                    (ruleView.getCurrentValue() / 12).toString()
+                        .substringBefore(".") + ruleView.getCurrentValue().toInt() % 12
 
-                Log.i("metres", (footInch.toFloat() * 0.3048).toString())
             }
         })
+
+        nextButton.setOnClickListener {
+            val inchToM = inchValue.text.toString().toDouble() * 0.0254
+            val footToM = feetValue.text.toString().toDouble() * 0.3048
+            val heightInMetres = inchToM + footToM
+
+            bmiViewModel.height.postValue(heightInMetres)
+            activity?.supportFragmentManager?.beginTransaction()
+                ?.replace(R.id.bmiFrameContainer, WeightFragment())
+                ?.addToBackStack(null)?.commit()
+        }
 
     }
 

@@ -21,6 +21,7 @@ class OnBoardingViewModel : ViewModel() {
     val categories: MutableLiveData<CategoriesModel> = MutableLiveData()
     val reminderTime: MutableLiveData<ReminderTime> = MutableLiveData()
     val userLiveData: MutableLiveData<User> = MutableLiveData()
+    val startMainActivityTrigger:MutableLiveData<Boolean> = MutableLiveData()
     val categoryResponseAction: SingleLiveEvent<ResponseAction> =
         SingleLiveEvent()
     val subCategoryResponseAction: SingleLiveEvent<ResponseAction> =

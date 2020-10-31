@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
+    android:layoutAnimation="@anim/layout_animation_fade_enter"
     tools:context=".bmi.HeightFragment">
 
     <ImageView
@@ -16,8 +17,6 @@
         android:src="@drawable/ic_arrow_back_24px"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-
 
     <TextView
         android:id="@+id/howTallTextView"
@@ -35,68 +34,65 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-   <TextView
-       android:id="@+id/feetValue"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       app:layout_constraintStart_toStartOf="parent"
-       android:fontFamily="@font/manrope_medium"
-       android:textStyle="normal"
-       android:textSize="42sp"
-       android:textColor="#4d426d"
-       android:lineSpacingExtra="84sp"
-       android:text="5"
-       app:layout_constraintBottom_toTopOf="@id/feetTextView"
-       android:layout_marginStart="63dp"
-       app:layout_constraintTop_toTopOf="@id/ruleView"
-       />
+    <TextView
+        android:id="@+id/feetValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="63dp"
+        android:fontFamily="@font/manrope_medium"
+        android:lineSpacingExtra="84sp"
+        android:text="5"
+        android:textColor="#4d426d"
+        android:textSize="42sp"
+        android:textStyle="normal"
+        app:layout_constraintBottom_toTopOf="@id/feetTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/ruleView" />
 
-   <TextView
-       android:id="@+id/feetTextView"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       app:layout_constraintStart_toStartOf="@id/feetValue"
-       app:layout_constraintEnd_toEndOf="@id/feetValue"
-       android:fontFamily="@font/manrope_medium"
-       android:textStyle="normal"
-       android:textSize="14sp"
-       android:textColor="#4d426d"
-       android:lineSpacingExtra="28sp"
-       android:text="Feet"
-       app:layout_constraintBottom_toTopOf="@id/inchValue"
-       app:layout_constraintTop_toBottomOf="@id/feetValue"
-       />
-   <TextView
-       android:id="@+id/inchValue"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       app:layout_constraintStart_toStartOf="parent"
-       android:fontFamily="@font/manrope_medium"
-       android:textStyle="normal"
-       android:textSize="42sp"
-       android:textColor="#4d426d"
-       android:lineSpacingExtra="84sp"
-       android:text="6"
-       android:layout_marginStart="63dp"
-       app:layout_constraintBottom_toTopOf="@id/inchText"
-       app:layout_constraintTop_toBottomOf="@id/feetTextView"
-       />
+    <TextView
+        android:id="@+id/feetTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/manrope_medium"
+        android:lineSpacingExtra="28sp"
+        android:text="Feet"
+        android:textColor="#4d426d"
+        android:textSize="14sp"
+        android:textStyle="normal"
+        app:layout_constraintBottom_toTopOf="@id/inchValue"
+        app:layout_constraintEnd_toEndOf="@id/feetValue"
+        app:layout_constraintStart_toStartOf="@id/feetValue"
+        app:layout_constraintTop_toBottomOf="@id/feetValue" />
 
-   <TextView
-       android:id="@+id/inchText"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:fontFamily="@font/manrope_medium"
-       android:textStyle="normal"
-       android:textSize="14sp"
-       android:textColor="#4d426d"
-       android:lineSpacingExtra="28sp"
-       android:text="inches"
-       app:layout_constraintStart_toStartOf="@id/inchValue"
-       app:layout_constraintEnd_toEndOf="@id/inchValue"
-       app:layout_constraintTop_toBottomOf="@id/inchValue"
-       app:layout_constraintBottom_toBottomOf="@id/ruleView"
-       />
+    <TextView
+        android:id="@+id/inchValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="63dp"
+        android:fontFamily="@font/manrope_medium"
+        android:lineSpacingExtra="84sp"
+        android:text="6"
+        android:textColor="#4d426d"
+        android:textSize="42sp"
+        android:textStyle="normal"
+        app:layout_constraintBottom_toTopOf="@id/inchText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/feetTextView" />
+
+    <TextView
+        android:id="@+id/inchText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/manrope_medium"
+        android:lineSpacingExtra="28sp"
+        android:text="inches"
+        android:textColor="#4d426d"
+        android:textSize="14sp"
+        android:textStyle="normal"
+        app:layout_constraintBottom_toBottomOf="@id/ruleView"
+        app:layout_constraintEnd_toEndOf="@id/inchValue"
+        app:layout_constraintStart_toStartOf="@id/inchValue"
+        app:layout_constraintTop_toBottomOf="@id/inchValue" />
 
     <com.example.misobo.utils.RuleView
         android:id="@+id/ruleView"
@@ -106,32 +102,44 @@
         app:bgColor="@color/colorPrimary"
         app:gradationUnit="1"
         app:indicatorLineColor="@color/colorAccent"
-        app:indicatorLineLen="68dp"
+        app:indicatorLineLen="70dp"
         app:indicatorLineWidth="3dp"
         app:layout_constraintBottom_toTopOf="@id/nextButton"
         app:layout_constraintTop_toBottomOf="@id/howTallTextView"
         app:longGradationColor="@color/colorPrimaryDark"
-        app:longGradationLen="68dp"
+        app:longGradationLen="70dp"
         app:longLineWidth="3dp"
         app:numberPerCount="12"
         app:shortGradationColor="@color/colorPrimaryDarkMedium"
-        app:shortGradationLen="55dp"
+        app:shortGradationLen="60dp"
         app:shortLineWidth="3dp"
         app:textSize="18sp" />
 
-   <Button
-       android:id="@+id/nextButton"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:layout_marginStart="27dp"
-       android:layout_marginEnd="27dp"
-       android:layout_marginBottom="24dp"
-       android:background="@drawable/rounded_button"
-       android:backgroundTint="@color/colorAccent"
-       android:text="Next"
-       android:textAllCaps="false"
-       android:textColor="#ffffff"
-       app:layout_constraintBottom_toBottomOf="parent"
-       app:layout_constraintEnd_toEndOf="parent"
-       app:layout_constraintStart_toStartOf="parent" />
+    <View
+        android:id="@+id/view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/ruler_gradient"
+        android:backgroundTint="@color/colorPrimary"
+        android:rotation="90"
+        app:layout_constraintBottom_toBottomOf="@id/ruleView"
+        app:layout_constraintEnd_toEndOf="@id/ruleView"
+        app:layout_constraintStart_toStartOf="@id/ruleView"
+        app:layout_constraintTop_toTopOf="@id/ruleView" />
+
+    <Button
+        android:id="@+id/nextButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="27dp"
+        android:layout_marginEnd="27dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="@color/colorAccent"
+        android:text="Next"
+        android:textAllCaps="false"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
