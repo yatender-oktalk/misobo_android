@@ -1,6 +1,7 @@
 package com.example.misobo
 
 import android.app.Application
+import com.example.misobo.utils.SharedPreferenceManager
 import com.facebook.stetho.Stetho
 
 class Misobo : Application() {

@@ -9,7 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.misobo.R
-import com.example.misobo.SharedPreferenceManager
+import com.example.misobo.utils.SharedPreferenceManager
 import com.example.misobo.onBoarding.models.CategoriesModel
 import com.example.misobo.onBoarding.models.CategoriesRequestModel
 import com.example.misobo.onBoarding.viewModels.OnBoardingViewModel
@@ -18,8 +18,6 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.fragment_sub_categories.*
-
-// TODO: Rename parameter arguments, choose names that match
 
 class SubCategoriesFragment : Fragment() {
 

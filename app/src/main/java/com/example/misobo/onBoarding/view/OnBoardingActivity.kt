@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.misobo.R
-import com.example.misobo.SharedPreferenceManager
+import com.example.misobo.utils.SharedPreferenceManager
 import com.example.misobo.onBoarding.viewModels.OnBoardingViewModel
 import com.example.misobo.onBoarding.models.RegistrationModel
 import kotlinx.android.synthetic.main.activity_onboarding.*

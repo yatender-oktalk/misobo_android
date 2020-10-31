@@ -1,8 +1,6 @@
 package com.example.misobo.onBoarding.api
 
-import com.example.misobo.AuthInterceptor
-import com.example.misobo.Misobo
-import com.example.misobo.SharedPreferenceManager
+import com.example.misobo.utils.SharedPreferenceManager
 import com.example.misobo.onBoarding.models.CategoriesModel
 import com.example.misobo.onBoarding.models.CategoriesRequestModel
 import com.example.misobo.onBoarding.models.RegistrationModel

@@ -19,7 +19,6 @@ class MainActivity : AppCompatActivity() {
                 .replace(R.id.mainContainer, fragment, fragment.javaClass.simpleName)
                 .commit()
         }
-
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
 

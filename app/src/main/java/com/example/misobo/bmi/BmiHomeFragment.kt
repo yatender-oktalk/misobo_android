@@ -1,4 +1,4 @@
-package com.example.misobo.home
+package com.example.misobo.bmi
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,30 +6,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.misobo.R
-import com.example.misobo.bmi.BmiHomeFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_bmi_home.*
-import kotlinx.android.synthetic.main.fragment_home.*
 
-class HomeFragment : Fragment() {
+class BmiHomeFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        return inflater.inflate(R.layout.fragment_bmi_home, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        activity?.bottomNavigationView?.visibility = View.VISIBLE
-        textView.setOnClickListener {
+        activity?.bottomNavigationView?.visibility = View.GONE
+        startedButton.setOnClickListener {
             activity?.supportFragmentManager?.beginTransaction()
-                ?.replace(R.id.mainContainer, BmiHomeFragment())
+                ?.replace(R.id.mainContainer, HeightFragment())
                 ?.addToBackStack(null)?.commit()
         }
-        //bmiBackButton.setOnClickListener { activity?.onBackPressed() }
     }
 }

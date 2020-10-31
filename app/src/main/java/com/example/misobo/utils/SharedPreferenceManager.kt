@@ -1,7 +1,8 @@
-package com.example.misobo
+package com.example.misobo.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.example.misobo.R
 import com.example.misobo.onBoarding.models.User
 import com.google.gson.Gson
 import io.reactivex.Completable
@@ -19,7 +20,9 @@ object SharedPreferenceManager {
     }
 
     fun getUser(): User? =
-        Gson().fromJson(sharedPreferences?.getString(USER, null), User::class.java)
+        Gson().fromJson(
+            sharedPreferences?.getString(
+                USER, null), User::class.java)
 
 
     fun setUser(context: Context?, user: User?): Completable {

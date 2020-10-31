@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RuleView">
+        <attr name="bgColor" format="reference|color" />
+        <attr name="gradationColor" format="reference|color" />
+        <attr name="shortLineWidth" format="reference|dimension" />
+        <attr name="longLineWidth" format="reference|dimension" />
+        <attr name="longGradationColor" format="reference|color" />
+        <attr name="shortGradationColor" format="reference|color" />
+        <attr name="shortGradationLen" format="reference|dimension" />
+        <attr name="longGradationLen" format="reference|dimension" />
+        <attr name="textColor" format="reference|color" />
+        <attr name="textSize" format="reference|dimension" />
+        <attr name="indicatorLineColor" format="reference|color"/>
+        <attr name="indicatorLineWidth" format="reference|dimension" />
+        <attr name="indicatorLineLen" format="reference|dimension" />
+        <attr name="minValue" format="reference|float" />
+        <attr name="maxValue" format="reference|float" />
+        <attr name="currentValue" format="reference|float" />
+        <attr name="gradationUnit" format="reference|float" />
+        <attr name="numberPerCount" format="reference|integer" />
+        <attr name="gradationGap" format="reference|dimension" />
+        <attr name="gradationNumberGap" format="reference|dimension" />
+    </declare-styleable>
+</resources>

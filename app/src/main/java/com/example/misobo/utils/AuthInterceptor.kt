@@ -1,4 +1,4 @@
-package com.example.misobo
+package com.example.misobo.utils
 
 import okhttp3.Interceptor
 import okhttp3.Response
