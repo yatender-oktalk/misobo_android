@@ -8,7 +8,7 @@ data class BmiResponsebody(
 ) {
     data class Data(
         @SerializedName("bmi")
-        val bmi: Int?,
+        val bmi: Double?,
         @SerializedName("result")
         val result: String?
     )

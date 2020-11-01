@@ -15,6 +15,7 @@ class BmiViewModel : ViewModel() {
     var bmiService = BmiService.Creator.service
     val height:MutableLiveData<Double> = MutableLiveData()
     val weight:MutableLiveData<Int> = MutableLiveData()
+    val bmiDetails:MutableLiveData<BmiResponsebody> = MutableLiveData()
     val bmiActionLiveData: MutableLiveData<BmiResponseAction> = MutableLiveData()
 
     fun saveBmi(bmiRequestBody: BmiRequestBody, regId: Int) {
