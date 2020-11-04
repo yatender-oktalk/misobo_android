@@ -27,10 +27,14 @@ class BmiScoreFragment : Fragment() {
 
         bmiViewModel.bmiDetails.observe(viewLifecycleOwner, Observer { responseBody ->
             bmiValue.text = responseBody.data?.bmi.toString()
-            bmiStatus.text = "You are in the ${ responseBody.data?.result}  range"
-
-
-
+            bmiStatus.text = "You are in the ${responseBody.data?.result}  range"
         })
+
+        fullReportButton.setOnClickListener {
+            activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.bmiFrameContainer,BmiFullReportFragment()
+            )?.addToBackStack(null)?.commit()
+        }
+
+
     }
 }

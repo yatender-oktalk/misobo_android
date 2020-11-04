@@ -2,10 +2,7 @@ package com.example.misobo.bmi
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.misobo.onBoarding.api.OnBoardingService
-import com.example.misobo.onBoarding.viewModels.CategoriesAction
 import io.reactivex.android.schedulers.AndroidSchedulers
-
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
