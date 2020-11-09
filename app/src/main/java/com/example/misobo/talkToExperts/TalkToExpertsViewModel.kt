@@ -30,8 +30,17 @@ class TalkToExpertsViewModel : ViewModel() {
             .subscribe { categoriesExpertLiveData.postValue(it) })
     }
 
-    fun getExpertsList(id: Int) {
-        compositeDisposable.add(talkToExpertsViewModel.getExperts(id)
+    fun getCategoryExpertsList(id: Int) {
+        compositeDisposable.add(talkToExpertsViewModel.getCategoryExpertsList(id)
+            .subscribeOn(Schedulers.io())
+            .map { ExpertListState.Success(it) as ExpertListState }
+            .startWith(ExpertListState.Loading)
+            .onErrorReturn { ExpertListState.Fail }
+            .subscribe { expertListLiveData.postValue(it) })
+    }
+
+    fun getAllExpertsList() {
+        compositeDisposable.add(talkToExpertsViewModel.getAllExperts(1)
             .subscribeOn(Schedulers.io())
             .map { ExpertListState.Success(it) as ExpertListState }
             .startWith(ExpertListState.Loading)

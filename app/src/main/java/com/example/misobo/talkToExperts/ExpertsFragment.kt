@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.misobo.R
@@ -53,7 +52,11 @@ class ExpertsFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel.getExpertsList(categoryModel?.id ?: 0)
+        if (categoryModel?.id == -1)
+            viewModel.getAllExpertsList()
+        else
+            viewModel.getCategoryExpertsList(categoryModel?.id ?: 0)
+
         expertsRecyclerView.adapter = groupAdapter
         viewModel.expertListLiveData.observe(viewLifecycleOwner, Observer { state ->
             when (state) {

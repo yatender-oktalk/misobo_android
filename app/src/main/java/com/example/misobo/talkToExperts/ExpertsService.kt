@@ -20,7 +20,11 @@ interface ExpertsService {
 
     @Headers("Accept: application/json", "Content-Type: application/json")
     @GET("api/category_experts/{category_id}")
-    fun getExperts(@Path(value = "category_id") catgId:Int?): Observable<ExpertModel>
+    fun getCategoryExpertsList(@Path(value = "category_id") catgId: Int?): Observable<ExpertModel>
+
+    @Headers("Accept: application/json", "Content-Type: application/json")
+    @GET("api/experts")
+    fun getAllExperts(@Query("page") pageNo: Int): Observable<ExpertModel>
 
     object Creator {
         private const val url: String = "http://143.110.176.70:4000/"

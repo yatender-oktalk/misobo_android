@@ -32,10 +32,12 @@ class TalktoExpertsHomeFragment : Fragment() {
         viewModel.categoriesExpertLiveData.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is CategoriesState.Success -> {
+                    val expertList = mutableListOf(ExpertCategoriesModel(-1,"All"))
+                    expertList.addAll(state.categoriesModel)
                     expertViewPager.adapter =
                         ExpertPagerAdapter(
                             requireActivity().supportFragmentManager,
-                            state.categoriesModel
+                            expertList
                         )
                     tabLayout.setupWithViewPager(expertViewPager)
                     tabLayout.tabRippleColor = null
@@ -52,11 +54,6 @@ class TalktoExpertsHomeFragment : Fragment() {
                         else p.setMargins(0, 0, Util.convertDpToPixels(8F, requireContext()), 0)
                         tab.requestLayout()
                     }
-
-                    /*TabLayoutMediator(tabLayout, expertViewPager) { tab, position ->
-                        tab.text = expertList[position]
-                        expertViewPager.setCurrentItem(tab.position, true)
-                    }.attach()*/
                 }
 
                 is CategoriesState.Fail -> {
