@@ -10,16 +10,17 @@ import io.reactivex.Observable
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Headers
-import retrofit2.http.POST
+import retrofit2.http.*
 
-interface ExpertsService  {
+interface ExpertsService {
 
     @Headers("Accept: application/json", "Content-Type: application/json")
     @GET("api/expert_categories")
     fun getExpertsCategories(): Observable<List<ExpertCategoriesModel>>
+
+    @Headers("Accept: application/json", "Content-Type: application/json")
+    @GET("api/category_experts/{category_id}")
+    fun getExperts(@Path(value = "category_id") catgId:Int?): Observable<ExpertModel>
 
     object Creator {
         private const val url: String = "http://143.110.176.70:4000/"

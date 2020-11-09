@@ -2,17 +2,16 @@ package com.example.misobo.talkToExperts
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.misobo.onBoarding.viewModels.CategoriesAction
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-
 class TalkToExpertsViewModel : ViewModel() {
-
 
     private val compositeDisposable = CompositeDisposable()
     val categoriesExpertLiveData: MutableLiveData<CategoriesState> = MutableLiveData()
+    val expertListLiveData: MutableLiveData<ExpertListState> = MutableLiveData()
+
     var talkToExpertsViewModel = ExpertsService.Creator.service
 
     fun getExpertCategories() {
@@ -30,10 +29,25 @@ class TalkToExpertsViewModel : ViewModel() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { categoriesExpertLiveData.postValue(it) })
     }
+
+    fun getExpertsList(id: Int) {
+        compositeDisposable.add(talkToExpertsViewModel.getExperts(id)
+            .subscribeOn(Schedulers.io())
+            .map { ExpertListState.Success(it) as ExpertListState }
+            .startWith(ExpertListState.Loading)
+            .onErrorReturn { ExpertListState.Fail }
+            .subscribe { expertListLiveData.postValue(it) })
+    }
 }
 
 sealed class CategoriesState {
     data class Success(val categoriesModel: List<ExpertCategoriesModel>) : CategoriesState()
     object Fail : CategoriesState()
     object Loading : CategoriesState()
+}
+
+sealed class ExpertListState() {
+    data class Success(val expertList: ExpertModel) : ExpertListState()
+    object Fail : ExpertListState()
+    object Loading : ExpertListState()
 }

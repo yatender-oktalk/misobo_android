@@ -1,6 +1,8 @@
 package com.example.misobo.bmi
 
+import android.content.Context
 import android.os.Bundle
+import android.os.Vibrator
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -30,6 +32,8 @@ class HeightFragment : Fragment() {
         feetValue.text = (ruleView.getCurrentValue() / 12).toString().substringBefore(".")
         inchValue.text = "${ruleView.getCurrentValue().toInt() % 12}"
 
+        val vib = this.context?.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+
         ruleView.setOnValueChangedListener(object : RuleView.OnValueChangedListener {
             override fun onValueChanged(value: Float) {
                 feetValue.text = (ruleView.getCurrentValue() / 12).toString().substringBefore(".")
@@ -38,8 +42,10 @@ class HeightFragment : Fragment() {
                     (ruleView.getCurrentValue() / 12).toString()
                         .substringBefore(".") + ruleView.getCurrentValue().toInt() % 12
 
+                vib.vibrate(2)
             }
         })
+
 
         nextButton.setOnClickListener {
             val inchToM = inchValue.text.toString().toDouble() * 0.0254
