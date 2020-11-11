@@ -11,7 +11,6 @@ class TalkToExpertsViewModel : ViewModel() {
     private val compositeDisposable = CompositeDisposable()
     val categoriesExpertLiveData: MutableLiveData<CategoriesState> = MutableLiveData()
     val expertListLiveData: MutableLiveData<ExpertListState> = MutableLiveData()
-
     var talkToExpertsViewModel = ExpertsService.Creator.service
 
     fun getExpertCategories() {

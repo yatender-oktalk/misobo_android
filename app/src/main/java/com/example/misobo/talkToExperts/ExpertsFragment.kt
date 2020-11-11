@@ -17,7 +17,7 @@ private const val CATEGORY_MODEL = "CATEGORY_MODEL"
 
 class ExpertsFragment : Fragment() {
     private var categoryModel: ExpertCategoriesModel? = null
-    val viewModel: TalkToExpertsViewModel by lazy {
+    private val viewModel: TalkToExpertsViewModel by lazy {
         ViewModelProvider(this).get(
             TalkToExpertsViewModel::class.java
         )
@@ -64,7 +64,10 @@ class ExpertsFragment : Fragment() {
                     groupAdapter.clear()
                     val section = Section()
                     state.expertList.entries?.forEach {
-                        section.add(ExpertsRecyclerItem(it))
+                        section.add(ExpertsRecyclerItem(it) {
+                            activity?.supportFragmentManager?.beginTransaction()
+                                ?.add(BookASlotDialog(), null)?.commit()
+                        })
                     }
                     groupAdapter.add(section)
                 }

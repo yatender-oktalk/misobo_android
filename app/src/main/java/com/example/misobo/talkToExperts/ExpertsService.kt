@@ -26,6 +26,10 @@ interface ExpertsService {
     @GET("api/experts")
     fun getAllExperts(@Query("page") pageNo: Int): Observable<ExpertModel>
 
+    @Headers("Accept: application/json", "Content-Type: application/json")
+    @GET("api/experts")
+    fun getExpertsSlot(@Query("page") pageNo: Int): Observable<ExpertModel>
+
     object Creator {
         private const val url: String = "http://143.110.176.70:4000/"
         private val token = SharedPreferenceManager.getUser()?.data?.token ?: ""
