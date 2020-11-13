@@ -1,8 +1,5 @@
 package com.example.misobo.talkToExperts
 
-import com.example.misobo.onBoarding.api.OnBoardingService
-import com.example.misobo.onBoarding.models.RegistrationModel
-import com.example.misobo.onBoarding.models.User
 import com.example.misobo.utils.SharedPreferenceManager
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -27,8 +24,11 @@ interface ExpertsService {
     fun getAllExperts(@Query("page") pageNo: Int): Observable<ExpertModel>
 
     @Headers("Accept: application/json", "Content-Type: application/json")
-    @GET("api/experts")
-    fun getExpertsSlot(@Query("page") pageNo: Int): Observable<ExpertModel>
+    @POST("api/expert/{expert_id}/slots")
+    fun getExpertsSlot(
+        @Path("expert_id") expertId: Int,
+        @Body dateModel: DatePayloadModel
+    ): Observable<List<ExpertSlotsResponse>>
 
     object Creator {
         private const val url: String = "http://143.110.176.70:4000/"

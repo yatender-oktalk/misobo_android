@@ -10,7 +10,11 @@ import kotlinx.android.synthetic.main.slot_book_date_item.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class DateRecyclerItem(val date: String,val selectedPosition: Int, val onClick: (String,Int) -> Unit) : Item() {
+class DateRecyclerItem(
+    val date: String,
+    val selectedPosition: Int,
+    val onClick: (String, Int) -> Unit
+) : Item() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
 
         val format = SimpleDateFormat("yyyy-MM-dd")
@@ -23,12 +27,53 @@ class DateRecyclerItem(val date: String,val selectedPosition: Int, val onClick: 
         viewHolder.itemView.dayOfWeekTextView.text = dayOfTheWeek
         viewHolder.itemView.dateTextView.text = day
         viewHolder.itemView.monthTextView.text = monthString
-        viewHolder.itemView.setOnClickListener { onClick.invoke(this.date,position) }
+        viewHolder.itemView.setOnClickListener { onClick.invoke(this.date, position) }
 
-        if (position == selectedPosition){
-            viewHolder.itemView.root.backgroundTintList = ContextCompat.getColorStateList(viewHolder.containerView.context,R.color.colorAccent)
-        }else{
-            viewHolder.itemView.root.backgroundTintList = ContextCompat.getColorStateList(viewHolder.containerView.context,R.color.lightGrey)
+        if (position == selectedPosition) {
+            viewHolder.itemView.root.backgroundTintList = ContextCompat.getColorStateList(
+                viewHolder.containerView.context,
+                R.color.colorAccent
+            )
+            viewHolder.itemView.dayOfWeekTextView.setTextColor(
+                ContextCompat.getColorStateList(
+                    viewHolder.containerView.context,
+                    android.R.color.white
+                )
+            )
+            viewHolder.itemView.dateTextView.setTextColor(
+                ContextCompat.getColorStateList(
+                    viewHolder.containerView.context,
+                    android.R.color.white
+                )
+            )
+            viewHolder.itemView.monthTextView.setTextColor(
+                ContextCompat.getColorStateList(
+                    viewHolder.containerView.context,
+                    android.R.color.white
+                )
+            )
+        } else {
+            viewHolder.itemView.root.backgroundTintList =
+                ContextCompat.getColorStateList(viewHolder.containerView.context, R.color.lightGrey)
+
+            viewHolder.itemView.dayOfWeekTextView.setTextColor(
+                ContextCompat.getColorStateList(
+                    viewHolder.containerView.context,
+                    R.color.darkGrey
+                )
+            )
+            viewHolder.itemView.dateTextView.setTextColor(
+                ContextCompat.getColorStateList(
+                    viewHolder.containerView.context,
+                    R.color.darkGrey
+                )
+            )
+            viewHolder.itemView.monthTextView.setTextColor(
+                ContextCompat.getColorStateList(
+                    viewHolder.containerView.context,
+                    R.color.darkGrey
+                )
+            )
         }
     }
 

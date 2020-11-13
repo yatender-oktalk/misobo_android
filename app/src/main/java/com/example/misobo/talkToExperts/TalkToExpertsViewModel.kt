@@ -11,6 +11,9 @@ class TalkToExpertsViewModel : ViewModel() {
     private val compositeDisposable = CompositeDisposable()
     val categoriesExpertLiveData: MutableLiveData<CategoriesState> = MutableLiveData()
     val expertListLiveData: MutableLiveData<ExpertListState> = MutableLiveData()
+    val selectedExpertLiveDate: MutableLiveData<ExpertModel.Expert> = MutableLiveData()
+    val slotListLiveData: MutableLiveData<SlotFetchState> = MutableLiveData()
+
     var talkToExpertsViewModel = ExpertsService.Creator.service
 
     fun getExpertCategories() {
@@ -46,6 +49,15 @@ class TalkToExpertsViewModel : ViewModel() {
             .onErrorReturn { ExpertListState.Fail }
             .subscribe { expertListLiveData.postValue(it) })
     }
+
+    fun getSlot(expertId: Int, datePayloadModel: DatePayloadModel) {
+        compositeDisposable.add(talkToExpertsViewModel.getExpertsSlot(expertId, datePayloadModel)
+            .subscribeOn(Schedulers.io())
+            .map { SlotFetchState.Success(it) as SlotFetchState }
+            .startWith(SlotFetchState.Loading)
+            .onErrorReturn { SlotFetchState.Fail }
+            .subscribe { slotListLiveData.postValue(it) })
+    }
 }
 
 sealed class CategoriesState {
@@ -58,4 +70,10 @@ sealed class ExpertListState() {
     data class Success(val expertList: ExpertModel) : ExpertListState()
     object Fail : ExpertListState()
     object Loading : ExpertListState()
+}
+
+sealed class SlotFetchState() {
+    data class Success(val slotList: List<ExpertSlotsResponse>) : SlotFetchState()
+    object Fail : SlotFetchState()
+    object Loading : SlotFetchState()
 }

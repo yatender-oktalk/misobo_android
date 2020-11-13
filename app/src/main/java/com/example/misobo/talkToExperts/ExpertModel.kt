@@ -1,25 +1,27 @@
 package com.example.misobo.talkToExperts
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+
 
 data class ExpertModel(
     @SerializedName("entries")
-    val entries:List<Expert>?
+    val entries: List<Expert>?
 ) {
     data class Expert(
         @SerializedName("id")
-        val id:Int?,
+        val id: Int?,
         @SerializedName("name")
-        val name:String?,
+        val name: String?,
         @SerializedName("experience")
-        val experience:String?,
+        val experience: String?,
         @SerializedName("image")
-        val image:String?,
+        val image: String?,
         @SerializedName("language")
-        val language:String?,
+        val language: String?,
         @SerializedName("rating")
-        val rating:String?,
+        val rating: String?,
         @SerializedName("total_consultations")
-        val consultations:Long?
+        val consultations: Long?
     )
 }

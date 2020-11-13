@@ -65,8 +65,13 @@ class ExpertsFragment : Fragment() {
                     val section = Section()
                     state.expertList.entries?.forEach {
                         section.add(ExpertsRecyclerItem(it) {
+                            viewModel.selectedExpertLiveDate.postValue(it)
+                            val slotDialog = BookASlotDialog()
+                            val bundle = Bundle()
+                            it.id?.let { it1 -> bundle.putInt("ID", it1) }
+                            slotDialog.arguments = bundle
                             activity?.supportFragmentManager?.beginTransaction()
-                                ?.add(BookASlotDialog(), null)?.commit()
+                                ?.add(slotDialog, null)?.commit()
                         })
                     }
                     groupAdapter.add(section)

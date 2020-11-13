@@ -151,6 +151,79 @@
             app:layout_constraintEnd_toEndOf="parent"
             />
 
+        <View
+            android:id="@+id/separatorForDate"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="#f7f7f7"
+            app:layout_constraintTop_toBottomOf="@id/dateRecyclerView"
+            android:layout_marginTop="16dp"
+            />
+
+        <TextView
+            android:id="@+id/selectTimeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/manrope_extra_bold"
+            android:textStyle="normal"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/separatorForDate"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="16dp"
+            android:textColor="#4d426d"
+            android:lineSpacingExtra="5sp"
+            android:gravity="center_horizontal"
+            android:text="Select a Time"
+            />
+
+        <TextView
+            android:id="@+id/availaibleSlotsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/manrope_medium"
+            android:textStyle="normal"
+            android:textSize="12sp"
+            android:textColor="#4d426d"
+            android:lineSpacingExtra="9sp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="@id/selectTimeTextView"
+            app:layout_constraintTop_toBottomOf="@id/selectTimeTextView"
+            android:gravity="center_horizontal"
+            android:text="Available Time Slots"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/timeSlotsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintTop_toBottomOf="@id/availaibleSlotsText"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <Button
+            android:id="@+id/okayButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="27dp"
+            android:layout_marginEnd="27dp"
+            android:layout_marginBottom="22dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="@color/colorAccent"
+            android:text="Okay"
+            android:textAllCaps="false"
+            android:textColor="#ffffff"
+            android:layout_marginTop="45dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/timeSlotsRecyclerView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
