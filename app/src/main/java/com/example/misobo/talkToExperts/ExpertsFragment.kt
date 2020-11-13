@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.misobo.R
@@ -22,6 +23,8 @@ class ExpertsFragment : Fragment() {
             TalkToExpertsViewModel::class.java
         )
     }
+    private val commonViewModel: TalkToExpertsViewModel by activityViewModels()
+
     private val groupAdapter = GroupAdapter<ViewHolder>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,7 +68,7 @@ class ExpertsFragment : Fragment() {
                     val section = Section()
                     state.expertList.entries?.forEach {
                         section.add(ExpertsRecyclerItem(it) {
-                            viewModel.selectedExpertLiveDate.postValue(it)
+                            commonViewModel.selectedExpertLiveDate.postValue(it)
                             val slotDialog = BookASlotDialog()
                             val bundle = Bundle()
                             it.id?.let { it1 -> bundle.putInt("ID", it1) }

@@ -19,10 +19,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class BookASlotDialog : BottomSheetDialogFragment() {
-    val dateAdapter = GroupAdapter<ViewHolder>()
-    val slotAdapter = GroupAdapter<ViewHolder>()
-    val viewModel: TalkToExpertsViewModel by activityViewModels()
-    val id by lazy { arguments?.getInt("ID") }
+    private val dateAdapter = GroupAdapter<ViewHolder>()
+    private val slotAdapter = GroupAdapter<ViewHolder>()
+    private val viewModel: TalkToExpertsViewModel by activityViewModels()
+    private val id by lazy { arguments?.getInt("ID") }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,7 +52,21 @@ class BookASlotDialog : BottomSheetDialogFragment() {
         timeSlotsRecyclerView.adapter = slotAdapter
         timeSlotsRecyclerView.layoutManager = layoutManager
 
+        id?.let {
+            viewModel.getSlot(
+                it,
+                DatePayloadModel(getDate(0))
+            )
+        }
         inflateRecycer(0)
+
+
+        viewModel.selectedExpertLiveDate.observe(
+            viewLifecycleOwner,
+            androidx.lifecycle.Observer { expert ->
+                expertNameTexView.text = expert.name
+                expertLanguage.text = expert.language
+            })
 
         viewModel.slotListLiveData.observe(
             viewLifecycleOwner,
@@ -60,7 +74,6 @@ class BookASlotDialog : BottomSheetDialogFragment() {
                 when (state) {
                     is SlotFetchState.Success -> {
                         inflateSlotsRecycler(state.slotList)
-
                     }
                     is SlotFetchState.Loading -> {
 
@@ -75,7 +88,7 @@ class BookASlotDialog : BottomSheetDialogFragment() {
     private fun inflateSlotsRecycler(slotList: List<ExpertSlotsResponse>) {
         slotAdapter.clear()
         val section = Section()
-        slotList.filter { it.isBooked?.not()?:false }.forEach {
+        slotList.filter { it.isBooked?.not() ?: false }.forEach {
             section.add(SlotsRecyclerItem(it))
         }
         slotAdapter.add(section)
@@ -85,12 +98,7 @@ class BookASlotDialog : BottomSheetDialogFragment() {
         dateAdapter.clear()
         val section = Section()
         for (i in 0..30) {
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd")
-            val cal = Calendar.getInstance()
-            cal.add(Calendar.DATE, i)
-            val toDate1 = cal.time
-            val fromDate = dateFormat.format(toDate1)
-            section.add(DateRecyclerItem(fromDate, position) { date, position ->
+            section.add(DateRecyclerItem(getDate(delay = i), position) { date, position ->
                 id?.let {
                     viewModel.getSlot(
                         it,
@@ -101,5 +109,14 @@ class BookASlotDialog : BottomSheetDialogFragment() {
             })
         }
         dateAdapter.add(section)
+    }
+
+    private fun getDate(delay: Int): String {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+        val cal = Calendar.getInstance()
+        cal.add(Calendar.DATE, delay)
+        val toDate1 = cal.time
+        val fromDate = dateFormat.format(toDate1)
+        return fromDate
     }
 }
