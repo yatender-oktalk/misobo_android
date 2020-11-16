@@ -29,6 +29,7 @@ class DateRecyclerItem(
         viewHolder.itemView.monthTextView.text = monthString
         viewHolder.itemView.setOnClickListener { onClick.invoke(this.date, position) }
 
+
         if (position == selectedPosition) {
             viewHolder.itemView.root.backgroundTintList = ContextCompat.getColorStateList(
                 viewHolder.containerView.context,

@@ -234,6 +234,8 @@
             android:background="@drawable/rounded_button"
             android:backgroundTint="@color/colorAccent"
             android:text="Okay"
+            android:enabled="false"
+            android:alpha=".7"
             android:textAllCaps="false"
             android:textColor="#ffffff"
             app:layout_constraintBottom_toBottomOf="parent"

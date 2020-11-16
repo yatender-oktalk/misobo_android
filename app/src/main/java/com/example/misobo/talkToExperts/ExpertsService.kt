@@ -30,6 +30,13 @@ interface ExpertsService {
         @Body dateModel: DatePayloadModel
     ): Observable<List<ExpertSlotsResponse>>
 
+    @Headers("Accept: application/json", "Content-Type: application/json")
+    @POST("api/expert/{expert_id}/book_slot")
+    fun bookSlot(
+        @Path("expert_id") expertId: Int,
+        @Body payload: BookSlotPayload
+    ): Observable<BookSlotResponse>
+
     object Creator {
         private const val url: String = "http://143.110.176.70:4000/"
         private val token = SharedPreferenceManager.getUser()?.data?.token ?: ""

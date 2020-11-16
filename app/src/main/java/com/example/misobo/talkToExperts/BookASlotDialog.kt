@@ -45,6 +45,7 @@ class BookASlotDialog : BottomSheetDialogFragment() {
         super.onActivityCreated(savedInstanceState)
 
         dateRecyclerView.adapter = dateAdapter
+        crossIcon.setOnClickListener { this.dismiss() }
 
         val layoutManager = FlexboxLayoutManager(context)
         layoutManager.flexDirection = FlexDirection.ROW
@@ -60,7 +61,6 @@ class BookASlotDialog : BottomSheetDialogFragment() {
         }
         inflateRecycer(0)
 
-
         viewModel.selectedExpertLiveDate.observe(
             viewLifecycleOwner,
             androidx.lifecycle.Observer { expert ->
@@ -73,7 +73,7 @@ class BookASlotDialog : BottomSheetDialogFragment() {
             androidx.lifecycle.Observer { state ->
                 when (state) {
                     is SlotFetchState.Success -> {
-                        inflateSlotsRecycler(state.slotList)
+                        inflateSlotsRecycler(state.slotList, -1)
                     }
                     is SlotFetchState.Loading -> {
 
@@ -83,13 +83,49 @@ class BookASlotDialog : BottomSheetDialogFragment() {
                     }
                 }
             })
+
+        viewModel.bookSlotLiveData.observe(
+            viewLifecycleOwner,
+            androidx.lifecycle.Observer { state ->
+                when (state) {
+                    is BookSlotState.Success -> {
+
+                    }
+                    is BookSlotState.NotAuthorised -> {
+
+                    }
+                    is BookSlotState.Loading -> {
+
+                    }
+                    is BookSlotState.Fail -> {
+
+                    }
+                }
+            })
+
+        okayButton.setOnClickListener {
+            id?.let { it1 ->
+                viewModel.bookSlot(
+                    it1,
+                    BookSlotPayload(viewModel.slotSelectedLiveData.value)
+                )
+            }
+        }
+
+        viewModel.slotSelectedLiveData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            okayButton.isEnabled = true
+            okayButton.alpha = 1f
+        })
     }
 
-    private fun inflateSlotsRecycler(slotList: List<ExpertSlotsResponse>) {
+    private fun inflateSlotsRecycler(slotList: List<ExpertSlotsResponse>, position: Int) {
         slotAdapter.clear()
         val section = Section()
-        slotList.filter { it.isBooked?.not() ?: false }.forEach {
-            section.add(SlotsRecyclerItem(it))
+        slotList.filter { it.isBooked?.not() ?: false }.forEach { it ->
+            section.add(SlotsRecyclerItem(it, position) { unixTime, selPosition ->
+                viewModel.slotSelectedLiveData.postValue(unixTime)
+                inflateSlotsRecycler(slotList, selPosition)
+            })
         }
         slotAdapter.add(section)
     }

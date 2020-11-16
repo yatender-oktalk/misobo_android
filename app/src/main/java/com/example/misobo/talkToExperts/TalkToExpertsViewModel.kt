@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import retrofit2.HttpException
 
 class TalkToExpertsViewModel : ViewModel() {
 
@@ -13,6 +14,8 @@ class TalkToExpertsViewModel : ViewModel() {
     val expertListLiveData: MutableLiveData<ExpertListState> = MutableLiveData()
     val selectedExpertLiveDate: MutableLiveData<ExpertModel.Expert> = MutableLiveData()
     val slotListLiveData: MutableLiveData<SlotFetchState> = MutableLiveData()
+    val slotSelectedLiveData: MutableLiveData<Long> = MutableLiveData()
+    val bookSlotLiveData: MutableLiveData<BookSlotState> = MutableLiveData()
 
     var talkToExpertsViewModel = ExpertsService.Creator.service
 
@@ -58,6 +61,21 @@ class TalkToExpertsViewModel : ViewModel() {
             .onErrorReturn { SlotFetchState.Fail }
             .subscribe { slotListLiveData.postValue(it) })
     }
+
+    fun bookSlot(expertId: Int, payload: BookSlotPayload) {
+        compositeDisposable.add(talkToExpertsViewModel.bookSlot(expertId, payload)
+            .subscribeOn(Schedulers.io())
+            .map { BookSlotState.Success(it) as BookSlotState }
+            .startWith(BookSlotState.Loading)
+            .onErrorReturn { e ->
+                val exception = e as com.jakewharton.retrofit2.adapter.rxjava2.HttpException
+                if (exception.code() == 401)
+                    BookSlotState.NotAuthorised
+                else
+                    BookSlotState.Fail
+            }
+            .subscribe { bookSlotLiveData.postValue(it) })
+    }
 }
 
 sealed class CategoriesState {
@@ -76,4 +94,11 @@ sealed class SlotFetchState() {
     data class Success(val slotList: List<ExpertSlotsResponse>) : SlotFetchState()
     object Fail : SlotFetchState()
     object Loading : SlotFetchState()
+}
+
+sealed class BookSlotState() {
+    data class Success(val bookSlotResponse: BookSlotResponse) : BookSlotState()
+    object Fail : BookSlotState()
+    object Loading : BookSlotState()
+    object NotAuthorised : BookSlotState()
 }
