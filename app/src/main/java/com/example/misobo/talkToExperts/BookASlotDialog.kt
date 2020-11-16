@@ -92,7 +92,9 @@ class BookASlotDialog : BottomSheetDialogFragment() {
 
                     }
                     is BookSlotState.NotAuthorised -> {
-
+                        val loginDialog = LoginDialog()
+                        activity?.supportFragmentManager?.beginTransaction()
+                            ?.add(loginDialog, null)?.commit()
                     }
                     is BookSlotState.Loading -> {
 
