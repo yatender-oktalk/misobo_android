@@ -33,7 +33,7 @@ class WeightFragment : Fragment() {
 
             bmiViewModel.saveBmi(
                 bmiRequestBody = bmiRequestBody,
-                regId = SharedPreferenceManager.getUser()?.data?.id ?: -1
+                regId = SharedPreferenceManager.getUser()?.data?.registrationId ?: -1
             )
         }
     }

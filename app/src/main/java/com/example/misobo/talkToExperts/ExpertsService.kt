@@ -37,6 +37,19 @@ interface ExpertsService {
         @Body payload: BookSlotPayload
     ): Observable<BookSlotResponse>
 
+    @Headers("Accept: application/json", "Content-Type: application/json")
+    @POST("api/user")
+    fun mobileRegistration(
+        @Body payload: OtpPayload
+    ): Observable<VerificationResponse>
+
+    @Headers("Accept: application/json", "Content-Type: application/json")
+    @POST("api/user/{id}/verify")
+    fun sendOtp(
+        @Path("id") id: Int,
+        @Body payload: OtpPayload
+    ): Observable<VerificationResponse>
+
     object Creator {
         private const val url: String = "http://143.110.176.70:4000/"
         private val token = SharedPreferenceManager.getUser()?.data?.token ?: ""

@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import retrofit2.HttpException
 
 class TalkToExpertsViewModel : ViewModel() {
 
@@ -16,6 +15,9 @@ class TalkToExpertsViewModel : ViewModel() {
     val slotListLiveData: MutableLiveData<SlotFetchState> = MutableLiveData()
     val slotSelectedLiveData: MutableLiveData<Long> = MutableLiveData()
     val bookSlotLiveData: MutableLiveData<BookSlotState> = MutableLiveData()
+    val mobileRegistration: MutableLiveData<MobileRegistration> = MutableLiveData()
+    val otpVerification: MutableLiveData<MobileRegistration> = MutableLiveData()
+    val mobileNumber:MutableLiveData<String> = MutableLiveData()
 
     var talkToExpertsViewModel = ExpertsService.Creator.service
 
@@ -62,6 +64,24 @@ class TalkToExpertsViewModel : ViewModel() {
             .subscribe { slotListLiveData.postValue(it) })
     }
 
+    fun mobileRegistration(otpModel: OtpPayload) {
+        compositeDisposable.add(talkToExpertsViewModel.mobileRegistration(otpModel)
+            .subscribeOn(Schedulers.io())
+            .map { MobileRegistration.Success(it) as MobileRegistration }
+            .startWith(MobileRegistration.Loading)
+            .onErrorReturn { MobileRegistration.Fail }
+            .subscribe { mobileRegistration.postValue(it) })
+    }
+
+    fun verifyOtp(id: Int, otpModel: OtpPayload) {
+        compositeDisposable.add(talkToExpertsViewModel.sendOtp(id, otpModel)
+            .subscribeOn(Schedulers.io())
+            .map { MobileRegistration.Success(it) as MobileRegistration }
+            .startWith(MobileRegistration.Loading)
+            .onErrorReturn { MobileRegistration.Fail }
+            .subscribe { otpVerification.postValue(it) })
+    }
+
     fun bookSlot(expertId: Int, payload: BookSlotPayload) {
         compositeDisposable.add(talkToExpertsViewModel.bookSlot(expertId, payload)
             .subscribeOn(Schedulers.io())
@@ -101,4 +121,10 @@ sealed class BookSlotState() {
     object Fail : BookSlotState()
     object Loading : BookSlotState()
     object NotAuthorised : BookSlotState()
+}
+
+sealed class MobileRegistration() {
+    data class Success(val verificationResponse: VerificationResponse) : MobileRegistration()
+    object Fail : MobileRegistration()
+    object Loading : MobileRegistration()
 }

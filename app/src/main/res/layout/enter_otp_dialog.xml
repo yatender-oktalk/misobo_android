@@ -69,8 +69,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/enterOtp" />
 
-        <TextView
-            android:id="@+id/phonenumberText"
+        <EditText
+            android:id="@+id/otpText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="23dp"
@@ -79,7 +79,7 @@
             android:background="@drawable/rounded_border_grey"
             android:fontFamily="@font/manrope_regular"
             android:gravity="center_horizontal"
-            android:hint="989 789 7989"
+            android:hint="00000"
             android:inputType="number"
             android:letterSpacing="0.03"
             android:lineSpacingExtra="34sp"
@@ -87,15 +87,16 @@
             android:paddingTop="14dp"
             android:paddingEnd="20dp"
             android:paddingBottom="14dp"
-            android:textColor="#d3d3d3"
+            android:textColorHint="#d3d3d3"
             android:textSize="22sp"
+            android:textColor="@color/colorAccent"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/chatWithExperts" />
 
         <Button
-            android:id="@+id/veryButton"
+            android:id="@+id/verifyButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="27dp"
@@ -111,14 +112,14 @@
             android:textColor="#ffffff"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/phonenumberText" />
+            app:layout_constraintTop_toBottomOf="@id/otpText" />
 
         <LinearLayout
             android:id="@+id/resendLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/veryButton"
+            app:layout_constraintTop_toBottomOf="@id/verifyButton"
             android:gravity="center"
             android:layout_marginTop="15dp"
             >
@@ -143,7 +144,7 @@
             android:layout_marginStart="4dp"
             android:textColor="#f1ab87"
             android:lineSpacingExtra="11sp"
-            tools:text="Resend in 32s"
+            android:text="Resend in 32s"
             app:layout_constraintEnd_toEndOf="parent"
             />
 

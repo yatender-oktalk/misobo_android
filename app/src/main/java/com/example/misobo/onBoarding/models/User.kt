@@ -8,7 +8,7 @@ data class User(
 ) {
     data class Data(
         @SerializedName("id")
-        val id: Int?,
+        val registrationId: Int?,
         @SerializedName("token")
         val token: String?
     )
