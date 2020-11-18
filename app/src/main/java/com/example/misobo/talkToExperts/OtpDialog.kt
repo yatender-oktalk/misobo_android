@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import com.example.misobo.R
 import com.example.misobo.utils.SharedPreferenceManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -47,11 +48,27 @@ class OtpDialog : BottomSheetDialogFragment() {
         verifyButton.setOnClickListener {
             val verificationPayload =
                 OtpPayload(viewModel.mobileNumber.value.toString(), otpText.text.toString().toInt())
+            //Save id here.
             viewModel.verifyOtp(
-                SharedPreferenceManager.getUser()?.data?.registrationId ?: -1,
+                8,
                 verificationPayload
             )
         }
+
+        viewModel.otpVerification.observe(viewLifecycleOwner, Observer { state ->
+            when (state) {
+                is MobileRegistration.Success -> {
+                    activity?.supportFragmentManager?.beginTransaction()
+                        ?.add(BookSuccessDialog(), null)?.commit()
+                }
+                is MobileRegistration.Loading -> {
+
+                }
+                is MobileRegistration.Fail -> {
+
+                }
+            }
+        })
     }
 
     override fun setupDialog(dialog: Dialog, style: Int) {
