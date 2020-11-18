@@ -1,1 +1,6 @@
 /build
+
+#built application files
+*.apk
+*.ap_
+*.aab
