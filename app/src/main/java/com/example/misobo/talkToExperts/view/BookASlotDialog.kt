@@ -1,4 +1,4 @@
-package com.example.misobo.talkToExperts
+package com.example.misobo.talkToExperts.view
 
 import android.app.Dialog
 import android.os.Bundle
@@ -7,6 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.example.misobo.R
+import com.example.misobo.talkToExperts.items.DateRecyclerItem
+import com.example.misobo.talkToExperts.items.SlotsRecyclerItem
+import com.example.misobo.talkToExperts.models.BookSlotPayload
+import com.example.misobo.talkToExperts.models.DatePayloadModel
+import com.example.misobo.talkToExperts.models.ExpertSlotsResponse
+import com.example.misobo.talkToExperts.viewModels.BookSlotState
+import com.example.misobo.talkToExperts.viewModels.SlotFetchState
+import com.example.misobo.talkToExperts.viewModels.TalkToExpertsViewModel
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -56,7 +64,11 @@ class BookASlotDialog : BottomSheetDialogFragment() {
         id?.let {
             viewModel.getSlot(
                 it,
-                DatePayloadModel(getDate(0))
+                DatePayloadModel(
+                    getDate(
+                        0
+                    )
+                )
             )
         }
         inflateRecycer(0)
@@ -93,7 +105,8 @@ class BookASlotDialog : BottomSheetDialogFragment() {
                     }
                     is BookSlotState.NotAuthorised -> {
                         this.dismiss()
-                        val loginDialog = LoginDialog()
+                        val loginDialog =
+                            LoginDialog()
                         activity?.supportFragmentManager?.beginTransaction()
                             ?.add(loginDialog, null)?.commit()
                     }
@@ -110,7 +123,9 @@ class BookASlotDialog : BottomSheetDialogFragment() {
             id?.let { it1 ->
                 viewModel.bookSlot(
                     it1,
-                    BookSlotPayload(viewModel.slotSelectedLiveData.value)
+                    BookSlotPayload(
+                        viewModel.slotSelectedLiveData.value
+                    )
                 )
             }
         }
@@ -125,10 +140,14 @@ class BookASlotDialog : BottomSheetDialogFragment() {
         slotAdapter.clear()
         val section = Section()
         slotList.filter { it.isBooked?.not() ?: false }.forEach { it ->
-            section.add(SlotsRecyclerItem(it, position) { unixTime, selPosition ->
-                viewModel.slotSelectedLiveData.postValue(unixTime)
-                inflateSlotsRecycler(slotList, selPosition)
-            })
+            section.add(
+                SlotsRecyclerItem(
+                    it,
+                    position
+                ) { unixTime, selPosition ->
+                    viewModel.slotSelectedLiveData.postValue(unixTime)
+                    inflateSlotsRecycler(slotList, selPosition)
+                })
         }
         slotAdapter.add(section)
     }
@@ -137,15 +156,22 @@ class BookASlotDialog : BottomSheetDialogFragment() {
         dateAdapter.clear()
         val section = Section()
         for (i in 0..30) {
-            section.add(DateRecyclerItem(getDate(delay = i), position) { date, position ->
-                id?.let {
-                    viewModel.getSlot(
-                        it,
-                        DatePayloadModel(date)
-                    )
-                }
-                inflateRecycer(position)
-            })
+            section.add(
+                DateRecyclerItem(
+                    getDate(
+                        delay = i
+                    ), position
+                ) { date, position ->
+                    id?.let {
+                        viewModel.getSlot(
+                            it,
+                            DatePayloadModel(
+                                date
+                            )
+                        )
+                    }
+                    inflateRecycer(position)
+                })
         }
         dateAdapter.add(section)
     }

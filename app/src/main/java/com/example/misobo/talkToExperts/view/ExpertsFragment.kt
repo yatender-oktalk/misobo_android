@@ -1,4 +1,4 @@
-package com.example.misobo.talkToExperts
+package com.example.misobo.talkToExperts.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,6 +9,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.misobo.R
+import com.example.misobo.talkToExperts.viewModels.ExpertListState
+import com.example.misobo.talkToExperts.items.ExpertsRecyclerItem
+import com.example.misobo.talkToExperts.viewModels.TalkToExpertsViewModel
+import com.example.misobo.talkToExperts.models.ExpertCategoriesModel
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
@@ -67,15 +71,19 @@ class ExpertsFragment : Fragment() {
                     groupAdapter.clear()
                     val section = Section()
                     state.expertList.entries?.forEach {
-                        section.add(ExpertsRecyclerItem(it) {
-                            commonViewModel.selectedExpertLiveDate.postValue(it)
-                            val slotDialog = BookASlotDialog()
-                            val bundle = Bundle()
-                            it.id?.let { it1 -> bundle.putInt("ID", it1) }
-                            slotDialog.arguments = bundle
-                            activity?.supportFragmentManager?.beginTransaction()
-                                ?.add(slotDialog, null)?.commit()
-                        })
+                        section.add(
+                            ExpertsRecyclerItem(
+                                it
+                            ) {
+                                commonViewModel.selectedExpertLiveDate.postValue(it)
+                                val slotDialog =
+                                    BookASlotDialog()
+                                val bundle = Bundle()
+                                it.id?.let { it1 -> bundle.putInt("ID", it1) }
+                                slotDialog.arguments = bundle
+                                activity?.supportFragmentManager?.beginTransaction()
+                                    ?.add(slotDialog, null)?.commit()
+                            })
                     }
                     groupAdapter.add(section)
                 }

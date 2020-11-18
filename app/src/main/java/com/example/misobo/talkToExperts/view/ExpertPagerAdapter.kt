@@ -1,16 +1,21 @@
-package com.example.misobo.talkToExperts
+package com.example.misobo.talkToExperts.view
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
+import com.example.misobo.talkToExperts.models.ExpertCategoriesModel
 
 class ExpertPagerAdapter(fm: FragmentManager, val categoriesList: List<ExpertCategoriesModel>) :
     FragmentStatePagerAdapter(fm) {
     override fun getItem(position: Int): Fragment {
         if (categoriesList.isNotEmpty()) {
-            return ExpertsFragment.newInstance(categoriesList.get(position))
+            return ExpertsFragment.newInstance(
+                categoriesList.get(position)
+            )
         } else
-            return ExpertsFragment.newInstance(categoriesList.get(position))
+            return ExpertsFragment.newInstance(
+                categoriesList.get(position)
+            )
     }
 
     override fun getCount(): Int {

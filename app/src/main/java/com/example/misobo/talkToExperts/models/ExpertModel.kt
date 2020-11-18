@@ -1,6 +1,5 @@
-package com.example.misobo.talkToExperts
+package com.example.misobo.talkToExperts.models
 
-import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
 

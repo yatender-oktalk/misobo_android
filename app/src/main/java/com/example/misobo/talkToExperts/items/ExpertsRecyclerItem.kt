@@ -1,7 +1,7 @@
-package com.example.misobo.talkToExperts
+package com.example.misobo.talkToExperts.items
 
-import android.text.format.DateFormat
 import com.example.misobo.R
+import com.example.misobo.talkToExperts.models.ExpertModel
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.experts_recycler_item.view.*

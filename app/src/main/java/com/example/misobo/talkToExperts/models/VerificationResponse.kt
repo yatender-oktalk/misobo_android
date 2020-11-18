@@ -1,4 +1,4 @@
-package com.example.misobo.talkToExperts
+package com.example.misobo.talkToExperts.models
 
 data class VerificationResponse(
     val data: Data

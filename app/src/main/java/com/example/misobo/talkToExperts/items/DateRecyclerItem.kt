@@ -1,4 +1,4 @@
-package com.example.misobo.talkToExperts
+package com.example.misobo.talkToExperts.items
 
 import android.text.format.DateFormat
 import android.util.Log

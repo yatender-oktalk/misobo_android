@@ -1,5 +1,8 @@
-package com.example.misobo.talkToExperts
+package com.example.misobo.talkToExperts.api
 
+import com.example.misobo.talkToExperts.models.OtpPayload
+import com.example.misobo.talkToExperts.models.VerificationResponse
+import com.example.misobo.talkToExperts.models.*
 import com.example.misobo.utils.SharedPreferenceManager
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -63,7 +66,9 @@ interface ExpertsService {
                             .addInterceptor {
                                 it.proceed(
                                     it.request().newBuilder()
-                                        .addHeader("token", token)
+                                        .addHeader("token",
+                                            token
+                                        )
                                         .build()
                                 )
                             }

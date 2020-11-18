@@ -1,4 +1,4 @@
-package com.example.misobo.talkToExperts
+package com.example.misobo.talkToExperts.view
 
 import android.app.Dialog
 import android.os.Bundle

@@ -1,4 +1,4 @@
-package com.example.misobo.talkToExperts
+package com.example.misobo.talkToExperts.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,6 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.misobo.R
+import com.example.misobo.talkToExperts.viewModels.CategoriesState
+import com.example.misobo.talkToExperts.viewModels.TalkToExpertsViewModel
+import com.example.misobo.talkToExperts.models.ExpertCategoriesModel
 import com.example.misobo.utils.Util
 import kotlinx.android.synthetic.main.fragment_talkto_experts_home.*
 
@@ -32,7 +35,12 @@ class TalktoExpertsHomeFragment : Fragment() {
         viewModel.categoriesExpertLiveData.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is CategoriesState.Success -> {
-                    val expertList = mutableListOf(ExpertCategoriesModel(-1,"All"))
+                    val expertList = mutableListOf(
+                        ExpertCategoriesModel(
+                            -1,
+                            "All"
+                        )
+                    )
                     expertList.addAll(state.categoriesModel)
                     expertViewPager.adapter =
                         ExpertPagerAdapter(

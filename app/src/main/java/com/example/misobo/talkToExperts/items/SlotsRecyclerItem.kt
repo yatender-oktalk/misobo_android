@@ -1,11 +1,11 @@
-package com.example.misobo.talkToExperts
+package com.example.misobo.talkToExperts.items
 
 import android.text.format.DateFormat
 import androidx.core.content.ContextCompat
 import com.example.misobo.R
+import com.example.misobo.talkToExperts.models.ExpertSlotsResponse
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
-import kotlinx.android.synthetic.main.slot_book_date_item.view.*
 import kotlinx.android.synthetic.main.time_slots_item.view.*
 import java.text.SimpleDateFormat
 import java.util.*

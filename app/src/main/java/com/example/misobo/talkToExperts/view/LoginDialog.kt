@@ -1,4 +1,4 @@
-package com.example.misobo.talkToExperts
+package com.example.misobo.talkToExperts.view
 
 import android.app.Dialog
 import android.os.Bundle
@@ -9,7 +9,9 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.misobo.R
-import com.example.misobo.utils.SharedPreferenceManager
+import com.example.misobo.talkToExperts.viewModels.MobileRegistration
+import com.example.misobo.talkToExperts.models.OtpPayload
+import com.example.misobo.talkToExperts.viewModels.TalkToExpertsViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.jakewharton.rxbinding2.widget.RxTextView
 import kotlinx.android.synthetic.main.login_bottom_sheet.*
@@ -49,7 +51,8 @@ class LoginDialog : BottomSheetDialogFragment() {
             when (state) {
                 is MobileRegistration.Success -> {
                     viewModel.mobileNumber.postValue(state.verificationResponse.data.phone)
-                    val otpDialog = OtpDialog()
+                    val otpDialog =
+                        OtpDialog()
                     activity?.supportFragmentManager?.beginTransaction()
                         ?.add(otpDialog, null)?.commit()
                 }
@@ -63,7 +66,8 @@ class LoginDialog : BottomSheetDialogFragment() {
         })
 
         sendOtpButton.setOnClickListener {
-            val OtpPayload = OtpPayload(otpText.text.toString())
+            val OtpPayload =
+                OtpPayload(otpText.text.toString())
             viewModel.mobileRegistration(OtpPayload)
         }
 

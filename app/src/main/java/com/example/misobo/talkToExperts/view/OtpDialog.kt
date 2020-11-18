@@ -1,4 +1,4 @@
-package com.example.misobo.talkToExperts
+package com.example.misobo.talkToExperts.view
 
 import android.app.Dialog
 import android.os.Bundle
@@ -9,7 +9,9 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.misobo.R
-import com.example.misobo.utils.SharedPreferenceManager
+import com.example.misobo.talkToExperts.viewModels.MobileRegistration
+import com.example.misobo.talkToExperts.models.OtpPayload
+import com.example.misobo.talkToExperts.viewModels.TalkToExpertsViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.jakewharton.rxbinding2.widget.RxTextView
 import kotlinx.android.synthetic.main.enter_otp_dialog.*
@@ -47,7 +49,10 @@ class OtpDialog : BottomSheetDialogFragment() {
             }
         verifyButton.setOnClickListener {
             val verificationPayload =
-                OtpPayload(viewModel.mobileNumber.value.toString(), otpText.text.toString().toInt())
+                OtpPayload(
+                    viewModel.mobileNumber.value.toString(),
+                    otpText.text.toString().toInt()
+                )
             //Save id here.
             viewModel.verifyOtp(
                 8,

@@ -1,4 +1,4 @@
-package com.example.misobo.talkToExperts
+package com.example.misobo.talkToExperts.models
 
 import com.google.gson.annotations.SerializedName
 

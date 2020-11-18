@@ -1,7 +1,10 @@
-package com.example.misobo.talkToExperts
+package com.example.misobo.talkToExperts.viewModels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.misobo.talkToExperts.models.VerificationResponse
+import com.example.misobo.talkToExperts.api.ExpertsService
+import com.example.misobo.talkToExperts.models.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -40,7 +43,10 @@ class TalkToExpertsViewModel : ViewModel() {
     fun getCategoryExpertsList(id: Int) {
         compositeDisposable.add(talkToExpertsViewModel.getCategoryExpertsList(id)
             .subscribeOn(Schedulers.io())
-            .map { ExpertListState.Success(it) as ExpertListState }
+            .map { ExpertListState.Success(
+                it
+            ) as ExpertListState
+            }
             .startWith(ExpertListState.Loading)
             .onErrorReturn { ExpertListState.Fail }
             .subscribe { expertListLiveData.postValue(it) })
@@ -49,7 +55,10 @@ class TalkToExpertsViewModel : ViewModel() {
     fun getAllExpertsList() {
         compositeDisposable.add(talkToExpertsViewModel.getAllExperts(1)
             .subscribeOn(Schedulers.io())
-            .map { ExpertListState.Success(it) as ExpertListState }
+            .map { ExpertListState.Success(
+                it
+            ) as ExpertListState
+            }
             .startWith(ExpertListState.Loading)
             .onErrorReturn { ExpertListState.Fail }
             .subscribe { expertListLiveData.postValue(it) })
@@ -58,7 +67,10 @@ class TalkToExpertsViewModel : ViewModel() {
     fun getSlot(expertId: Int, datePayloadModel: DatePayloadModel) {
         compositeDisposable.add(talkToExpertsViewModel.getExpertsSlot(expertId, datePayloadModel)
             .subscribeOn(Schedulers.io())
-            .map { SlotFetchState.Success(it) as SlotFetchState }
+            .map { SlotFetchState.Success(
+                it
+            ) as SlotFetchState
+            }
             .startWith(SlotFetchState.Loading)
             .onErrorReturn { SlotFetchState.Fail }
             .subscribe { slotListLiveData.postValue(it) })
@@ -67,7 +79,10 @@ class TalkToExpertsViewModel : ViewModel() {
     fun mobileRegistration(otpModel: OtpPayload) {
         compositeDisposable.add(talkToExpertsViewModel.mobileRegistration(otpModel)
             .subscribeOn(Schedulers.io())
-            .map { MobileRegistration.Success(it) as MobileRegistration }
+            .map { MobileRegistration.Success(
+                it
+            ) as MobileRegistration
+            }
             .startWith(MobileRegistration.Loading)
             .onErrorReturn { MobileRegistration.Fail }
             .subscribe { mobileRegistration.postValue(it) })
@@ -76,7 +91,10 @@ class TalkToExpertsViewModel : ViewModel() {
     fun verifyOtp(id: Int, otpModel: OtpPayload) {
         compositeDisposable.add(talkToExpertsViewModel.sendOtp(id, otpModel)
             .subscribeOn(Schedulers.io())
-            .map { MobileRegistration.Success(it) as MobileRegistration }
+            .map { MobileRegistration.Success(
+                it
+            ) as MobileRegistration
+            }
             .startWith(MobileRegistration.Loading)
             .onErrorReturn { MobileRegistration.Fail }
             .subscribe { otpVerification.postValue(it) })
@@ -85,7 +103,10 @@ class TalkToExpertsViewModel : ViewModel() {
     fun bookSlot(expertId: Int, payload: BookSlotPayload) {
         compositeDisposable.add(talkToExpertsViewModel.bookSlot(expertId, payload)
             .subscribeOn(Schedulers.io())
-            .map { BookSlotState.Success(it) as BookSlotState }
+            .map { BookSlotState.Success(
+                it
+            ) as BookSlotState
+            }
             .startWith(BookSlotState.Loading)
             .onErrorReturn { e ->
                 val exception = e as com.jakewharton.retrofit2.adapter.rxjava2.HttpException
