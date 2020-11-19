@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.misobo.R
 import com.example.misobo.bmi.BmiActivity
+import com.example.misobo.mind.MindActivity
 import com.example.misobo.talkToExperts.view.TalkToExpertActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -26,13 +27,12 @@ class HomeFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         activity?.bottomNavigationView?.visibility = View.VISIBLE
-        textView.setOnClickListener {
+        unlockButtonBody.setOnClickListener {
             startActivity(Intent(context, BmiActivity::class.java))
         }
 
-        talkToExperts.setOnClickListener {
-            startActivity(Intent(context, TalkToExpertActivity::class.java))
+        unlockButtonMind.setOnClickListener {
+            startActivity(Intent(context, MindActivity::class.java))
         }
-        //bmiBackButton.setOnClickListener { activity?.onBackPressed() }
     }
 }
