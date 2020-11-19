@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="36dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:id="@+id/hello"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="26dp"
+        android:fontFamily="@font/manrope_extrabold"
+        android:lineSpacingExtra="12sp"
+        android:text="Hello,"
+        android:textColor="#4d426d"
+        android:textSize="26sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:fontFamily="@font/manrope_extrabold"
+        android:hint="Your Name"
+        android:lineSpacingExtra="12sp"
+        android:text=""
+        android:textColor="#4d426d"
+        android:textColorHint="#d3d3d3"
+        android:textSize="26sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/hello" />
+
+    <ImageView
+        android:id="@+id/edit"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="4dp"
+        android:src="@drawable/ic_edit"
+        app:layout_constraintBottom_toBottomOf="@id/editName"
+        app:layout_constraintStart_toEndOf="@id/editName"
+        app:layout_constraintTop_toTopOf="@id/editName" />
+
+    <TextView
+        android:id="@+id/karmaCoinsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/manrope_regular"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:textColor="#4d426d"
+        android:lineSpacingExtra="16sp"
+        android:text="100"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/hello"
+        app:layout_constraintBottom_toBottomOf="@id/hello"
+        android:layout_marginEnd="16dp"
+        android:drawableStart="@drawable/ic_karma_coin"
+        android:drawablePadding="5dp"
+        />
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

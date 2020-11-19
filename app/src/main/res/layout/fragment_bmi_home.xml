@@ -45,7 +45,7 @@
         android:layout_marginStart="66dp"
         android:layout_marginTop="108dp"
         android:layout_marginEnd="66dp"
-        android:fontFamily="@font/manrope_extra_bold"
+        android:fontFamily="@font/manrope_extrabold"
         android:gravity="center_horizontal"
         android:text="We would need some
 more details to analyse
