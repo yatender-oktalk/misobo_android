@@ -1,13 +1,13 @@
-package com.example.misobo.mind
+package com.example.misobo.mind.items
 
 import com.example.misobo.R
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 
-class TasksForTheDayItems: Item() {
+class CuratedArticlesItem : Item() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
-        TODO("Not yet implemented")
+
     }
 
-    override fun getLayout(): Int = R.layout.tasks_for_the_day_layout
+    override fun getLayout(): Int = R.layout.curated_articles_item_layout
 }

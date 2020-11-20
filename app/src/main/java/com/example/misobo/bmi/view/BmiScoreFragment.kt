@@ -1,4 +1,4 @@
-package com.example.misobo.bmi
+package com.example.misobo.bmi.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.misobo.R
+import com.example.misobo.bmi.viewModels.BmiViewModel
 import kotlinx.android.synthetic.main.fragment_bmi_score.*
 
 class BmiScoreFragment : Fragment() {
@@ -31,7 +32,8 @@ class BmiScoreFragment : Fragment() {
         })
 
         fullReportButton.setOnClickListener {
-            activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.bmiFrameContainer,BmiFullReportFragment()
+            activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.bmiFrameContainer,
+                BmiFullReportFragment()
             )?.addToBackStack(null)?.commit()
         }
 

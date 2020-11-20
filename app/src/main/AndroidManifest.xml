@@ -14,9 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".mind.MindActivity"></activity>
+        <activity android:name=".mind.view.MindActivity"></activity>
         <activity android:name=".talkToExperts.view.TalkToExpertActivity" />
-        <activity android:name=".bmi.BmiActivity" />
+        <activity android:name=".bmi.view.BmiActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".onBoarding.view.OnBoardingActivity">
             <intent-filter>

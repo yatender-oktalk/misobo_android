@@ -1,4 +1,4 @@
-package com.example.misobo.bmi
+package com.example.misobo.bmi.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -25,7 +25,9 @@ class BmiHomeFragment : Fragment() {
         activity?.bottomNavigationView?.visibility = View.GONE
         startedButton.setOnClickListener {
             activity?.supportFragmentManager?.beginTransaction()
-                ?.replace(R.id.bmiFrameContainer, HeightFragment())
+                ?.replace(R.id.bmiFrameContainer,
+                    HeightFragment()
+                )
                 ?.addToBackStack(null)?.commit()
         }
     }

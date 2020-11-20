@@ -1,5 +1,6 @@
-package com.example.misobo.bmi
+package com.example.misobo.mind.api
 
+import com.example.misobo.mind.models.MusicResponseModel
 import com.example.misobo.utils.SharedPreferenceManager
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -9,19 +10,18 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 
-interface BmiService {
+interface MindService {
 
     @Headers("Accept: application/json", "Content-Type: application/json")
-    @POST("api/user/{id}/bmi")
-    fun saveBmi(
-        @Body bmiRequestBody: BmiRequestBody,
-        @Path(value = "id") registrationId: Int
-    ): Observable<BmiResponsebody>
+    @GET("api/music")
+    fun fetchAllMusic(
+        @Query(value = "page") page: Int
+    ): Observable<MusicResponseModel>
 
     object Creator {
         private const val url: String = "http://143.110.176.70:4000/"
         private val token = SharedPreferenceManager.getUser()?.data?.token ?: ""
-        val service: BmiService
+        val service: MindService
             get() {
                 val retrofit = Retrofit.Builder()
                     .baseUrl(url)
@@ -31,7 +31,10 @@ interface BmiService {
                             .addInterceptor {
                                 it.proceed(
                                     it.request().newBuilder()
-                                        .addHeader("token", token)
+                                        .addHeader(
+                                            "token",
+                                            token
+                                        )
                                         .build()
                                 )
                             }
@@ -40,7 +43,7 @@ interface BmiService {
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build()
-                return retrofit.create(BmiService::class.java)
+                return retrofit.create(MindService::class.java)
             }
     }
 }

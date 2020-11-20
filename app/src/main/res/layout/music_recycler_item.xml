@@ -60,7 +60,7 @@
 
     <TextView
         android:id="@+id/musicNameText"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/manrope_extrabold"
         android:textStyle="normal"
@@ -68,7 +68,9 @@
         android:textColor="#4d426d"
         android:lineSpacingExtra="4sp"
         android:gravity="center_horizontal"
-        tools:text="Feel the breeze"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        tools:text="Feel the breeze sfk"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -77,11 +79,13 @@
 
     <TextView
         android:id="@+id/productionName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/manrope_medium"
         android:textStyle="normal"
         android:textSize="12sp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:textColor="#744d426d"
         android:lineSpacingExtra="9sp"
         tools:text="Production Name / Author name"

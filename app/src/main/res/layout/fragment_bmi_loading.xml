@@ -6,7 +6,7 @@
     android:background="@color/colorPrimary"
     android:clickable="true"
     android:layout_height="match_parent"
-    tools:context=".bmi.BmiLoadingFragment">
+    tools:context=".bmi.view.BmiLoadingFragment">
 
     <ImageView
         android:id="@+id/analysingImageView"

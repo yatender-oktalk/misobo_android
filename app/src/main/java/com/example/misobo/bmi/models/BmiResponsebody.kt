@@ -1,4 +1,4 @@
-package com.example.misobo.bmi
+package com.example.misobo.bmi.models
 
 import com.google.gson.annotations.SerializedName
 

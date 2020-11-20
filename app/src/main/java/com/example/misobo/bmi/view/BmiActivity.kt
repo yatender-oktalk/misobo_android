@@ -1,11 +1,11 @@
-package com.example.misobo.bmi
+package com.example.misobo.bmi.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.misobo.R
-import com.example.misobo.onBoarding.viewModels.OnBoardingViewModel
+import com.example.misobo.bmi.viewModels.BmiViewModel
 
 class BmiActivity : AppCompatActivity() {
 
@@ -18,7 +18,9 @@ class BmiActivity : AppCompatActivity() {
         setContentView(R.layout.activity_bmi)
 
         supportFragmentManager.beginTransaction()
-            .replace(R.id.bmiFrameContainer, BmiHomeFragment())
+            .replace(R.id.bmiFrameContainer,
+                BmiHomeFragment()
+            )
             .commit()
 
         bmiViewModel.bmiActionLiveData.observe(this, Observer {
@@ -26,13 +28,17 @@ class BmiActivity : AppCompatActivity() {
                 is BmiViewModel.BmiResponseAction.Success -> {
                     bmiViewModel.bmiDetails.postValue(it.bmiResponsebody)
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.bmiFrameContainer, BmiScoreFragment())
+                        .replace(R.id.bmiFrameContainer,
+                            BmiScoreFragment()
+                        )
                         .commit()
                 }
 
                 is BmiViewModel.BmiResponseAction.Loading -> {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.bmiFrameContainer, BmiLoadingFragment())
+                        .replace(R.id.bmiFrameContainer,
+                            BmiLoadingFragment()
+                        )
                         .addToBackStack(null)
                         .commit()
                 }

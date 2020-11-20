@@ -7,9 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.misobo.R
-import com.example.misobo.bmi.BmiActivity
-import com.example.misobo.mind.MindActivity
-import com.example.misobo.talkToExperts.view.TalkToExpertActivity
+import com.example.misobo.bmi.view.BmiActivity
+import com.example.misobo.mind.view.MindActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
 

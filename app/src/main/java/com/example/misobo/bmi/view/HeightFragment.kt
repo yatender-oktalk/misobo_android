@@ -1,16 +1,15 @@
-package com.example.misobo.bmi
+package com.example.misobo.bmi.view
 
 import android.content.Context
 import android.os.Bundle
 import android.os.Vibrator
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.example.misobo.R
-import com.example.misobo.onBoarding.viewModels.OnBoardingViewModel
+import com.example.misobo.bmi.viewModels.BmiViewModel
 import com.example.misobo.utils.RuleView
 import kotlinx.android.synthetic.main.fragment_height.*
 
@@ -54,7 +53,9 @@ class HeightFragment : Fragment() {
 
             bmiViewModel.height.postValue(heightInMetres)
             activity?.supportFragmentManager?.beginTransaction()
-                ?.replace(R.id.bmiFrameContainer, WeightFragment())
+                ?.replace(R.id.bmiFrameContainer,
+                    WeightFragment()
+                )
                 ?.addToBackStack(null)?.commit()
         }
 
