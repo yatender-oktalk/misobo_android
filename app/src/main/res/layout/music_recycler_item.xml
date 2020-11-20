@@ -84,6 +84,7 @@
         android:fontFamily="@font/manrope_medium"
         android:textStyle="normal"
         android:textSize="12sp"
+        android:gravity="center"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:textColor="#744d426d"
