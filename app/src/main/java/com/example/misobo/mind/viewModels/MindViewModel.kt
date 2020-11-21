@@ -13,6 +13,8 @@ class MindViewModel : ViewModel() {
     private val compositeDisposable = CompositeDisposable()
     private var mindService = MindService.Creator.service
     val musicLiveData: MutableLiveData<MusicFetchState> = MutableLiveData()
+    val playMusicLiveData: MutableLiveData<MusicResponseModel.MusicModel> = MutableLiveData()
+
 
     fun fetchAllMusic() {
         compositeDisposable.add(mindService.fetchAllMusic(1)

@@ -25,10 +25,6 @@ class MindFragment : Fragment() {
 
     private val mindViewModel: MindViewModel by activityViewModels()
     private val talkToExpertsViewModel by lazy { ViewModelProvider(this).get(TalkToExpertsViewModel::class.java) }
-    private val adapter = GroupAdapter<ViewHolder>()
-    private val helloSection = Section()
-    private val taskForTheDaySection = Section()
-    private val talkToExpertsSection = Section()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,10 +37,15 @@ class MindFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        val adapter = GroupAdapter<ViewHolder>()
+        val helloSection = Section()
+        val taskForTheDaySection = Section()
+        val talkToExpertsSection = Section()
         mindHomeRecyclerView.adapter = adapter
         helloSection.add(HelloItem())
 
-        talkToExpertsViewModel.getAllExpertsList()
+        if (talkToExpertsViewModel.expertListLiveData.value == null)
+            talkToExpertsViewModel.getAllExpertsList()
         talkToExpertsViewModel.expertListLiveData.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is ExpertListState.Success -> {
@@ -58,12 +59,19 @@ class MindFragment : Fragment() {
                 }
             }
         })
+        
 
-        mindViewModel.fetchAllMusic()
+        if (mindViewModel.musicLiveData.value == null)
+            mindViewModel.fetchAllMusic()
         mindViewModel.musicLiveData.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is MusicFetchState.Success -> {
-                    taskForTheDaySection.add(TasksForTheDayItems(state.musicEntries) {
+                    taskForTheDaySection.add(TasksForTheDayItems(state.musicEntries) { position ->
+                        mindViewModel.playMusicLiveData.postValue(
+                            state.musicEntries.entries?.get(
+                                position
+                            )
+                        )
                         activity?.supportFragmentManager?.beginTransaction()
                             ?.replace(R.id.mindFrameContainer, MusicPlayerFragment())
                             ?.addToBackStack(null)?.commit()
@@ -77,11 +85,11 @@ class MindFragment : Fragment() {
                 }
             }
         })
-
         adapter.apply {
             add(helloSection)
             add(taskForTheDaySection)
             add(talkToExpertsSection)
         }
     }
+
 }

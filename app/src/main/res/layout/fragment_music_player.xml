@@ -7,6 +7,81 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".mind.view.MusicPlayerFragment">
 
+    <ImageView
+        android:id="@+id/crossIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        app:tint="@color/colorAccent"
+        android:alpha=".7"
+        android:src="@drawable/ic_round_close_24"
+        />
+
+    <TextView
+        android:id="@+id/dailyMeditationText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/manrope_extrabold"
+        android:textStyle="normal"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="26dp"
+        android:textColor="#744d426d"
+        android:lineSpacingExtra="16sp"
+        android:gravity="center_horizontal"
+        android:text="Daily meditation dose"
+        />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/breatheAnimation"
+        android:layout_width="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/exoPlayer"
+        android:layout_marginBottom="90dp"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_fileName="breathe.json"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/songTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/manrope_extrabold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dailyMeditationText"
+        android:layout_marginTop="89dp"
+        android:textStyle="normal"
+        android:textSize="26sp"
+        android:textColor="#4d426d"
+        android:lineSpacingExtra="4sp"
+        android:gravity="center_horizontal"
+        tools:text="Feel the breeze"
+        />
+
+    <TextView
+        android:id="@+id/productionName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/manrope_medium"
+        android:textStyle="normal"
+        android:textSize="12sp"
+        android:textColor="#744d426d"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/songTitle"
+        android:layout_marginTop="8dp"
+        android:lineSpacingExtra="9sp"
+        tools:text="Production Name / Author name"
+        />
+
     <com.google.android.exoplayer2.ui.PlayerView
         android:id="@+id/exoPlayer"
         android:background="#00000000"
