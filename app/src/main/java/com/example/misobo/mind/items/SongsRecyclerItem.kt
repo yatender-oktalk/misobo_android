@@ -22,6 +22,7 @@ class SongsRecyclerItem(val model: MusicResponseModel.MusicModel,val onClick:()-
         viewHolder.itemView.playButton.setOnClickListener {
             onClick.invoke()
         }
+        viewHolder.itemView.progress.progress = 20
 
     }
 

@@ -55,11 +55,10 @@ class MindFragment : Fragment() {
 
                 }
                 is ExpertListState.Loading -> {
-
                 }
             }
         })
-        
+
 
         if (mindViewModel.musicLiveData.value == null)
             mindViewModel.fetchAllMusic()
