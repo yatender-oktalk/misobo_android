@@ -45,15 +45,15 @@ class MindFragment : Fragment() {
         helloSection.add(HelloItem())
 
         talkToExpertsViewModel.getAllExpertsList()
-        talkToExpertsViewModel.expertListLiveData.observe(viewLifecycleOwner, Observer { state->
-            when(state){
-                is ExpertListState.Success->{
+        talkToExpertsViewModel.expertListLiveData.observe(viewLifecycleOwner, Observer { state ->
+            when (state) {
+                is ExpertListState.Success -> {
                     talkToExpertsSection.add(TalkToTherapistItem(state.expertList))
                 }
-                is ExpertListState.Fail->{
+                is ExpertListState.Fail -> {
 
                 }
-                is ExpertListState.Loading->{
+                is ExpertListState.Loading -> {
 
                 }
             }
@@ -63,7 +63,11 @@ class MindFragment : Fragment() {
         mindViewModel.musicLiveData.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is MusicFetchState.Success -> {
-                    taskForTheDaySection.add(TasksForTheDayItems(state.musicEntries))
+                    taskForTheDaySection.add(TasksForTheDayItems(state.musicEntries) {
+                        activity?.supportFragmentManager?.beginTransaction()
+                            ?.replace(R.id.mindFrameContainer, MusicPlayerFragment())
+                            ?.addToBackStack(null)?.commit()
+                    })
                 }
                 is MusicFetchState.Loading -> {
 

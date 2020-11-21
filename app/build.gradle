@@ -139,4 +139,5 @@ dependencies {
 
     implementation  'com.jakewharton.rxbinding2:rxbinding:2.0.0'
 
+    implementation 'com.google.android.exoplayer:exoplayer:2.11.7'
 }
