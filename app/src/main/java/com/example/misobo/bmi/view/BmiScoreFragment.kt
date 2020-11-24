@@ -37,6 +37,8 @@ class BmiScoreFragment : Fragment() {
             )?.addToBackStack(null)?.commit()
         }
 
-
+        backIcon.setOnClickListener {
+            activity?.onBackPressed()
+        }
     }
 }

@@ -90,6 +90,10 @@ class MusicPlayerFragment : Fragment() {
                     progress.progress = (it * 100 / simpleExoPlayer.duration).toInt()
                 })
         })
+
+        crossIcon.setOnClickListener {
+            activity?.onBackPressed()
+        }
     }
 
     override fun onDestroyView() {

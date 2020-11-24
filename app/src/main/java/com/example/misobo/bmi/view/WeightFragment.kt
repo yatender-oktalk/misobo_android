@@ -40,6 +40,10 @@ class WeightFragment : Fragment() {
                 regId = SharedPreferenceManager.getUser()?.data?.registrationId ?: -1
             )
         }
+
+        backIcon.setOnClickListener {
+            activity?.onBackPressed()
+        }
     }
 
 

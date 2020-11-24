@@ -59,6 +59,9 @@ class HeightFragment : Fragment() {
                 ?.addToBackStack(null)?.commit()
         }
 
+        heightBackIcon.setOnClickListener {
+            activity?.onBackPressed()
+        }
     }
 
 

@@ -34,17 +34,27 @@
             android:id="@+id/editName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="14dp"
+            android:layout_marginStart="16dp"
             android:fontFamily="@font/manrope_extrabold"
             android:hint="Your Name"
             android:lineSpacingExtra="12sp"
             android:text=""
+            android:background="@android:color/transparent"
             android:textColor="#4d426d"
             android:textColorHint="#d3d3d3"
             android:textSize="26sp"
             android:textStyle="normal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/hello" />
+
+        <ImageView
+            android:id="@+id/dottedLine"
+            app:layout_constraintStart_toStartOf="@id/editName"
+            app:layout_constraintEnd_toEndOf="@id/editName"
+            app:layout_constraintTop_toBottomOf="@id/editName"
+            android:layout_width="0dp"
+            android:src="@drawable/dotted_dash"
+            android:layout_height="3dp"/>
 
         <ImageView
             android:id="@+id/edit"
@@ -219,7 +229,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/unlockMindPackCard">
-
 
             <ImageView
                 android:id="@+id/bodyPackIcon"
