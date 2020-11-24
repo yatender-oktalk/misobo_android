@@ -83,7 +83,7 @@
         app:layout_constraintTop_toBottomOf="@id/timeTextView" />
 
     <ProgressBar
-        android:id="@+id/progress"
+        android:id="@+id/arcSeekBar"
         android:layout_width="match_parent"
         style="?android:attr/progressBarStyleHorizontal"
         app:layout_constraintBottom_toBottomOf="parent"

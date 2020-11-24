@@ -35,9 +35,9 @@ class ReminderSuccessFragment : Fragment() {
             }
         })
 
-        progress.max = 1000
+        arcSeekBar.max = 1000
         val currentProgress = 1000
-        val anim = ObjectAnimator.ofInt(progress, "progress", currentProgress)
+        val anim = ObjectAnimator.ofInt(arcSeekBar, "progress", currentProgress)
         anim.setDuration(3000)
         anim.doOnEnd {
             SharedPreferenceManager.setOnBoarded(true)

@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.misobo.R
+import com.example.misobo.arcseekbar.ProgressListener
 import com.example.misobo.mind.viewModels.MindViewModel
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
@@ -24,6 +25,7 @@ class MusicPlayerFragment : Fragment() {
 
     private val mindViewModel: MindViewModel by activityViewModels()
     private val compositeDisposable = CompositeDisposable()
+    lateinit var simpleExoPlayer: SimpleExoPlayer
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,7 +50,7 @@ class MusicPlayerFragment : Fragment() {
             //Set up exo Player
             exoPlayer.controllerShowTimeoutMs = 0
             exoPlayer.cameraDistance = 30f
-            val simpleExoPlayer = SimpleExoPlayer.Builder(requireContext()).build()
+            simpleExoPlayer = SimpleExoPlayer.Builder(requireContext()).build()
             exoPlayer.player = simpleExoPlayer
             val dataSourceFactory =
                 DefaultDataSourceFactory(
@@ -68,7 +70,6 @@ class MusicPlayerFragment : Fragment() {
             breatheAnimation.playAnimation()
             simpleExoPlayer.clearVideoSurface()
             simpleExoPlayer.playWhenReady = true
-
             simpleExoPlayer.addListener(object : Player.DefaultEventListener() {
                 override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
                     if (playWhenReady && playbackState == Player.STATE_READY) {
@@ -81,14 +82,31 @@ class MusicPlayerFragment : Fragment() {
                 }
             })
 
+            var pause = true
+
             val playbackProgressObservable: Observable<Long> =
-                Observable.interval(500, java.util.concurrent.TimeUnit.MILLISECONDS)
+                Observable.interval(50, java.util.concurrent.TimeUnit.MILLISECONDS)
+                    .filter { pause }
                     .map { simpleExoPlayer.currentPosition }
 
             compositeDisposable.add(playbackProgressObservable.observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    progress.progress = (it * 100 / simpleExoPlayer.duration).toInt()
+                    arcSeekBar.progress = (it * 100 / simpleExoPlayer.duration).toInt()
                 })
+
+            val stopTrackingListener =
+                ProgressListener { progress: Int ->
+                    pause = true
+                    simpleExoPlayer.seekTo(progress * simpleExoPlayer.duration / 100)
+                }
+
+            val startTrackingListener =
+                ProgressListener { progress: Int ->
+                    pause = false
+                }
+
+            arcSeekBar.onStopTrackingTouch = stopTrackingListener
+            arcSeekBar.onStartTrackingTouch = startTrackingListener
         })
 
         crossIcon.setOnClickListener {

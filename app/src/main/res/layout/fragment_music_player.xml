@@ -82,8 +82,8 @@
         tools:text="Production Name / Author name"
         />
 
-    <com.marcinmoskala.arcseekbar.ArcSeekBar
-        android:id="@+id/progress"
+    <com.example.misobo.arcseekbar.ArcSeekBar
+        android:id="@+id/arcSeekBar"
         android:layout_width="match_parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
