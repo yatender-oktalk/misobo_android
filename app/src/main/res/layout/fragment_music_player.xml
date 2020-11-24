@@ -82,6 +82,25 @@
         tools:text="Production Name / Author name"
         />
 
+    <com.marcinmoskala.arcseekbar.ArcSeekBar
+        android:id="@+id/progress"
+        android:layout_width="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxProgress="100"
+        app:progress="0"
+        app:progressWidth="4dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:roundEdges="true"
+        app:thumb="@drawable/thumb"
+        app:progressBackgroundWidth="4dp"
+        app:progressColor="@color/colorAccent"
+        app:progressBackgroundColor="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@id/exoPlayer"
+        android:layout_marginBottom="8dp"
+        android:layout_height="80dp"/>
+
     <com.google.android.exoplayer2.ui.PlayerView
         android:id="@+id/exoPlayer"
         android:background="#00000000"

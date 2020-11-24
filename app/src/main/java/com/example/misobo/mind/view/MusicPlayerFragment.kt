@@ -2,10 +2,10 @@ package com.example.misobo.mind.view
 
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.misobo.R
@@ -15,11 +15,15 @@ import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_music_player.*
 
 class MusicPlayerFragment : Fragment() {
 
     private val mindViewModel: MindViewModel by activityViewModels()
+    private val compositeDisposable = CompositeDisposable()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,7 +41,6 @@ class MusicPlayerFragment : Fragment() {
             musicModel.title?.let {
                 songTitle.text = it
             }
-
             musicModel.productionName?.let { name ->
                 productionName.text = name
             }
@@ -66,23 +69,26 @@ class MusicPlayerFragment : Fragment() {
             simpleExoPlayer.clearVideoSurface()
             simpleExoPlayer.playWhenReady = true
 
-            simpleExoPlayer.addListener(object :Player.DefaultEventListener(){
+            simpleExoPlayer.addListener(object : Player.DefaultEventListener() {
                 override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-                    //super.onPlayerStateChanged(playWhenReady, playbackState)
                     if (playWhenReady && playbackState == Player.STATE_READY) {
                         breatheAnimation.resumeAnimation()
                         // media actually playing
-                    } else if (playWhenReady) {
-                        breatheAnimation.pauseAnimation()
-                        // might be idle (plays after prepare()),
-                        // buffering (plays when data available)
-                        // or ended (plays when seek away from end)
                     } else {
                         breatheAnimation.pauseAnimation()
                         // player paused in any state
                     }
                 }
             })
+
+            val playbackProgressObservable: Observable<Long> =
+                Observable.interval(500, java.util.concurrent.TimeUnit.MILLISECONDS)
+                    .map { simpleExoPlayer.currentPosition }
+
+            compositeDisposable.add(playbackProgressObservable.observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    progress.progress = (it * 100 / simpleExoPlayer.duration).toInt()
+                })
         })
     }
 
@@ -90,10 +96,11 @@ class MusicPlayerFragment : Fragment() {
         super.onDestroyView()
         breatheAnimation?.cancelAnimation()
         exoPlayer.player?.stop()
-
+        compositeDisposable.dispose()
     }
 
     override fun onDestroy() {
         super.onDestroy()
     }
+
 }

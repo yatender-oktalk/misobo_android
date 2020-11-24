@@ -1,5 +1,6 @@
 package com.example.misobo.mind.view
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import com.example.misobo.mind.items.TalkToTherapistItem
 import com.example.misobo.mind.items.TasksForTheDayItems
 import com.example.misobo.mind.viewModels.MindViewModel
 import com.example.misobo.mind.viewModels.MusicFetchState
+import com.example.misobo.talkToExperts.view.TalkToExpertActivity
 import com.example.misobo.talkToExperts.viewModels.ExpertListState
 import com.example.misobo.talkToExperts.viewModels.TalkToExpertsViewModel
 import com.xwray.groupie.GroupAdapter
@@ -49,7 +51,9 @@ class MindFragment : Fragment() {
         talkToExpertsViewModel.expertListLiveData.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is ExpertListState.Success -> {
-                    talkToExpertsSection.add(TalkToTherapistItem(state.expertList))
+                    talkToExpertsSection.add(TalkToTherapistItem(state.expertList) {
+                        startActivity(Intent(requireContext(), TalkToExpertActivity::class.java))
+                    })
                 }
                 is ExpertListState.Fail -> {
 
