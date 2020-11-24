@@ -28,8 +28,7 @@ object SharedPreferenceManager {
             ), User::class.java
         )
 
-    fun setUser(context: Context?, user: User?): Completable {
-        context?.let {
+    fun setUser(user: User?): Completable {
             sharedPreferences?.edit()?.apply {
                 if (user == null) {
                     putString(USER, null)
@@ -38,7 +37,6 @@ object SharedPreferenceManager {
                 }
                 apply()
             }
-        }
         return Completable.complete()
     }
 

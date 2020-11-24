@@ -59,7 +59,7 @@ class OnBoardingViewModel : ViewModel() {
 
     fun registerUser(registrationModel: RegistrationModel) {
         compositeDisposable.add(
-            onBoardingService.registerUser(registrationModel)
+            OnBoardingService.Creator.service.registerUser(registrationModel)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { user -> userLiveData.postValue(user) }
