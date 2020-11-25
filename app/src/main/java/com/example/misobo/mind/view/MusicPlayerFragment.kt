@@ -1,7 +1,9 @@
 package com.example.misobo.mind.view
 
+import android.icu.util.TimeUnit
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +21,7 @@ import com.google.android.exoplayer2.util.Util
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import kotlinx.android.synthetic.main.custom_exo_player_controls.view.*
 import kotlinx.android.synthetic.main.fragment_music_player.*
 
 class MusicPlayerFragment : Fragment() {
@@ -91,7 +94,7 @@ class MusicPlayerFragment : Fragment() {
 
             compositeDisposable.add(playbackProgressObservable.observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    arcSeekBar.progress = (it * 100 / simpleExoPlayer.duration).toInt()
+                    exoPlayer.arcSeekBar.progress = (it * 100 / simpleExoPlayer.duration).toInt()
                 })
 
             val stopTrackingListener =
@@ -105,8 +108,19 @@ class MusicPlayerFragment : Fragment() {
                     pause = false
                 }
 
-            arcSeekBar.onStopTrackingTouch = stopTrackingListener
-            arcSeekBar.onStartTrackingTouch = startTrackingListener
+            val progressChangedListener = ProgressListener { progress ->
+                val progressToMilli = progress * simpleExoPlayer.duration / 100
+                val  currTime = String.format("%02d:%02d",
+                java.util.concurrent.TimeUnit.MILLISECONDS.toMinutes(progressToMilli),
+                java.util.concurrent.TimeUnit.MILLISECONDS.toSeconds(progressToMilli) -
+                        java.util.concurrent.TimeUnit.MINUTES.toSeconds(java.util.concurrent.TimeUnit.MILLISECONDS.toMinutes(progressToMilli)))
+                Log.i("currTime" , currTime)
+                exoPlayer.exoPosition.text = currTime
+            }
+
+            exoPlayer.arcSeekBar.onStopTrackingTouch = stopTrackingListener
+            exoPlayer.arcSeekBar.onStartTrackingTouch = startTrackingListener
+            exoPlayer.arcSeekBar.onProgressChangedListener = progressChangedListener
         })
 
         crossIcon.setOnClickListener {
