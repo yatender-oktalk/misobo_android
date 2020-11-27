@@ -8,6 +8,8 @@ import com.google.gson.Gson
 import io.reactivex.Completable
 
 private const val ONBOARDED = "has_onboarded"
+private const val IS_MIND_UNLOCKED = "is_mind_unlocked"
+private const val IS_BODY_UNLOCKED = "is_body_unlocked"
 
 object SharedPreferenceManager {
 
@@ -29,14 +31,14 @@ object SharedPreferenceManager {
         )
 
     fun setUser(user: User?): Completable {
-            sharedPreferences?.edit()?.apply {
-                if (user == null) {
-                    putString(USER, null)
-                } else {
-                    putString(USER, Gson().toJson(user))
-                }
-                apply()
+        sharedPreferences?.edit()?.apply {
+            if (user == null) {
+                putString(USER, null)
+            } else {
+                putString(USER, Gson().toJson(user))
             }
+            apply()
+        }
         return Completable.complete()
     }
 
@@ -47,9 +49,29 @@ object SharedPreferenceManager {
         ) ?: false
 
     fun setOnBoarded(value: Boolean) = sharedPreferences?.edit().apply {
-        this?.putBoolean(ONBOARDED,value)
+        this?.putBoolean(ONBOARDED, value)
         this?.apply()
     }
+
+    fun setMindUnlock(isMindUnlocked: Boolean) =
+        sharedPreferences?.edit().apply {
+            this?.putBoolean(IS_MIND_UNLOCKED, isMindUnlocked)
+            this?.apply()
+        }
+
+    fun setBodyUnlock(isBodyUnlock: Boolean) =
+        sharedPreferences?.edit().apply {
+            this?.putBoolean(IS_BODY_UNLOCKED, isBodyUnlock)
+            this?.apply()
+        }
+
+    fun isMindUnlocked(): Boolean = sharedPreferences != null && sharedPreferences?.getBoolean(
+        IS_MIND_UNLOCKED, false
+    ) ?: false
+
+    fun isBodyUnlocked(): Boolean = sharedPreferences != null && sharedPreferences?.getBoolean(
+        IS_BODY_UNLOCKED, false
+    ) ?: false
 
     fun clear() {
         val editor = sharedPreferences?.edit()

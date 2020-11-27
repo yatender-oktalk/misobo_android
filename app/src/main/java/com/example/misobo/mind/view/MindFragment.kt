@@ -13,11 +13,13 @@ import com.example.misobo.R
 import com.example.misobo.mind.items.HelloItem
 import com.example.misobo.mind.items.TalkToTherapistItem
 import com.example.misobo.mind.items.TasksForTheDayItems
+import com.example.misobo.mind.items.UnlockItems
 import com.example.misobo.mind.viewModels.MindViewModel
 import com.example.misobo.mind.viewModels.MusicFetchState
 import com.example.misobo.talkToExperts.view.TalkToExpertActivity
 import com.example.misobo.talkToExperts.viewModels.ExpertListState
 import com.example.misobo.talkToExperts.viewModels.TalkToExpertsViewModel
+import com.example.misobo.utils.SharedPreferenceManager
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
@@ -41,10 +43,12 @@ class MindFragment : Fragment() {
 
         val adapter = GroupAdapter<ViewHolder>()
         val helloSection = Section()
+        val unlockSection = Section()
         val taskForTheDaySection = Section()
         val talkToExpertsSection = Section()
         mindHomeRecyclerView.adapter = adapter
         helloSection.add(HelloItem())
+        unlockSection.add(UnlockItems())
 
         if (talkToExpertsViewModel.expertListLiveData.value == null)
             talkToExpertsViewModel.getAllExpertsList()
@@ -71,9 +75,7 @@ class MindFragment : Fragment() {
                 is MusicFetchState.Success -> {
                     taskForTheDaySection.add(TasksForTheDayItems(state.musicEntries) { position ->
                         mindViewModel.playMusicLiveData.postValue(
-                            state.musicEntries.entries?.get(
-                                position
-                            )
+                            state.musicEntries[position]
                         )
                         activity?.supportFragmentManager?.beginTransaction()
                             ?.replace(R.id.mindFrameContainer, MusicPlayerFragment())
@@ -90,6 +92,9 @@ class MindFragment : Fragment() {
         })
         adapter.apply {
             add(helloSection)
+            if (!SharedPreferenceManager.isMindUnlocked() || !SharedPreferenceManager.isBodyUnlocked())
+                add(unlockSection)
+
             add(taskForTheDaySection)
             add(talkToExpertsSection)
         }

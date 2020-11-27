@@ -26,7 +26,7 @@ class MindViewModel : ViewModel() {
             }
             .startWith(MusicFetchState.Loading)
             .onErrorReturn {
-                MusicFetchState.Error
+                MusicFetchState.Error(it.localizedMessage)
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
@@ -36,7 +36,7 @@ class MindViewModel : ViewModel() {
 }
 
 sealed class MusicFetchState {
-    data class Success(val musicEntries: MusicResponseModel) : MusicFetchState()
+    data class Success(val musicEntries: List<MusicResponseModel.MusicModel>) : MusicFetchState()
     object Loading : MusicFetchState()
-    object Error : MusicFetchState()
+    data class Error(val message: String) : MusicFetchState()
 }

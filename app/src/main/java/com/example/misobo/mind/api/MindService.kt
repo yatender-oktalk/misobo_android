@@ -16,7 +16,7 @@ interface MindService {
     @GET("api/music")
     fun fetchAllMusic(
         @Query(value = "page") page: Int
-    ): Observable<MusicResponseModel>
+    ): Observable<List<MusicResponseModel.MusicModel>>
 
     object Creator {
         private const val url: String = "http://143.110.176.70:4000/"

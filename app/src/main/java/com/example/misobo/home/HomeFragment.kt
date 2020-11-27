@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import com.example.misobo.R
 import com.example.misobo.bmi.view.BmiActivity
 import com.example.misobo.mind.view.MindActivity
+import com.example.misobo.mind.view.MindFragment
+import com.example.misobo.utils.SharedPreferenceManager
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
 
@@ -31,7 +33,16 @@ class HomeFragment : Fragment() {
         }
 
         unlockButtonMind.setOnClickListener {
-            startActivity(Intent(context, MindActivity::class.java))
+            SharedPreferenceManager.setMindUnlock(true)
+            activity?.supportFragmentManager
+                ?.beginTransaction()
+                ?.replace(
+                    R.id.mainContainer,
+                    MindFragment()
+                )
+                ?.commit()
+
+            //startActivity(Intent(context, MindActivity::class.java))
         }
     }
 }

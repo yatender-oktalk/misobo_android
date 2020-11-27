@@ -9,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.misobo.R
 import com.example.misobo.bmi.viewModels.BmiViewModel
+import com.example.misobo.utils.SharedPreferenceManager
 import kotlinx.android.synthetic.main.fragment_bmi_score.*
 
 class BmiScoreFragment : Fragment() {
@@ -25,6 +26,8 @@ class BmiScoreFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        SharedPreferenceManager.setBodyUnlock(true)
 
         bmiViewModel.bmiDetails.observe(viewLifecycleOwner, Observer { responseBody ->
             bmiValue.text = responseBody.data?.bmi.toString()

@@ -8,14 +8,17 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.tasks_for_the_day_layout.view.*
 
-class TasksForTheDayItems(val musicEntries: MusicResponseModel,val onClick:(Int)->Unit) : Item() {
+class TasksForTheDayItems(
+    val musicEntries: List<MusicResponseModel.MusicModel>,
+    val onClick: (Int) -> Unit
+) : Item() {
     val adapter = GroupAdapter<ViewHolder>()
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.itemView.musicRecycler.adapter = adapter
         adapter.clear()
         val musicSection = Section()
-        musicEntries.entries?.forEach { model->
-            musicSection.add(SongsRecyclerItem(model){
+        musicEntries?.forEach { model ->
+            musicSection.add(SongsRecyclerItem(model) {
                 onClick.invoke(position)
             })
         }
