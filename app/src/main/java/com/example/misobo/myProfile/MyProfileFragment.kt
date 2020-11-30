@@ -1,10 +1,13 @@
 package com.example.misobo.myProfile
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.misobo.R
@@ -35,6 +38,23 @@ class MyProfileFragment : Fragment() {
         weekList.forEach { section.add(DailyCheckinItem(it)) }
         groupAdapter.add(section)
 
-        profileViewModel.getProfile(SharedPreferenceManager.getUser()?.data?.userId?:-1)
+        profileViewModel.getProfile(SharedPreferenceManager.getUser()?.data?.userId ?: -1)
+
+
+        profileViewModel.profileLiveData.observe(viewLifecycleOwner, Observer { state ->
+            when (state) {
+                is ProfileResponseAction.Success -> {
+                        Toast.makeText(context,state.response.data?.loginStreak?.two.toString(),Toast.LENGTH_SHORT).show()
+
+                }
+                is ProfileResponseAction.Loading -> {
+
+                }
+                is ProfileResponseAction.Error -> {
+                    Toast.makeText(context,state.error,Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
+
     }
 }

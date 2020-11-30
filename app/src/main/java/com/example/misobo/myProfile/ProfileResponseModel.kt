@@ -2,6 +2,7 @@ package com.example.misobo.myProfile
 
 import com.google.gson.annotations.SerializedName
 
+
 data class ProfileResponseModel(
     @SerializedName("data")
     val data: Data?,
@@ -32,10 +33,18 @@ data class ProfileResponseModel(
         @SerializedName("login_streak_days")
         val loginStreakDays: Int?,
         @SerializedName("login_streak")
-        val loginStreak: List<Streak>?
+        val loginStreak: Streak?
     )
 
     data class Streak(
-        val wasActive: Boolean?
+        @SerializedName("1")
+        val one: Boolean,
+        @SerializedName("2") val two: Boolean,
+        @SerializedName("3") val three: Boolean,
+        @SerializedName("4") val four: Boolean,
+        @SerializedName("5") val five: Boolean,
+        @SerializedName("6") val six: Boolean,
+        @SerializedName("7") val seven: Boolean,
+        @SerializedName("user_id") val user_id: Int
     )
 }

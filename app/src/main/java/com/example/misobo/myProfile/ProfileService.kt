@@ -20,7 +20,7 @@ interface ProfileService {
     @GET("api/user/{userId}")
     fun getProfile(
         @Path(value = "userId") userId: Int
-    ): Observable<Unit>
+    ): Observable<ProfileResponseModel>
 
     object Creator {
         private const val url: String = "http://143.110.176.70:4000/"
