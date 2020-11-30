@@ -21,6 +21,7 @@ import com.google.android.exoplayer2.util.Util
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.custom_exo_player_controls.view.*
 import kotlinx.android.synthetic.main.fragment_music_player.*
 
@@ -41,6 +42,7 @@ class MusicPlayerFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        activity?.bottomNavigationView?.visibility = View.GONE
         mindViewModel.playMusicLiveData.observe(viewLifecycleOwner, Observer { musicModel ->
 
             musicModel.title?.let {
@@ -137,6 +139,7 @@ class MusicPlayerFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
+        activity?.bottomNavigationView?.visibility = View.VISIBLE
     }
 
 }

@@ -78,7 +78,7 @@ class MindFragment : Fragment() {
                             state.musicEntries[position]
                         )
                         activity?.supportFragmentManager?.beginTransaction()
-                            ?.replace(R.id.mindFrameContainer, MusicPlayerFragment())
+                            ?.replace(R.id.mainContainer, MusicPlayerFragment())
                             ?.addToBackStack(null)?.commit()
                     })
                 }
