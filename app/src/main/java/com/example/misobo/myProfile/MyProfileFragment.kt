@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.misobo.R
+import com.example.misobo.utils.SharedPreferenceManager
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
@@ -15,6 +17,7 @@ import kotlinx.android.synthetic.main.fragment_my_profile.*
 
 class MyProfileFragment : Fragment() {
     val groupAdapter = GroupAdapter<ViewHolder>()
+    private val profileViewModel by lazy { ViewModelProvider(this).get(ProfileViewModel::class.java) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,5 +34,7 @@ class MyProfileFragment : Fragment() {
         val section = Section()
         weekList.forEach { section.add(DailyCheckinItem(it)) }
         groupAdapter.add(section)
+
+        profileViewModel.getProfile(SharedPreferenceManager.getUser()?.data?.userId?:-1)
     }
 }
