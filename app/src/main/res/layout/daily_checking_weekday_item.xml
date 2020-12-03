@@ -7,11 +7,13 @@
     android:layout_marginEnd="6dp">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/dailyCheckinStatusImage"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:src="@drawable/ic_tick"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/weekday_name"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -25,9 +27,9 @@
         android:textColor="#4d426d"
         android:textSize="12sp"
         android:textStyle="normal"
-        app:layout_constraintEnd_toEndOf="@id/imageView"
-        app:layout_constraintStart_toStartOf="@id/imageView"
-        app:layout_constraintTop_toBottomOf="@id/imageView"
+        app:layout_constraintEnd_toEndOf="@id/dailyCheckinStatusImage"
+        app:layout_constraintStart_toStartOf="@id/dailyCheckinStatusImage"
+        app:layout_constraintTop_toBottomOf="@id/dailyCheckinStatusImage"
 
         />
 

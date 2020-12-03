@@ -1,7 +1,6 @@
 package com.example.misobo.myProfile
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,14 +8,12 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.misobo.R
 import com.example.misobo.utils.SharedPreferenceManager
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.fragment_my_profile.*
-
 
 class MyProfileFragment : Fragment() {
     val groupAdapter = GroupAdapter<ViewHolder>()
@@ -34,9 +31,7 @@ class MyProfileFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         dailyCheckinRecyclerView.adapter = groupAdapter
         val weekList = listOf<String>("S", "M", "T", "W", "T", "F", "S")
-        val section = Section()
-        weekList.forEach { section.add(DailyCheckinItem(it)) }
-        groupAdapter.add(section)
+
 
         profileViewModel.getProfile(SharedPreferenceManager.getUser()?.data?.userId ?: -1)
 
@@ -44,14 +39,29 @@ class MyProfileFragment : Fragment() {
         profileViewModel.profileLiveData.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is ProfileResponseAction.Success -> {
-                        Toast.makeText(context,state.response.data?.loginStreak?.two.toString(),Toast.LENGTH_SHORT).show()
+                    groupAdapter.clear()
+                    val section = Section()
 
+                    section.add(DailyCheckinItem(state.response.data?.loginStreak?.one?:false, "S"))
+                    section.add(DailyCheckinItem(state.response.data?.loginStreak?.two?:false, "M"))
+                    section.add(DailyCheckinItem(state.response.data?.loginStreak?.three?:false, "T"))
+                    section.add(DailyCheckinItem(state.response.data?.loginStreak?.four?:false, "W"))
+                    section.add(DailyCheckinItem(state.response.data?.loginStreak?.five?:false, "T"))
+                    section.add(DailyCheckinItem(state.response.data?.loginStreak?.six?:false, "F"))
+                    section.add(DailyCheckinItem(state.response.data?.loginStreak?.seven?:false, "S"))
+
+                    groupAdapter.add(section)
+                    Toast.makeText(
+                        context,
+                        state.response.data?.loginStreak?.two.toString(),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
                 is ProfileResponseAction.Loading -> {
 
                 }
                 is ProfileResponseAction.Error -> {
-                    Toast.makeText(context,state.error,Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, state.error, Toast.LENGTH_SHORT).show()
                 }
             }
         })
