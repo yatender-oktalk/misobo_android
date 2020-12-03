@@ -1,6 +1,5 @@
 package com.example.misobo.blogs
 
-import com.example.misobo.mind.models.MusicResponseModel
 import com.example.misobo.utils.SharedPreferenceManager
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -10,13 +9,17 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Headers
+import retrofit2.http.Path
 
 interface BlogsService {
 
     @Headers("Accept: application/json", "Content-Type: application/json")
     @GET("api/blogs")
-    fun fetchAllBlogs(
-    ): Observable<BlogsModel>
+    fun fetchAllBlogs(): Observable<BlogsModel>
+
+    @Headers("Accept: application/json", "Content-Type: application/json")
+    @GET("api/blogs/{blog-id}")
+    fun getDetailBlog(@Path("blog-id") blogId: Int): Observable<BlogsModel.Blogs>
 
     object Creator {
         private const val url: String = "http://143.110.176.70:4000/"

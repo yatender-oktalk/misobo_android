@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
+import com.example.misobo.blogs.BlogsViewModel
 import com.example.misobo.home.HomeFragment
 import com.example.misobo.mind.view.MindActivity
 import com.example.misobo.mind.view.MindFragment
@@ -17,6 +18,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     private val viewModel: MindViewModel by lazy { ViewModelProvider(this).get(MindViewModel::class.java) }
+    private val blogsViewModel: BlogsViewModel by lazy { ViewModelProvider(this).get(BlogsViewModel::class.java) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

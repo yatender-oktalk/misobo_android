@@ -10,6 +10,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.misobo.R
+import com.example.misobo.blogs.BlogDetailedFetchState
+import com.example.misobo.blogs.BlogsDetailFragment
 import com.example.misobo.blogs.BlogsFetchState
 import com.example.misobo.blogs.BlogsViewModel
 import com.example.misobo.mind.items.*
@@ -27,7 +29,7 @@ import kotlinx.android.synthetic.main.fragment_mind.*
 class MindFragment : Fragment() {
 
     private val mindViewModel: MindViewModel by activityViewModels()
-    private val blogsViewModel: BlogsViewModel by lazy { ViewModelProvider(this).get(BlogsViewModel::class.java) }
+    private val blogsViewModel: BlogsViewModel by activityViewModels()
     private val talkToExpertsViewModel by lazy { ViewModelProvider(this).get(TalkToExpertsViewModel::class.java) }
 
     override fun onCreateView(
@@ -94,15 +96,23 @@ class MindFragment : Fragment() {
 
         if (blogsViewModel.blogLiveData.value == null)
             blogsViewModel.fetchBlogs()
-        blogsViewModel.blogLiveData.observe(viewLifecycleOwner, Observer { state->
-            when(state){
-                is BlogsFetchState.Success->{
-                    blogsSection.add(CuratedArticlesItem(state.blogsModel){
+        blogsViewModel.blogLiveData.observe(viewLifecycleOwner, Observer { state ->
+            when (state) {
+                is BlogsFetchState.Success -> {
+                    blogsSection.add(CuratedArticlesItem(state.blogsModel) {
+                        blogsViewModel.detailedBlogLiveData.postValue(
+                            BlogDetailedFetchState.Success(
+                                state.blogsModel.data?.get(it)!!
+                            )
+                        )
+                        activity?.supportFragmentManager?.beginTransaction()
+                            ?.replace(R.id.mainContainer, BlogsDetailFragment.newInstance(it))
+                            ?.addToBackStack(null)?.commit()
                     })
                 }
-                is BlogsFetchState.Loading->{
+                is BlogsFetchState.Loading -> {
                 }
-                is BlogsFetchState.Error->{
+                is BlogsFetchState.Error -> {
 
                 }
             }

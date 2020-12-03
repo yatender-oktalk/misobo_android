@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import com.example.misobo.R
+import com.example.misobo.blogs.BlogsViewModel
 import com.example.misobo.mind.viewModels.MindViewModel
 
 class MindActivity : AppCompatActivity() {
