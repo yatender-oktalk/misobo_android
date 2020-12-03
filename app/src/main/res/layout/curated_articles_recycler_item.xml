@@ -17,11 +17,11 @@
         android:textSize="12sp"
         android:textColor="#4d426d"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@id/earnTextView"
         android:lineSpacingExtra="26sp"
+        app:layout_constraintBottom_toBottomOf="@id/earnTextView"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        tools:text="MIND"
+        android:text="MIND"
         />
 
     <TextView
@@ -56,7 +56,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/earnTextView"
         app:layout_constraintBottom_toBottomOf="@id/earnTextView"
-        tools:text="501"
+        android:text="501"
         />
 
     <TextView
@@ -73,7 +73,7 @@
         android:layout_marginTop="91dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:lineSpacingExtra="8sp"
+        android:lineSpacingExtra="2sp"
         tools:text="7 Habits for a Healthy Mind in a Healthy Body"
         />
 
@@ -90,6 +90,8 @@
         android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
+        android:maxLines="2"
+        android:ellipsize="end"
         android:textColor="#744d426d"
         android:lineSpacingExtra="4sp"
         tools:text="The secrets to well-being can be

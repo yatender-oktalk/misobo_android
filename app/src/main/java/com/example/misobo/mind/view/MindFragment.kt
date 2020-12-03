@@ -10,10 +10,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.misobo.R
-import com.example.misobo.mind.items.HelloItem
-import com.example.misobo.mind.items.TalkToTherapistItem
-import com.example.misobo.mind.items.TasksForTheDayItems
-import com.example.misobo.mind.items.UnlockItems
+import com.example.misobo.blogs.BlogsFetchState
+import com.example.misobo.blogs.BlogsViewModel
+import com.example.misobo.mind.items.*
 import com.example.misobo.mind.viewModels.MindViewModel
 import com.example.misobo.mind.viewModels.MusicFetchState
 import com.example.misobo.talkToExperts.view.TalkToExpertActivity
@@ -28,6 +27,7 @@ import kotlinx.android.synthetic.main.fragment_mind.*
 class MindFragment : Fragment() {
 
     private val mindViewModel: MindViewModel by activityViewModels()
+    private val blogsViewModel: BlogsViewModel by lazy { ViewModelProvider(this).get(BlogsViewModel::class.java) }
     private val talkToExpertsViewModel by lazy { ViewModelProvider(this).get(TalkToExpertsViewModel::class.java) }
 
     override fun onCreateView(
@@ -46,6 +46,8 @@ class MindFragment : Fragment() {
         val unlockSection = Section()
         val taskForTheDaySection = Section()
         val talkToExpertsSection = Section()
+        val blogsSection = Section()
+
         mindHomeRecyclerView.adapter = adapter
         helloSection.add(HelloItem())
         unlockSection.add(UnlockItems())
@@ -66,7 +68,6 @@ class MindFragment : Fragment() {
                 }
             }
         })
-
 
         if (mindViewModel.musicLiveData.value == null)
             mindViewModel.fetchAllMusic()
@@ -90,6 +91,23 @@ class MindFragment : Fragment() {
                 }
             }
         })
+
+        if (blogsViewModel.blogLiveData.value == null)
+            blogsViewModel.fetchBlogs()
+        blogsViewModel.blogLiveData.observe(viewLifecycleOwner, Observer { state->
+            when(state){
+                is BlogsFetchState.Success->{
+                    blogsSection.add(CuratedArticlesItem(state.blogsModel){
+                    })
+                }
+                is BlogsFetchState.Loading->{
+                }
+                is BlogsFetchState.Error->{
+
+                }
+            }
+        })
+
         adapter.apply {
             add(helloSection)
             if (!SharedPreferenceManager.isMindUnlocked() || !SharedPreferenceManager.isBodyUnlocked())
@@ -97,6 +115,7 @@ class MindFragment : Fragment() {
 
             add(taskForTheDaySection)
             add(talkToExpertsSection)
+            add(blogsSection)
         }
     }
 

@@ -112,19 +112,23 @@ class MusicPlayerFragment : Fragment() {
 
             val progressChangedListener = ProgressListener { progress ->
                 val progressToMilli = progress * simpleExoPlayer.duration / 100
-                val  currTime = String.format("%02d:%02d",
-                java.util.concurrent.TimeUnit.MILLISECONDS.toMinutes(progressToMilli),
-                java.util.concurrent.TimeUnit.MILLISECONDS.toSeconds(progressToMilli) -
-                        java.util.concurrent.TimeUnit.MINUTES.toSeconds(java.util.concurrent.TimeUnit.MILLISECONDS.toMinutes(progressToMilli)))
-                Log.i("currTime" , currTime)
+                val currTime = String.format(
+                    "%02d:%02d",
+                    java.util.concurrent.TimeUnit.MILLISECONDS.toMinutes(progressToMilli),
+                    java.util.concurrent.TimeUnit.MILLISECONDS.toSeconds(progressToMilli) -
+                            java.util.concurrent.TimeUnit.MINUTES.toSeconds(
+                                java.util.concurrent.TimeUnit.MILLISECONDS.toMinutes(
+                                    progressToMilli
+                                )
+                            )
+                )
+                Log.i("currTime", currTime)
                 exoPlayer.exoPosition.text = currTime
             }
-
             exoPlayer.arcSeekBar.onStopTrackingTouch = stopTrackingListener
             exoPlayer.arcSeekBar.onStartTrackingTouch = startTrackingListener
             exoPlayer.arcSeekBar.onProgressChangedListener = progressChangedListener
         })
-
         crossIcon.setOnClickListener {
             activity?.onBackPressed()
         }
@@ -141,5 +145,4 @@ class MusicPlayerFragment : Fragment() {
         super.onDestroy()
         activity?.bottomNavigationView?.visibility = View.VISIBLE
     }
-
 }

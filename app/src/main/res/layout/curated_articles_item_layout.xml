@@ -1,55 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/curatedArticles"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/manrope_extrabold"
-        android:textStyle="normal"
-        android:textSize="20sp"
-        android:textColor="#4d426d"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:lineSpacingExtra="18sp"
         android:layout_marginStart="16dp"
+        android:fontFamily="@font/manrope_extrabold"
+        android:lineSpacingExtra="18sp"
         android:text="Curated Articles"
-        />
+        android:textColor="#4d426d"
+        android:textSize="20sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/viewAll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/manrope_regular"
-        android:textStyle="bold"
-        android:textSize="12sp"
-        android:textColor="#4d426d"
-        android:lineSpacingExtra="26sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/curatedArticles"
-        app:layout_constraintBottom_toBottomOf="@id/curatedArticles"
         android:layout_marginEnd="20dp"
         android:background="@drawable/rounded_background_radius_15"
+        android:fontFamily="@font/manrope_regular"
         android:gravity="center_horizontal"
+        android:lineSpacingExtra="26sp"
         android:paddingStart="11dp"
-        android:paddingEnd="11dp"
         android:paddingTop="5dp"
+        android:paddingEnd="11dp"
         android:paddingBottom="5dp"
         android:text="View All"
-        />
+        android:textColor="#4d426d"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/curatedArticles"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/curatedArticles" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/curatedArticlesRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/curatedArticles"
         android:layout_marginTop="21dp"
+        android:clipToPadding="false"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingBottom="16dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:orientation="vertical"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/curatedArticles" />
 </androidx.constraintlayout.widget.ConstraintLayout>
