@@ -18,6 +18,6 @@ data class BlogsModel(
         @SerializedName("title")
         val title: String?,
         @SerializedName("image")
-        val image: Boolean?
+        val image: String?
     )
 }

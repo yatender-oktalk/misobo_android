@@ -6,6 +6,8 @@ data class BmiRequestBody(
     @SerializedName("height")
     val height: Double,
     @SerializedName("weight")
-    val weight: Int
+    val weight: Int,
+    @SerializedName("gender")
+    val gender: String
 ) {
 }

@@ -8,7 +8,7 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.unlock_pack_home_banner.view.*
 
-class UnlockItems() : Item() {
+class UnlockItems(val navigateToBody: (Boolean) -> Unit) : Item() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
         when (SharedPreferenceManager.isMindUnlocked()) {
             true -> {
@@ -19,6 +19,8 @@ class UnlockItems() : Item() {
                     R.drawable.unlock_body_mini
                 )
                 Picasso.get().load(R.drawable.ic_group_434).into(viewHolder.itemView.packIcon)
+                viewHolder.itemView.setOnClickListener { navigateToBody.invoke(true) }
+
             }
             false -> {
                 viewHolder.itemView.packTitle.text = "Mind pack"
@@ -28,6 +30,7 @@ class UnlockItems() : Item() {
                     R.drawable.unlock_mind_mini
                 )
                 Picasso.get().load(R.drawable.ic_mind_pack_icon).into(viewHolder.itemView.packIcon)
+                viewHolder.itemView.setOnClickListener { navigateToBody.invoke(false) }
             }
         }
     }

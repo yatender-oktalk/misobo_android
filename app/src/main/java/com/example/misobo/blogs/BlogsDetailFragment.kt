@@ -51,6 +51,7 @@ class BlogsDetailFragment : Fragment() {
         //blogsViewModel.getDetailedBlog(blogId ?: 0)
         activity?.bottomNavigationView?.visibility = View.GONE
 
+        backIcon.setOnClickListener { activity?.onBackPressed() }
 
         blogsViewModel.detailedBlogLiveData.observe(viewLifecycleOwner, Observer { state ->
             when (state) {

@@ -7,7 +7,7 @@ data class MusicResponseModel(
     val entries: List<MusicModel>?
 ) {
     data class MusicModel(
-        @SerializedName("entries")
+        @SerializedName("id")
         val id: Int?,
         @SerializedName("author_name")
         val authorName: String?,
@@ -17,6 +17,8 @@ data class MusicResponseModel(
         val hlsUrl: String?,
         @SerializedName("karma")
         val karma: Int?,
+        @SerializedName("progress")
+        val progress: Int?,
         @SerializedName("production_name")
         val productionName: String?,
         @SerializedName("title")

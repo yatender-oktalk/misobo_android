@@ -1,6 +1,5 @@
 package com.example.misobo.mind.view
 
-import android.icu.util.TimeUnit
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -12,7 +11,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.misobo.R
 import com.example.misobo.arcseekbar.ProgressListener
+import com.example.misobo.mind.models.ProgressPayload
 import com.example.misobo.mind.viewModels.MindViewModel
+import com.example.misobo.utils.SharedPreferenceManager
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
@@ -24,12 +25,14 @@ import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.custom_exo_player_controls.view.*
 import kotlinx.android.synthetic.main.fragment_music_player.*
+import java.util.concurrent.TimeUnit
 
 class MusicPlayerFragment : Fragment() {
 
     private val mindViewModel: MindViewModel by activityViewModels()
     private val compositeDisposable = CompositeDisposable()
     lateinit var simpleExoPlayer: SimpleExoPlayer
+    var musicId: Int?= 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,7 +47,7 @@ class MusicPlayerFragment : Fragment() {
 
         activity?.bottomNavigationView?.visibility = View.GONE
         mindViewModel.playMusicLiveData.observe(viewLifecycleOwner, Observer { musicModel ->
-
+            mindViewModel.selectedMusicId = musicModel.id?:0
             musicModel.title?.let {
                 songTitle.text = it
             }
@@ -96,7 +99,7 @@ class MusicPlayerFragment : Fragment() {
 
             compositeDisposable.add(playbackProgressObservable.observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    exoPlayer.arcSeekBar.progress = (it * 100 / simpleExoPlayer.duration).toInt()
+                    exoPlayer.progressBar.progress = (it * 100 / simpleExoPlayer.duration).toInt()
                 })
 
             val stopTrackingListener =
@@ -114,10 +117,10 @@ class MusicPlayerFragment : Fragment() {
                 val progressToMilli = progress * simpleExoPlayer.duration / 100
                 val currTime = String.format(
                     "%02d:%02d",
-                    java.util.concurrent.TimeUnit.MILLISECONDS.toMinutes(progressToMilli),
-                    java.util.concurrent.TimeUnit.MILLISECONDS.toSeconds(progressToMilli) -
-                            java.util.concurrent.TimeUnit.MINUTES.toSeconds(
-                                java.util.concurrent.TimeUnit.MILLISECONDS.toMinutes(
+                    TimeUnit.MILLISECONDS.toMinutes(progressToMilli),
+                    TimeUnit.MILLISECONDS.toSeconds(progressToMilli) -
+                            TimeUnit.MINUTES.toSeconds(
+                                TimeUnit.MILLISECONDS.toMinutes(
                                     progressToMilli
                                 )
                             )
@@ -125,9 +128,9 @@ class MusicPlayerFragment : Fragment() {
                 Log.i("currTime", currTime)
                 exoPlayer.exoPosition.text = currTime
             }
-            exoPlayer.arcSeekBar.onStopTrackingTouch = stopTrackingListener
-            exoPlayer.arcSeekBar.onStartTrackingTouch = startTrackingListener
-            exoPlayer.arcSeekBar.onProgressChangedListener = progressChangedListener
+            exoPlayer.progressBar.onStopTrackingTouch = stopTrackingListener
+            exoPlayer.progressBar.onStartTrackingTouch = startTrackingListener
+            exoPlayer.progressBar.onProgressChangedListener = progressChangedListener
         })
         crossIcon.setOnClickListener {
             activity?.onBackPressed()
@@ -139,10 +142,22 @@ class MusicPlayerFragment : Fragment() {
         breatheAnimation?.cancelAnimation()
         exoPlayer.player?.stop()
         compositeDisposable.dispose()
+        updateProgress()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         activity?.bottomNavigationView?.visibility = View.VISIBLE
+    }
+
+    private fun updateProgress() {
+        val progressToMilli = simpleExoPlayer.currentPosition
+        mindViewModel.updateProgress(
+            mindViewModel.selectedMusicId,
+            ProgressPayload(
+                userId = SharedPreferenceManager.getUser()?.data?.userId,
+                progress = TimeUnit.MILLISECONDS.toSeconds(progressToMilli)
+            )
+        )
     }
 }

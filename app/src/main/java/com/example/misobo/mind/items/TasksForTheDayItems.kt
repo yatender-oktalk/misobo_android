@@ -19,7 +19,7 @@ class TasksForTheDayItems(
         val musicSection = Section()
         musicEntries?.forEach { model ->
             musicSection.add(SongsRecyclerItem(model) {
-                onClick.invoke(position)
+                onClick.invoke(it)
             })
         }
         adapter.add(musicSection)

@@ -45,7 +45,6 @@ class HeightFragment : Fragment() {
             }
         })
 
-
         nextButton.setOnClickListener {
             val inchToM = inchValue.text.toString().toDouble() * 0.0254
             val footToM = feetValue.text.toString().toDouble() * 0.3048

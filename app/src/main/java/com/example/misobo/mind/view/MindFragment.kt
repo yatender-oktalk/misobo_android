@@ -2,21 +2,26 @@ package com.example.misobo.mind.view
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.misobo.LoadingFragment
 import com.example.misobo.R
 import com.example.misobo.blogs.BlogDetailedFetchState
 import com.example.misobo.blogs.BlogsDetailFragment
 import com.example.misobo.blogs.BlogsFetchState
 import com.example.misobo.blogs.BlogsViewModel
+import com.example.misobo.bmi.view.BmiActivity
 import com.example.misobo.mind.items.*
 import com.example.misobo.mind.viewModels.MindViewModel
 import com.example.misobo.mind.viewModels.MusicFetchState
+import com.example.misobo.myProfile.FetchState
+import com.example.misobo.myProfile.NamePayload
+import com.example.misobo.myProfile.ProfileViewModel
 import com.example.misobo.talkToExperts.view.TalkToExpertActivity
 import com.example.misobo.talkToExperts.viewModels.ExpertListState
 import com.example.misobo.talkToExperts.viewModels.TalkToExpertsViewModel
@@ -31,6 +36,8 @@ class MindFragment : Fragment() {
     private val mindViewModel: MindViewModel by activityViewModels()
     private val blogsViewModel: BlogsViewModel by activityViewModels()
     private val talkToExpertsViewModel by lazy { ViewModelProvider(this).get(TalkToExpertsViewModel::class.java) }
+    private val profileViewModel by lazy { ViewModelProvider(this).get(ProfileViewModel::class.java) }
+    private val loadingFragment = LoadingFragment()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,8 +58,42 @@ class MindFragment : Fragment() {
         val blogsSection = Section()
 
         mindHomeRecyclerView.adapter = adapter
-        helloSection.add(HelloItem())
-        unlockSection.add(UnlockItems())
+        helloSection.add(HelloItem {
+            profileViewModel.updateName(
+                SharedPreferenceManager.getUser()?.data?.userId ?: -1,
+                namePayload = NamePayload(NamePayload.Data(it))
+            )
+        })
+        unlockSection.add(UnlockItems() {
+            if (true)
+                startActivity(Intent(context, BmiActivity::class.java))
+        })
+
+        profileViewModel.nameLiveData.observe(requireActivity(), Observer { state ->
+            when (state) {
+                is FetchState.Success -> {
+                    activity?.supportFragmentManager?.popBackStack()
+
+                   /* val fragment: Fragment? =
+                        activity?.supportFragmentManager?.findFragmentByTag("LOADING")
+                    if (fragment != null) activity?.supportFragmentManager?.beginTransaction()
+                        ?.remove(fragment)?.commit()*/
+                }
+                is FetchState.Loading -> {
+                    activity?.supportFragmentManager?.beginTransaction()
+                        ?.replace(R.id.mainContainer, loadingFragment, "LOADING")
+                        ?.addToBackStack(null)?.commit()
+                }
+                is FetchState.Error -> {
+                    activity?.supportFragmentManager?.popBackStack()
+
+                    /*val fragment: Fragment? =
+                        activity?.supportFragmentManager?.findFragmentByTag("LOADING")
+                    if (fragment != null) activity?.supportFragmentManager?.beginTransaction()
+                        ?.remove(fragment)?.commit()*/
+                }
+            }
+        })
 
         if (talkToExpertsViewModel.expertListLiveData.value == null)
             talkToExpertsViewModel.getAllExpertsList()

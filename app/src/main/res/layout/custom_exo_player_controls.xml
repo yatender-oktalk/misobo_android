@@ -24,7 +24,7 @@
             android:textStyle="bold"
             android:fontFamily="@font/manrope_extrabold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/arcSeekBar" />
+            app:layout_constraintTop_toTopOf="@id/progressBar" />
 
         <TextView
             android:id="@id/exo_duration"
@@ -38,11 +38,11 @@
             android:textStyle="bold"
             android:fontFamily="@font/manrope_extrabold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/arcSeekBar"
+            app:layout_constraintTop_toTopOf="@id/progressBar"
             />
 
         <com.example.misobo.arcseekbar.ArcSeekBar
-            android:id="@+id/arcSeekBar"
+            android:id="@+id/progressBar"
             android:layout_width="match_parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
