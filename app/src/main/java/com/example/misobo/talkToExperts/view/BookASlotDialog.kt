@@ -1,6 +1,7 @@
 package com.example.misobo.talkToExperts.view
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -105,10 +106,13 @@ class BookASlotDialog : BottomSheetDialogFragment() {
                     }
                     is BookSlotState.NotAuthorised -> {
                         this.dismiss()
-                        val loginDialog =
+
+                        startActivity(Intent(context,PaymentActivity::class.java))
+
+                       /* val loginDialog =
                             LoginDialog()
                         activity?.supportFragmentManager?.beginTransaction()
-                            ?.add(loginDialog, null)?.commit()
+                            ?.add(loginDialog, null)?.commit()*/
                     }
                     is BookSlotState.Loading -> {
 

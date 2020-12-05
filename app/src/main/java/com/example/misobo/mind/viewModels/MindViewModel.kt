@@ -4,6 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.misobo.mind.api.MindService
 import com.example.misobo.mind.models.MusicResponseModel
+import com.example.misobo.mind.models.OrderPayload
+import com.example.misobo.mind.models.OrderResponse
 import com.example.misobo.mind.models.ProgressPayload
 import com.example.misobo.myProfile.FetchState
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -46,7 +48,7 @@ class MindViewModel : ViewModel() {
             .subscribeOn(Schedulers.io())
             .map {
                 FetchState.Success
-                 as FetchState
+                        as FetchState
             }
             .startWith(FetchState.Loading)
             .onErrorReturn {
@@ -57,6 +59,9 @@ class MindViewModel : ViewModel() {
                 progressLiveData.postValue(it)
             })
     }
+
+
+
 
     override fun onCleared() {
         super.onCleared()
@@ -69,4 +74,10 @@ sealed class MusicFetchState {
     data class Success(val musicEntries: List<MusicResponseModel.MusicModel>) : MusicFetchState()
     object Loading : MusicFetchState()
     data class Error(val message: String) : MusicFetchState()
+}
+
+sealed class OrderFetchState {
+    data class Success(val orderResponse: OrderResponse) : OrderFetchState()
+    object Loading : OrderFetchState()
+    data class Error(val message: String) : OrderFetchState()
 }

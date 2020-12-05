@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".mind.view.MindActivity"></activity>
+        <activity android:name=".talkToExperts.view.PaymentActivity"></activity>
+        <activity android:name=".mind.view.MindActivity" />
         <activity android:name=".talkToExperts.view.TalkToExpertActivity" />
         <activity android:name=".bmi.view.BmiActivity" />
         <activity android:name=".MainActivity" />

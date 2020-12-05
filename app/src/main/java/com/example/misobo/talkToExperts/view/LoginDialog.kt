@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.login_bottom_sheet.*
 
 class LoginDialog : BottomSheetDialogFragment() {
 
-    val viewModel: TalkToExpertsViewModel by activityViewModels()
+    private val viewModel: TalkToExpertsViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,

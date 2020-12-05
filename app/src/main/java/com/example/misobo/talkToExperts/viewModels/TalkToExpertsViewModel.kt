@@ -2,6 +2,8 @@ package com.example.misobo.talkToExperts.viewModels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.misobo.mind.models.OrderPayload
+import com.example.misobo.mind.viewModels.OrderFetchState
 import com.example.misobo.talkToExperts.models.VerificationResponse
 import com.example.misobo.talkToExperts.api.ExpertsService
 import com.example.misobo.talkToExperts.models.*
@@ -21,6 +23,8 @@ class TalkToExpertsViewModel : ViewModel() {
     val mobileRegistration: MutableLiveData<MobileRegistration> = MutableLiveData()
     val otpVerification: MutableLiveData<MobileRegistration> = MutableLiveData()
     val mobileNumber:MutableLiveData<String> = MutableLiveData()
+    val orderLiveData: MutableLiveData<OrderFetchState> = MutableLiveData()
+
 
     var talkToExpertsViewModel = ExpertsService.Creator.service
 
@@ -116,6 +120,25 @@ class TalkToExpertsViewModel : ViewModel() {
                     BookSlotState.Fail
             }
             .subscribe { bookSlotLiveData.postValue(it) })
+    }
+
+    fun createOrder(orderPayload: OrderPayload) {
+        compositeDisposable.add(talkToExpertsViewModel.createOrder(
+            orderPayload = orderPayload
+        )
+            .subscribeOn(Schedulers.io())
+            .map {
+                OrderFetchState.Success(it)
+                        as OrderFetchState
+            }
+            .startWith(OrderFetchState.Loading)
+            .onErrorReturn {
+                OrderFetchState.Error(it.localizedMessage)
+            }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                orderLiveData.postValue(it)
+            })
     }
 }
 

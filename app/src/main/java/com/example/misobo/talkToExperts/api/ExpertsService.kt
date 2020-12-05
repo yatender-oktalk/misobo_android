@@ -1,5 +1,7 @@
 package com.example.misobo.talkToExperts.api
 
+import com.example.misobo.mind.models.OrderPayload
+import com.example.misobo.mind.models.OrderResponse
 import com.example.misobo.talkToExperts.models.OtpPayload
 import com.example.misobo.talkToExperts.models.VerificationResponse
 import com.example.misobo.talkToExperts.models.*
@@ -52,6 +54,12 @@ interface ExpertsService {
         @Path("id") id: Int,
         @Body payload: OtpPayload
     ): Observable<VerificationResponse>
+
+    @Headers("Accept: application/json", "Content-Type: application/json")
+    @POST("api/order")
+    fun createOrder(
+        @Body orderPayload: OrderPayload
+    ): Observable<OrderResponse>
 
     object Creator {
         private const val url: String = "http://143.110.176.70:4000/"

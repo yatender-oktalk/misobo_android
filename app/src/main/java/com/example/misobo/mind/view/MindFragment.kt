@@ -22,6 +22,7 @@ import com.example.misobo.mind.viewModels.MusicFetchState
 import com.example.misobo.myProfile.FetchState
 import com.example.misobo.myProfile.NamePayload
 import com.example.misobo.myProfile.ProfileViewModel
+import com.example.misobo.talkToExperts.view.PaymentActivity
 import com.example.misobo.talkToExperts.view.TalkToExpertActivity
 import com.example.misobo.talkToExperts.viewModels.ExpertListState
 import com.example.misobo.talkToExperts.viewModels.TalkToExpertsViewModel
@@ -121,9 +122,12 @@ class MindFragment : Fragment() {
                         mindViewModel.playMusicLiveData.postValue(
                             state.musicEntries[position]
                         )
-                        activity?.supportFragmentManager?.beginTransaction()
+
+                        startActivity(Intent(context, PaymentActivity::class.java))
+
+                        /*activity?.supportFragmentManager?.beginTransaction()
                             ?.replace(R.id.mainContainer, MusicPlayerFragment())
-                            ?.addToBackStack(null)?.commit()
+                            ?.addToBackStack(null)?.commit()*/
                     })
                 }
                 is MusicFetchState.Loading -> {
