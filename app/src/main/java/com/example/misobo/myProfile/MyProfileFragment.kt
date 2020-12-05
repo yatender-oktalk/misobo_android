@@ -39,16 +39,52 @@ class MyProfileFragment : Fragment() {
         profileViewModel.profileLiveData.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is ProfileResponseAction.Success -> {
+                    SharedPreferenceManager.setUserProfile(state.response)
                     groupAdapter.clear()
                     val section = Section()
 
-                    section.add(DailyCheckinItem(state.response.data?.loginStreak?.one?:false, "S"))
-                    section.add(DailyCheckinItem(state.response.data?.loginStreak?.two?:false, "M"))
-                    section.add(DailyCheckinItem(state.response.data?.loginStreak?.three?:false, "T"))
-                    section.add(DailyCheckinItem(state.response.data?.loginStreak?.four?:false, "W"))
-                    section.add(DailyCheckinItem(state.response.data?.loginStreak?.five?:false, "T"))
-                    section.add(DailyCheckinItem(state.response.data?.loginStreak?.six?:false, "F"))
-                    section.add(DailyCheckinItem(state.response.data?.loginStreak?.seven?:false, "S"))
+                    section.add(
+                        DailyCheckinItem(
+                            state.response.data?.loginStreak?.one ?: false,
+                            "S"
+                        )
+                    )
+                    section.add(
+                        DailyCheckinItem(
+                            state.response.data?.loginStreak?.two ?: false,
+                            "M"
+                        )
+                    )
+                    section.add(
+                        DailyCheckinItem(
+                            state.response.data?.loginStreak?.three ?: false,
+                            "T"
+                        )
+                    )
+                    section.add(
+                        DailyCheckinItem(
+                            state.response.data?.loginStreak?.four ?: false,
+                            "W"
+                        )
+                    )
+                    section.add(
+                        DailyCheckinItem(
+                            state.response.data?.loginStreak?.five ?: false,
+                            "T"
+                        )
+                    )
+                    section.add(
+                        DailyCheckinItem(
+                            state.response.data?.loginStreak?.six ?: false,
+                            "F"
+                        )
+                    )
+                    section.add(
+                        DailyCheckinItem(
+                            state.response.data?.loginStreak?.seven ?: false,
+                            "S"
+                        )
+                    )
 
                     groupAdapter.add(section)
                     Toast.makeText(

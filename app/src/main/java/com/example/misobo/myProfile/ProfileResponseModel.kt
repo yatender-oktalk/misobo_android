@@ -2,7 +2,6 @@ package com.example.misobo.myProfile
 
 import com.google.gson.annotations.SerializedName
 
-
 data class ProfileResponseModel(
     @SerializedName("data")
     val data: Data?,

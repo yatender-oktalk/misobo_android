@@ -30,6 +30,7 @@ class LoginDialog : BottomSheetDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogStyle)
     }
 
@@ -57,10 +58,8 @@ class LoginDialog : BottomSheetDialogFragment() {
                         ?.add(otpDialog, null)?.commit()
                 }
                 is MobileRegistration.Fail -> {
-
                 }
                 is MobileRegistration.Loading -> {
-
                 }
             }
         })
@@ -70,7 +69,6 @@ class LoginDialog : BottomSheetDialogFragment() {
                 OtpPayload(otpText.text.toString())
             viewModel.mobileRegistration(OtpPayload)
         }
-
     }
 
     override fun setupDialog(dialog: Dialog, style: Int) {

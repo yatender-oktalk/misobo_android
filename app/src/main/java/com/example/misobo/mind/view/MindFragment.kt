@@ -20,7 +20,6 @@ import com.example.misobo.mind.items.*
 import com.example.misobo.mind.viewModels.MindViewModel
 import com.example.misobo.mind.viewModels.MusicFetchState
 import com.example.misobo.myProfile.FetchState
-import com.example.misobo.myProfile.NamePayload
 import com.example.misobo.myProfile.ProfileViewModel
 import com.example.misobo.talkToExperts.view.PaymentActivity
 import com.example.misobo.talkToExperts.view.TalkToExpertActivity
@@ -59,12 +58,9 @@ class MindFragment : Fragment() {
         val blogsSection = Section()
 
         mindHomeRecyclerView.adapter = adapter
-        helloSection.add(HelloItem {
-            profileViewModel.updateName(
-                SharedPreferenceManager.getUser()?.data?.userId ?: -1,
-                namePayload = NamePayload(NamePayload.Data(it))
-            )
-        })
+
+        fillName(helloSection)
+
         unlockSection.add(UnlockItems() {
             if (true)
                 startActivity(Intent(context, BmiActivity::class.java))
@@ -75,10 +71,10 @@ class MindFragment : Fragment() {
                 is FetchState.Success -> {
                     activity?.supportFragmentManager?.popBackStack()
 
-                   /* val fragment: Fragment? =
-                        activity?.supportFragmentManager?.findFragmentByTag("LOADING")
-                    if (fragment != null) activity?.supportFragmentManager?.beginTransaction()
-                        ?.remove(fragment)?.commit()*/
+                    /* val fragment: Fragment? =
+                         activity?.supportFragmentManager?.findFragmentByTag("LOADING")
+                     if (fragment != null) activity?.supportFragmentManager?.beginTransaction()
+                         ?.remove(fragment)?.commit()*/
                 }
                 is FetchState.Loading -> {
                     activity?.supportFragmentManager?.beginTransaction()
@@ -172,6 +168,18 @@ class MindFragment : Fragment() {
             add(talkToExpertsSection)
             add(blogsSection)
         }
+    }
+
+    fun fillName(helloSection: Section) {
+        helloSection.removeHeader()
+        helloSection.setHeader(HelloItem(SharedPreferenceManager.getName()) {
+            SharedPreferenceManager.setName(it)
+            fillName(helloSection)
+            /*profileViewModel.updateName(
+                SharedPreferenceManager.getUser()?.data?.userId ?: -1,
+                namePayload = NamePayload(NamePayload.Data(it))
+            )*/
+        })
     }
 
 }

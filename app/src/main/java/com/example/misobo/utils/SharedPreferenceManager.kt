@@ -3,6 +3,7 @@ package com.example.misobo.utils
 import android.content.Context
 import android.content.SharedPreferences
 import com.example.misobo.R
+import com.example.misobo.myProfile.ProfileResponseModel
 import com.example.misobo.onBoarding.models.User
 import com.google.gson.Gson
 import io.reactivex.Completable
@@ -14,6 +15,9 @@ private const val IS_BODY_UNLOCKED = "is_body_unlocked"
 object SharedPreferenceManager {
 
     private const val USER = "user"
+    private const val PROFILE = "profile"
+    private const val NAME = "name"
+
     private var sharedPreferences: SharedPreferences? = null
 
     fun init(context: Context) {
@@ -41,6 +45,35 @@ object SharedPreferenceManager {
         }
         return Completable.complete()
     }
+
+    fun setUserProfile(profile: ProfileResponseModel): Completable {
+        sharedPreferences?.edit()?.apply {
+            if (profile != null) {
+                putString(PROFILE, Gson().toJson(profile))
+            }
+            apply()
+        }
+        return Completable.complete()
+    }
+
+    fun getUserProfile(): ProfileResponseModel? = Gson().fromJson(
+        sharedPreferences?.getString(
+            PROFILE, null
+        ), ProfileResponseModel::class.java
+    )
+
+    fun setName(name: String): Completable {
+        sharedPreferences?.edit()?.apply {
+            if (name != null) {
+                putString(NAME, name)
+            }
+            apply()
+        }
+        return Completable.complete()
+    }
+
+    fun getName(): String? = sharedPreferences?.getString(
+            NAME, null)
 
     fun isOnBoarded(): Boolean =
         sharedPreferences != null && sharedPreferences?.getBoolean(
