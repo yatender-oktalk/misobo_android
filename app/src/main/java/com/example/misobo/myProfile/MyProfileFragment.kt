@@ -1,9 +1,11 @@
 package com.example.misobo.myProfile
 
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -14,6 +16,7 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.fragment_my_profile.*
+import kotlinx.android.synthetic.main.fragment_my_profile.editName
 
 class MyProfileFragment : Fragment() {
     val groupAdapter = GroupAdapter<ViewHolder>()
@@ -32,6 +35,17 @@ class MyProfileFragment : Fragment() {
         dailyCheckinRecyclerView.adapter = groupAdapter
         val weekList = listOf<String>("S", "M", "T", "W", "T", "F", "S")
 
+        fillName()
+
+        editName.setOnEditorActionListener { v, actionId, event ->
+            if (event != null && event.keyCode === KeyEvent.KEYCODE_ENTER || actionId == EditorInfo.IME_ACTION_DONE) {
+                if (!editName.text.isNullOrEmpty()) {
+                    SharedPreferenceManager.setName(editName.text.toString())
+                    fillName()
+                }
+            }
+            false
+        }
 
         profileViewModel.getProfile(SharedPreferenceManager.getUser()?.data?.userId ?: -1)
 
@@ -102,5 +116,16 @@ class MyProfileFragment : Fragment() {
             }
         })
 
+    }
+
+    private fun fillName() {
+        if (SharedPreferenceManager.getName() != null) {
+            editNameGroup.visibility = View.INVISIBLE
+            nameTextView.text = SharedPreferenceManager.getName()
+            nameTextView.visibility = View.VISIBLE
+        } else {
+            nameTextView.visibility = View.INVISIBLE
+            editNameGroup.visibility = View.VISIBLE
+        }
     }
 }

@@ -43,7 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="visible"
-        app:constraint_referenced_ids="editName,edit" />
+        app:constraint_referenced_ids="editName,edit,dottedLine" />
 
     <EditText
         android:id="@+id/editName"
@@ -56,6 +56,7 @@
         android:inputType="textPersonName"
         android:lineSpacingExtra="12sp"
         android:singleLine="true"
+        android:background="@android:color/transparent"
         android:text=""
         android:textColor="#4d426d"
         android:textColorHint="#d3d3d3"
@@ -63,6 +64,15 @@
         android:textStyle="normal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/hello" />
+
+    <ImageView
+        android:id="@+id/dottedLine"
+        android:layout_width="0dp"
+        android:layout_height="3dp"
+        android:src="@drawable/dotted_dash"
+        app:layout_constraintEnd_toEndOf="@id/editName"
+        app:layout_constraintStart_toStartOf="@id/editName"
+        app:layout_constraintTop_toBottomOf="@id/editName" />
 
     <ImageView
         android:id="@+id/edit"
