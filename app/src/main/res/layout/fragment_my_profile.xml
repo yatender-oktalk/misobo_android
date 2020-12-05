@@ -11,10 +11,9 @@
         android:layout_width="match_parent"
         android:paddingBottom="50dp"
 
-
+        android:layoutAnimation="@anim/layout_animation_fade_enter"
         android:layout_height="match_parent">
         <!--
-        android:layoutAnimation="@anim/layout_animation_fade_enter"
 -->
 
         <ImageView
@@ -42,16 +41,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profileImage"
             android:layout_width="147dp"
             android:layout_height="147dp"
-            android:background="@color/colorPrimary"
-            android:src="@drawable/ic_launcher_background"
+            android:background="@android:color/transparent"
             app:layout_constraintBottom_toBottomOf="@id/semiCircleImage"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/semiCircleImage" />
+            app:layout_constraintTop_toBottomOf="@id/semiCircleImage"
+            />
 
         <TextView
             android:id="@+id/nameTextView"

@@ -1,5 +1,8 @@
 package com.example.misobo.myProfile
 
+import android.app.Activity.RESULT_OK
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -10,13 +13,17 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.example.misobo.R
 import com.example.misobo.utils.SharedPreferenceManager
+import com.squareup.picasso.Picasso
+import com.theartofdev.edmodo.cropper.CropImage
+import com.theartofdev.edmodo.cropper.CropImageView
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.fragment_my_profile.*
-import kotlinx.android.synthetic.main.fragment_my_profile.editName
+
 
 class MyProfileFragment : Fragment() {
     val groupAdapter = GroupAdapter<ViewHolder>()
@@ -36,6 +43,12 @@ class MyProfileFragment : Fragment() {
         val weekList = listOf<String>("S", "M", "T", "W", "T", "F", "S")
 
         fillName()
+
+        Glide.with(requireContext())
+            .load("ssf")
+            .placeholder(R.drawable.ic_tick_green)
+            .error(R.drawable.ic_tick_green)
+            .into(profileImage);
 
         editName.setOnEditorActionListener { v, actionId, event ->
             if (event != null && event.keyCode === KeyEvent.KEYCODE_ENTER || actionId == EditorInfo.IME_ACTION_DONE) {
@@ -116,6 +129,27 @@ class MyProfileFragment : Fragment() {
             }
         })
 
+        profileImage.setOnClickListener {
+            CropImage.activity()
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .start(requireContext(),this);
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            val result = CropImage.getActivityResult(data)
+            if (resultCode == RESULT_OK) {
+                val resultUri: Uri = result.uri
+                Glide.with(requireContext())
+                    .load(resultUri)
+                    .placeholder(R.drawable.ic_tick_green)
+                    .error(R.drawable.ic_tick_green)
+                    .into(profileImage);
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                val error = result.error
+            }
+        }
     }
 
     private fun fillName() {

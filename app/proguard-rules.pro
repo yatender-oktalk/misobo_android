@@ -36,3 +36,4 @@
   public void onPayment*(...);
 }
 
+-keep class androidx.appcompat.widget.** { *; }
