@@ -120,7 +120,6 @@ class MindFragment : Fragment() {
                         )
 
                         startActivity(Intent(context, PaymentActivity::class.java))
-
                         /*activity?.supportFragmentManager?.beginTransaction()
                             ?.replace(R.id.mainContainer, MusicPlayerFragment())
                             ?.addToBackStack(null)?.commit()*/
