@@ -21,7 +21,6 @@ class MindViewModel : ViewModel() {
     val playMusicLiveData: MutableLiveData<MusicResponseModel.MusicModel> = MutableLiveData()
     var selectedMusicId: Int = 0
 
-
     fun fetchAllMusic() {
         compositeDisposable.add(mindService.fetchAllMusic(1)
             .subscribeOn(Schedulers.io())

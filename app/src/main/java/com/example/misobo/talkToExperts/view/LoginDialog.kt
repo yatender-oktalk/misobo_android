@@ -51,6 +51,7 @@ class LoginDialog : BottomSheetDialogFragment() {
         viewModel.mobileRegistration.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is MobileRegistration.Success -> {
+                    this.dismiss()
                     viewModel.mobileNumber.postValue(state.verificationResponse.data.phone)
                     val otpDialog =
                         OtpDialog()

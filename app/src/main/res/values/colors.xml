@@ -7,4 +7,9 @@
     <color name="colorPrimaryDarkMedium">#fbdfd0</color>
     <color name="lightGrey">#f7f7f9</color>
     <color name="darkGrey">#1c4d426d</color>
+    <color name="invalidOTPRed">#eb5858</color>
+    <color name="successGreen">#178169</color>
+
+
+
 </resources>

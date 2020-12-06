@@ -12,6 +12,7 @@ import com.example.misobo.R
 import com.example.misobo.talkToExperts.viewModels.CategoriesState
 import com.example.misobo.talkToExperts.viewModels.TalkToExpertsViewModel
 import com.example.misobo.talkToExperts.models.ExpertCategoriesModel
+import com.example.misobo.utils.SharedPreferenceManager
 import com.example.misobo.utils.Util
 import kotlinx.android.synthetic.main.fragment_talkto_experts_home.*
 
@@ -31,6 +32,8 @@ class TalktoExpertsHomeFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         viewModel.getExpertCategories()
+
+        karmaCoinsText.text = SharedPreferenceManager.getUserProfile()?.data?.karmaPoints?:"0"
 
         viewModel.categoriesExpertLiveData.observe(viewLifecycleOwner, Observer { state ->
             when (state) {

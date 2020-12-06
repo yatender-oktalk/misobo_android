@@ -61,6 +61,17 @@ interface ExpertsService {
         @Body orderPayload: OrderPayload
     ): Observable<OrderResponse>
 
+    @Headers("Accept: application/json", "Content-Type: application/json")
+    @POST("api/order/capture")
+    fun captureOrder(
+        @Body captureOrderPayload: CaptureOrderPayload
+    ): Observable<CapturePaymentResponse>
+
+    @Headers("Accept: application/json", "Content-Type: application/json")
+    @GET("api/packs")
+    fun getPacks(
+    ): Observable<List<Packs>>
+
     object Creator {
         private const val url: String = "http://143.110.176.70:4000/"
         private val token = SharedPreferenceManager.getUser()?.data?.token ?: ""
@@ -74,7 +85,8 @@ interface ExpertsService {
                             .addInterceptor {
                                 it.proceed(
                                     it.request().newBuilder()
-                                        .addHeader("token",
+                                        .addHeader(
+                                            "token",
                                             token
                                         )
                                         .build()

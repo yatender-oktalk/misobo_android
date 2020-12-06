@@ -56,23 +56,23 @@
         app:layout_constraintTop_toBottomOf="@id/expertName"
         tools:text="Vedic Astrologer" />
 
-    <!--  <TextView
-          android:id="@+id/dotTextView"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          app:layout_constraintStart_toEndOf="@id/expertCategory"
-          app:layout_constraintTop_toTopOf="@id/expertCategory"
-          android:text="."
-          android:textSize="18dp"
-          android:gravity="center"
-          app:layout_constraintBottom_toBottomOf="@id/expertCategory"
-          />-->
+    <ImageView
+        android:id="@+id/dotImageView"
+        android:layout_width="4dp"
+        android:layout_height="4dp"
+        android:gravity="center"
+        android:layout_marginStart="6dp"
+        android:src="@drawable/circle_dot"
+        app:layout_constraintBottom_toBottomOf="@id/expertCategory"
+        app:layout_constraintStart_toEndOf="@id/expertCategory"
+        app:layout_constraintTop_toTopOf="@id/expertCategory"
+        app:tint="@color/colorAccent" />
 
     <TextView
         android:id="@+id/expertLanguage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="6dp"
         android:layout_marginTop="2dp"
         android:alpha=".7"
         android:fontFamily="@font/manrope_medium"
@@ -80,7 +80,7 @@
         android:textColor="#4d426d"
         android:textSize="12sp"
         android:textStyle="normal"
-        app:layout_constraintStart_toEndOf="@id/expertCategory"
+        app:layout_constraintStart_toEndOf="@id/dotImageView"
         app:layout_constraintTop_toBottomOf="@id/expertName"
         tools:text="Hindi" />
 
@@ -161,18 +161,27 @@
         app:layout_constraintBottom_toBottomOf="@id/imageCard"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <ImageView
+        android:id="@+id/karmaIcon"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginEnd="4dp"
+        android:src="@drawable/ic_karma_coin"
+        app:layout_constraintBottom_toBottomOf="@id/coinsNeeded"
+        app:layout_constraintEnd_toStartOf="@id/coinsNeeded"
+        app:layout_constraintTop_toTopOf="@id/coinsNeeded" />
+
     <TextView
         android:id="@+id/coinsNeeded"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:drawablePadding="8dp"
         android:fontFamily="@font/manrope_regular"
+        android:gravity="center"
         android:lineSpacingExtra="12sp"
         android:textColor="#4d426d"
         android:textSize="12sp"
         android:textStyle="bold"
-        android:drawableStart="@drawable/ic_karma_coin"
-        android:gravity="center"
-        android:drawablePadding="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/imageCard"
         tools:text="501/Min" />
@@ -183,7 +192,7 @@
         android:layout_height="1dp"
         android:layout_marginTop="16dp"
         android:background="#f7f7f7"
-        app:layout_constraintTop_toBottomOf="@id/imageCard"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageCard" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

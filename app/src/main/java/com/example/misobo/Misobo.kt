@@ -4,6 +4,8 @@ import android.app.Application
 import android.provider.Settings
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import com.example.misobo.myProfile.ProfileResponseAction
+import com.example.misobo.myProfile.ProfileService
 import com.example.misobo.onBoarding.api.OnBoardingService
 import com.example.misobo.onBoarding.models.RegistrationModel
 import com.example.misobo.onBoarding.viewModels.OnBoardingViewModel
@@ -42,11 +44,25 @@ class Misobo : Application() {
                 )
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { user -> SharedPreferenceManager.setUser(user) })
+                    .subscribe { user ->
+                        SharedPreferenceManager.setUser(user)
+                        updatekarmaCoins()
+                    })
+            }else{
+                updatekarmaCoins()
             }
         } catch (e: Exception) {
             Toast.makeText(this, e.localizedMessage, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    fun updatekarmaCoins() {
+        compositeDisposable.add(ProfileService.Creator.service.getProfile(
+            userId = SharedPreferenceManager.getUser()?.data?.userId ?: 0
+        )
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { SharedPreferenceManager.setUserProfile(it)})
     }
 
     override fun onTerminate() {

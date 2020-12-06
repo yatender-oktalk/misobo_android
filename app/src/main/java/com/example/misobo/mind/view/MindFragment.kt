@@ -62,8 +62,11 @@ class MindFragment : Fragment() {
         fillName(helloSection)
 
         unlockSection.add(UnlockItems() {
-            if (true)
+            if (it)
                 startActivity(Intent(context, BmiActivity::class.java))
+            else
+                SharedPreferenceManager.setMindUnlock(true)
+            adapter.remove(unlockSection)
         })
 
         profileViewModel.nameLiveData.observe(requireActivity(), Observer { state ->
@@ -109,12 +112,12 @@ class MindFragment : Fragment() {
             }
         })
 
-        if (mindViewModel.musicLiveData.value == null)
-            mindViewModel.fetchAllMusic()
+        //if (mindViewModel.musicLiveData.value == null)
+        mindViewModel.fetchAllMusic()
         mindViewModel.musicLiveData.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is MusicFetchState.Success -> {
-                    taskForTheDaySection.add(TasksForTheDayItems(state.musicEntries) { position ->
+                    taskForTheDaySection.setHeader(TasksForTheDayItems(state.musicEntries) { position ->
                         mindViewModel.playMusicLiveData.postValue(
                             state.musicEntries[position]
                         )

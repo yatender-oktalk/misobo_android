@@ -8,7 +8,7 @@ data class VerificationResponse(
         val dob: String?,
         val phone: String?,
         val isEnables: Boolean?,
-        val karmaPoints: Long?,
+        val karmaPoints: Int?,
         val name: String?,
         val horoscopeId: Int?,
         val registrationId: Int?,

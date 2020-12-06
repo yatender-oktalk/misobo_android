@@ -3,10 +3,13 @@ package com.example.misobo.talkToExperts.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.misobo.mind.models.OrderPayload
+import com.example.misobo.mind.models.OrderResponse
 import com.example.misobo.mind.viewModels.OrderFetchState
+import com.example.misobo.myProfile.FetchState
 import com.example.misobo.talkToExperts.models.VerificationResponse
 import com.example.misobo.talkToExperts.api.ExpertsService
 import com.example.misobo.talkToExperts.models.*
+import com.example.misobo.utils.SingleLiveEvent
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -19,17 +22,22 @@ class TalkToExpertsViewModel : ViewModel() {
     val selectedExpertLiveDate: MutableLiveData<ExpertModel.Expert> = MutableLiveData()
     val slotListLiveData: MutableLiveData<SlotFetchState> = MutableLiveData()
     val slotSelectedLiveData: MutableLiveData<Long> = MutableLiveData()
-    val bookSlotLiveData: MutableLiveData<BookSlotState> = MutableLiveData()
-    val mobileRegistration: MutableLiveData<MobileRegistration> = MutableLiveData()
+    val bookSlotLiveData: SingleLiveEvent<BookSlotState> = SingleLiveEvent()
+    val mobileRegistration: SingleLiveEvent<MobileRegistration> = SingleLiveEvent()
     val otpVerification: MutableLiveData<MobileRegistration> = MutableLiveData()
-    val mobileNumber:MutableLiveData<String> = MutableLiveData()
+    val mobileNumber: MutableLiveData<String> = MutableLiveData()
     val orderLiveData: MutableLiveData<OrderFetchState> = MutableLiveData()
+    val currentOrder: MutableLiveData<OrderResponse> = MutableLiveData()
+    val captureOrderLiveData: MutableLiveData<CaptureOrderState> = MutableLiveData()
+    val packsLiveData: MutableLiveData<PacksFetchState> = MutableLiveData()
+    var expertsService = ExpertsService.Creator.service
+    var paymentAmount = 1.00
+    var pack = 1000
 
 
-    var talkToExpertsViewModel = ExpertsService.Creator.service
 
     fun getExpertCategories() {
-        compositeDisposable.add(talkToExpertsViewModel.getExpertsCategories()
+        compositeDisposable.add(expertsService.getExpertsCategories()
             .subscribeOn(Schedulers.io())
             .map {
                 CategoriesState.Success(
@@ -45,11 +53,12 @@ class TalkToExpertsViewModel : ViewModel() {
     }
 
     fun getCategoryExpertsList(id: Int) {
-        compositeDisposable.add(talkToExpertsViewModel.getCategoryExpertsList(id)
+        compositeDisposable.add(expertsService.getCategoryExpertsList(id)
             .subscribeOn(Schedulers.io())
-            .map { ExpertListState.Success(
-                it
-            ) as ExpertListState
+            .map {
+                ExpertListState.Success(
+                    it
+                ) as ExpertListState
             }
             .startWith(ExpertListState.Loading)
             .onErrorReturn { ExpertListState.Fail }
@@ -57,11 +66,12 @@ class TalkToExpertsViewModel : ViewModel() {
     }
 
     fun getAllExpertsList() {
-        compositeDisposable.add(talkToExpertsViewModel.getAllExperts(1)
+        compositeDisposable.add(expertsService.getAllExperts(1)
             .subscribeOn(Schedulers.io())
-            .map { ExpertListState.Success(
-                it
-            ) as ExpertListState
+            .map {
+                ExpertListState.Success(
+                    it
+                ) as ExpertListState
             }
             .startWith(ExpertListState.Loading)
             .onErrorReturn { ExpertListState.Fail }
@@ -69,11 +79,12 @@ class TalkToExpertsViewModel : ViewModel() {
     }
 
     fun getSlot(expertId: Int, datePayloadModel: DatePayloadModel) {
-        compositeDisposable.add(talkToExpertsViewModel.getExpertsSlot(expertId, datePayloadModel)
+        compositeDisposable.add(expertsService.getExpertsSlot(expertId, datePayloadModel)
             .subscribeOn(Schedulers.io())
-            .map { SlotFetchState.Success(
-                it
-            ) as SlotFetchState
+            .map {
+                SlotFetchState.Success(
+                    it
+                ) as SlotFetchState
             }
             .startWith(SlotFetchState.Loading)
             .onErrorReturn { SlotFetchState.Fail }
@@ -81,11 +92,12 @@ class TalkToExpertsViewModel : ViewModel() {
     }
 
     fun mobileRegistration(otpModel: OtpPayload) {
-        compositeDisposable.add(talkToExpertsViewModel.mobileRegistration(otpModel)
+        compositeDisposable.add(expertsService.mobileRegistration(otpModel)
             .subscribeOn(Schedulers.io())
-            .map { MobileRegistration.Success(
-                it
-            ) as MobileRegistration
+            .map {
+                MobileRegistration.Success(
+                    it
+                ) as MobileRegistration
             }
             .startWith(MobileRegistration.Loading)
             .onErrorReturn { MobileRegistration.Fail }
@@ -93,11 +105,12 @@ class TalkToExpertsViewModel : ViewModel() {
     }
 
     fun verifyOtp(id: Int, otpModel: OtpPayload) {
-        compositeDisposable.add(talkToExpertsViewModel.sendOtp(id, otpModel)
+        compositeDisposable.add(expertsService.sendOtp(id, otpModel)
             .subscribeOn(Schedulers.io())
-            .map { MobileRegistration.Success(
-                it
-            ) as MobileRegistration
+            .map {
+                MobileRegistration.Success(
+                    it
+                ) as MobileRegistration
             }
             .startWith(MobileRegistration.Loading)
             .onErrorReturn { MobileRegistration.Fail }
@@ -105,17 +118,20 @@ class TalkToExpertsViewModel : ViewModel() {
     }
 
     fun bookSlot(expertId: Int, payload: BookSlotPayload) {
-        compositeDisposable.add(talkToExpertsViewModel.bookSlot(expertId, payload)
+        compositeDisposable.add(expertsService.bookSlot(expertId, payload)
             .subscribeOn(Schedulers.io())
-            .map { BookSlotState.Success(
-                it
-            ) as BookSlotState
+            .map {
+                BookSlotState.Success(
+                    it
+                ) as BookSlotState
             }
             .startWith(BookSlotState.Loading)
             .onErrorReturn { e ->
                 val exception = e as com.jakewharton.retrofit2.adapter.rxjava2.HttpException
                 if (exception.code() == 401)
                     BookSlotState.NotAuthorised
+                else if (exception.code() == 402)
+                    BookSlotState.NotSufficientKarma
                 else
                     BookSlotState.Fail
             }
@@ -123,7 +139,7 @@ class TalkToExpertsViewModel : ViewModel() {
     }
 
     fun createOrder(orderPayload: OrderPayload) {
-        compositeDisposable.add(talkToExpertsViewModel.createOrder(
+        compositeDisposable.add(expertsService.createOrder(
             orderPayload = orderPayload
         )
             .subscribeOn(Schedulers.io())
@@ -138,6 +154,42 @@ class TalkToExpertsViewModel : ViewModel() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 orderLiveData.postValue(it)
+            })
+    }
+
+    fun captureOrder(captureOrderPayload: CaptureOrderPayload) {
+        compositeDisposable.add(expertsService.captureOrder(
+            captureOrderPayload = captureOrderPayload
+        )
+            .subscribeOn(Schedulers.io())
+            .map {
+                CaptureOrderState.Success(it)
+                        as CaptureOrderState
+            }
+            .startWith(CaptureOrderState.Loading)
+            .onErrorReturn {
+                CaptureOrderState.Fail
+            }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                captureOrderLiveData.postValue(it)
+            })
+    }
+
+    fun getPacks() {
+        compositeDisposable.add(expertsService.getPacks()
+            .subscribeOn(Schedulers.io())
+            .map {
+                PacksFetchState.Success(it)
+                        as PacksFetchState
+            }
+            .startWith(PacksFetchState.Loading)
+            .onErrorReturn {
+                PacksFetchState.Fail
+            }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                packsLiveData.postValue(it)
             })
     }
 }
@@ -165,10 +217,23 @@ sealed class BookSlotState() {
     object Fail : BookSlotState()
     object Loading : BookSlotState()
     object NotAuthorised : BookSlotState()
+    object NotSufficientKarma : BookSlotState()
 }
 
 sealed class MobileRegistration() {
     data class Success(val verificationResponse: VerificationResponse) : MobileRegistration()
     object Fail : MobileRegistration()
     object Loading : MobileRegistration()
+}
+
+sealed class CaptureOrderState() {
+    data class Success(val response: CapturePaymentResponse) : CaptureOrderState()
+    object Fail : CaptureOrderState()
+    object Loading : CaptureOrderState()
+}
+
+sealed class PacksFetchState() {
+    data class Success(val packsList: List<Packs>) : PacksFetchState()
+    object Fail : PacksFetchState()
+    object Loading : PacksFetchState()
 }

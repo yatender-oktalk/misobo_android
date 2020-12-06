@@ -185,7 +185,7 @@
                 android:drawablePadding="13dp"
                 android:fontFamily="@font/manrope_semi_bold"
                 android:lineSpacingExtra="17sp"
-                android:text="23.5"
+                tools:text="23.5"
                 android:textColor="#4d426d"
                 android:textSize="34sp"
                 android:textStyle="bold"

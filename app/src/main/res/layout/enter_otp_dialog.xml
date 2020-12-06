@@ -95,12 +95,29 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/chatWithExperts" />
 
+        <TextView
+            android:id="@+id/invalidOtpText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/manrope_medium"
+            android:textStyle="normal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/otpText"
+            android:textSize="12sp"
+            android:visibility="invisible"
+            android:layout_marginTop="8dp"
+            android:textColor="#e31111"
+            android:lineSpacingExtra="18sp"
+            android:text="Invalid OTP entered"
+            />
+
         <Button
             android:id="@+id/verifyButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="27dp"
-            android:layout_marginTop="14dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="27dp"
             android:layout_marginBottom="22dp"
             android:alpha=".7"
@@ -112,7 +129,7 @@
             android:textColor="#ffffff"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/otpText" />
+            app:layout_constraintTop_toBottomOf="@id/invalidOtpText" />
 
         <LinearLayout
             android:id="@+id/resendLayout"

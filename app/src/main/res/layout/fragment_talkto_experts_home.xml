@@ -18,7 +18,7 @@
 
     <TextView
         android:id="@+id/talkToAnExpert"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="27dp"
@@ -27,9 +27,29 @@
         android:text="Talk to an expert"
         android:textColor="#4d426d"
         android:textSize="26sp"
+        app:layout_constraintEnd_toStartOf="@id/karmaCoinsText"
         android:textStyle="normal"
+        android:layout_marginEnd="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/backIcon" />
+
+    <TextView
+        android:id="@+id/karmaCoinsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:drawableStart="@drawable/ic_karma_coin"
+        android:drawablePadding="5dp"
+        android:fontFamily="@font/manrope_regular"
+        android:gravity="center"
+        android:lineSpacingExtra="16sp"
+        android:text="100"
+        android:textColor="#4d426d"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/talkToAnExpert"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/talkToAnExpert" />
 
     <TextView
         android:id="@+id/solveYourMiseriesTextView"

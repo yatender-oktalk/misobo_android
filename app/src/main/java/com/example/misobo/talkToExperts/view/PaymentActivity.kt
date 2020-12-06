@@ -3,12 +3,15 @@ package com.example.misobo.talkToExperts.view
 import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.misobo.R
 import com.example.misobo.mind.models.OrderPayload
 import com.example.misobo.mind.viewModels.OrderFetchState
+import com.example.misobo.talkToExperts.models.CaptureOrderPayload
+import com.example.misobo.talkToExperts.viewModels.CaptureOrderState
 import com.example.misobo.talkToExperts.viewModels.TalkToExpertsViewModel
 import com.razorpay.Checkout
 import com.razorpay.PaymentResultListener
@@ -29,18 +32,33 @@ class PaymentActivity : AppCompatActivity(), PaymentResultListener {
         Checkout.preload(this)
 
         button.setOnClickListener {
-            viewModel.createOrder(OrderPayload(200.25, OrderPayload.Note("jsfjfhhfs")))
+            viewModel.createOrder(OrderPayload(1.00, OrderPayload.Note("1")))
         }
 
-        viewModel.orderLiveData.observe(this, Observer { state->
-            when(state){
-                is OrderFetchState.Success->{
+        viewModel.orderLiveData.observe(this, Observer { state ->
+            when (state) {
+                is OrderFetchState.Success -> {
+                    viewModel.currentOrder.postValue(state.orderResponse)
                     startPayment(state.orderResponse.data?.paymentGatewayOrderId)
                 }
-                is OrderFetchState.Loading->{
+                is OrderFetchState.Loading -> {
 
                 }
-                is OrderFetchState.Error->{
+                is OrderFetchState.Error -> {
+
+                }
+            }
+        })
+
+        viewModel.captureOrderLiveData.observe(this, Observer { state ->
+            when (state) {
+                is CaptureOrderState.Success -> {
+                    Log.i("captureOrder", state.response.data?.msg.toString())
+                }
+                is CaptureOrderState.Fail -> {
+
+                }
+                is CaptureOrderState.Loading -> {
 
                 }
             }
@@ -54,8 +72,7 @@ class PaymentActivity : AppCompatActivity(), PaymentResultListener {
         val activity: Activity = this
         val co = Checkout()
         co.setImage(R.drawable.misobo_icon);
-
-        co.setKeyID("rzp_test_dTvKn9msFUzE7U");
+        co.setKeyID("rzp_live_2N116OfoXntg9j");
         try {
             val options = JSONObject()
             options.put("name", "Misobo Pvt Ltd")
@@ -65,12 +82,11 @@ class PaymentActivity : AppCompatActivity(), PaymentResultListener {
             options.put("theme.color", "#f1ab87");
             options.put("currency", "INR");
             options.put("order_id", paymentGatewayOrderId);
-            options.put("amount", "200")//pass amount in currency subunits
+            options.put("amount", "1.00")//pass amount in currency subunits
 
             val prefill = JSONObject()
             prefill.put("email", "akshay@gmail.com")
             prefill.put("contact", "9876543210")
-
             options.put("prefill", prefill)
             co.open(activity, options)
         } catch (e: Exception) {
@@ -80,10 +96,12 @@ class PaymentActivity : AppCompatActivity(), PaymentResultListener {
     }
 
     override fun onPaymentError(p0: Int, p1: String?) {
+        Log.i("fail", p0.toString() + " " + p1)
 
     }
 
     override fun onPaymentSuccess(p0: String?) {
-
+        Log.i("success", p0.toString())
+        viewModel.captureOrder(CaptureOrderPayload(p0.toString(),"signature" , viewModel.currentOrder.value?.data?.orderId?:0,viewModel.currentOrder.value?.data?.transactionId?:0,1.00))
     }
 }

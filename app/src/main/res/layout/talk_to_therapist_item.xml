@@ -31,7 +31,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/talktoTherapist"
         app:layout_constraintBottom_toBottomOf="@id/talktoTherapist"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="16sp"
         android:background="@drawable/rounded_background_radius_15"
         android:gravity="center_horizontal"
         android:paddingStart="11dp"

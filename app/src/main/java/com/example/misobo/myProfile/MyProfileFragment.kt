@@ -15,8 +15,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.misobo.R
+import com.example.misobo.bmi.view.BmiActivity
 import com.example.misobo.utils.SharedPreferenceManager
-import com.squareup.picasso.Picasso
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import com.xwray.groupie.GroupAdapter
@@ -24,9 +24,8 @@ import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.fragment_my_profile.*
 
-
 class MyProfileFragment : Fragment() {
-    val groupAdapter = GroupAdapter<ViewHolder>()
+    private val groupAdapter = GroupAdapter<ViewHolder>()
     private val profileViewModel by lazy { ViewModelProvider(this).get(ProfileViewModel::class.java) }
 
     override fun onCreateView(
@@ -40,7 +39,7 @@ class MyProfileFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         dailyCheckinRecyclerView.adapter = groupAdapter
-        val weekList = listOf<String>("S", "M", "T", "W", "T", "F", "S")
+        val weekList = listOf("S", "M", "T", "W", "T", "F", "S")
 
         fillName()
 
@@ -49,6 +48,11 @@ class MyProfileFragment : Fragment() {
             .placeholder(R.drawable.profile_placeholder)
             .error(R.drawable.profile_placeholder)
             .into(profileImage);
+
+        if (SharedPreferenceManager.getUserProfile()?.data?.bmi != null)
+            bmiScore.text = SharedPreferenceManager.getUserProfile()?.data?.bmi
+        else
+            bmiScoreLayout.visibility = View.GONE
 
         editName.setOnEditorActionListener { v, actionId, event ->
             if (event != null && event.keyCode === KeyEvent.KEYCODE_ENTER || actionId == EditorInfo.IME_ACTION_DONE) {
@@ -60,14 +64,19 @@ class MyProfileFragment : Fragment() {
             false
         }
 
+        bmiScoreLayout.setOnClickListener { startActivity(Intent(context,BmiActivity::class.java)) }
+
         profileViewModel.getProfile(SharedPreferenceManager.getUser()?.data?.userId ?: -1)
 
         profileViewModel.profileLiveData.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is ProfileResponseAction.Success -> {
                     SharedPreferenceManager.setUserProfile(state.response)
-                    karmaCoinsText.text = state.response.data?.karmaPoints?:"0"
-                    bmiScore.text = state.response.data?.bmi
+                    karmaCoinsText.text = state.response.data?.karmaPoints ?: "0"
+                    if (state.response.data?.bmi != null)
+                        bmiScore.text = state.response.data.bmi
+                    else
+                        bmiScoreLayout.visibility = View.GONE
                     groupAdapter.clear()
                     val section = Section()
                     section.add(
@@ -133,7 +142,7 @@ class MyProfileFragment : Fragment() {
             CropImage.activity()
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .setCropShape(CropImageView.CropShape.OVAL)
-                .start(requireContext(),this);
+                .start(requireContext(), this);
         }
     }
 

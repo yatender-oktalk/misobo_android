@@ -2,6 +2,7 @@ package com.example.misobo.myProfile
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.misobo.utils.SharedPreferenceManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -17,6 +18,7 @@ class ProfileViewModel() : ViewModel() {
         compositeDisposable.add(profileService.getProfile(userId = userId)
             .subscribeOn(Schedulers.io())
             .map {
+                SharedPreferenceManager.setUserProfile(it)
                 ProfileResponseAction.Success(
                     it
                 ) as ProfileResponseAction
