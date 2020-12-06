@@ -62,14 +62,14 @@ class MyProfileFragment : Fragment() {
 
         profileViewModel.getProfile(SharedPreferenceManager.getUser()?.data?.userId ?: -1)
 
-
         profileViewModel.profileLiveData.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is ProfileResponseAction.Success -> {
                     SharedPreferenceManager.setUserProfile(state.response)
+                    karmaCoinsText.text = state.response.data?.karmaPoints?:"0"
+                    bmiScore.text = state.response.data?.bmi
                     groupAdapter.clear()
                     val section = Section()
-
                     section.add(
                         DailyCheckinItem(
                             state.response.data?.loginStreak?.one ?: false,

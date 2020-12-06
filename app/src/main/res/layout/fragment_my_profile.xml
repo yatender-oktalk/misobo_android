@@ -10,7 +10,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:paddingBottom="50dp"
-
         android:layoutAnimation="@anim/layout_animation_fade_enter"
         android:layout_height="match_parent">
         <!--
@@ -40,6 +39,24 @@
             android:textStyle="normal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/karmaCoinsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:drawableStart="@drawable/ic_karma_coin"
+            android:drawablePadding="5dp"
+            android:fontFamily="@font/manrope_regular"
+            android:gravity="center"
+            android:lineSpacingExtra="16sp"
+            android:text="100"
+            android:textColor="#4d426d"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/profileHeader"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/profileHeader" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profileImage"
@@ -131,7 +148,7 @@
             android:background="@drawable/rounded_background_radius_10"
             android:backgroundTint="#eaf7ff"
             android:padding="20dp"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintTop_toBottomOf="@id/nameTextView">
 
             <TextView
@@ -161,6 +178,7 @@
                 app:layout_constraintTop_toBottomOf="@id/bmiScoreHeader" />
 
             <TextView
+                android:id="@+id/bmiScore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/ic_keyboard_arrow_right_24px"
