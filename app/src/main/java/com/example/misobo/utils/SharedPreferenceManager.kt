@@ -17,6 +17,7 @@ object SharedPreferenceManager {
     private const val USER = "user"
     private const val PROFILE = "profile"
     private const val NAME = "name"
+    private const val PROFILE_IMAGE = "profileImage"
 
     private var sharedPreferences: SharedPreferences? = null
 
@@ -73,7 +74,22 @@ object SharedPreferenceManager {
     }
 
     fun getName(): String? = sharedPreferences?.getString(
-            NAME, null)
+        NAME, null
+    )
+
+    fun setProfileImage(uri: String): Completable {
+        sharedPreferences?.edit()?.apply {
+            if (uri != null) {
+                putString(PROFILE_IMAGE, uri)
+            }
+            apply()
+        }
+        return Completable.complete()
+    }
+
+    fun getProfileImage(): String? = sharedPreferences?.getString(
+        PROFILE_IMAGE, null
+    )
 
     fun isOnBoarded(): Boolean =
         sharedPreferences != null && sharedPreferences?.getBoolean(

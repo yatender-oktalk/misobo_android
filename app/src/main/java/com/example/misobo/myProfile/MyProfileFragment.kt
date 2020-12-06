@@ -45,9 +45,9 @@ class MyProfileFragment : Fragment() {
         fillName()
 
         Glide.with(requireContext())
-            .load("ssf")
-            .placeholder(R.drawable.ic_tick_green)
-            .error(R.drawable.ic_tick_green)
+            .load(SharedPreferenceManager.getProfileImage())
+            .placeholder(R.drawable.profile_placeholder)
+            .error(R.drawable.profile_placeholder)
             .into(profileImage);
 
         editName.setOnEditorActionListener { v, actionId, event ->
@@ -132,6 +132,7 @@ class MyProfileFragment : Fragment() {
         profileImage.setOnClickListener {
             CropImage.activity()
                 .setGuidelines(CropImageView.Guidelines.ON)
+                .setCropShape(CropImageView.CropShape.OVAL)
                 .start(requireContext(),this);
         }
     }
@@ -141,10 +142,11 @@ class MyProfileFragment : Fragment() {
             val result = CropImage.getActivityResult(data)
             if (resultCode == RESULT_OK) {
                 val resultUri: Uri = result.uri
+                SharedPreferenceManager.setProfileImage(resultUri.toString())
                 Glide.with(requireContext())
                     .load(resultUri)
-                    .placeholder(R.drawable.ic_tick_green)
-                    .error(R.drawable.ic_tick_green)
+                    .placeholder(R.drawable.profile_placeholder)
+                    .error(R.drawable.profile_placeholder)
                     .into(profileImage);
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 val error = result.error
