@@ -72,6 +72,11 @@ interface ExpertsService {
     fun getPacks(
     ): Observable<List<Packs>>
 
+    @Headers("Accept: application/json", "Content-Type: application/json")
+    @GET("api/user/{userId}/expert_bookings?page=1")
+    fun fetchBookings(
+    ): Observable<UserBookings>
+
     object Creator {
         private const val url: String = "http://143.110.176.70:4000/"
         private val token = SharedPreferenceManager.getUser()?.data?.token ?: ""

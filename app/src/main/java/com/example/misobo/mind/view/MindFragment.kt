@@ -21,6 +21,7 @@ import com.example.misobo.mind.viewModels.MindViewModel
 import com.example.misobo.mind.viewModels.MusicFetchState
 import com.example.misobo.myProfile.FetchState
 import com.example.misobo.myProfile.ProfileViewModel
+import com.example.misobo.talkToExperts.view.BookASlotDialog
 import com.example.misobo.talkToExperts.view.PaymentActivity
 import com.example.misobo.talkToExperts.view.TalkToExpertActivity
 import com.example.misobo.talkToExperts.viewModels.ExpertListState
@@ -35,7 +36,7 @@ class MindFragment : Fragment() {
 
     private val mindViewModel: MindViewModel by activityViewModels()
     private val blogsViewModel: BlogsViewModel by activityViewModels()
-    private val talkToExpertsViewModel by lazy { ViewModelProvider(this).get(TalkToExpertsViewModel::class.java) }
+    private val talkToExpertsViewModel: TalkToExpertsViewModel by activityViewModels()
     private val profileViewModel by lazy { ViewModelProvider(this).get(ProfileViewModel::class.java) }
     private val loadingFragment = LoadingFragment()
 
@@ -100,9 +101,18 @@ class MindFragment : Fragment() {
         talkToExpertsViewModel.expertListLiveData.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is ExpertListState.Success -> {
-                    talkToExpertsSection.add(TalkToTherapistItem(state.expertList) {
+                    talkToExpertsSection.add(TalkToTherapistItem(state.expertList, {
                         startActivity(Intent(requireContext(), TalkToExpertActivity::class.java))
-                    })
+                    }, {
+                        talkToExpertsViewModel.selectedExpertLiveDate.postValue(it)
+                        val slotDialog =
+                            BookASlotDialog()
+                        val bundle = Bundle()
+                        it.id?.let { it1 -> bundle.putInt("ID", it1) }
+                        slotDialog.arguments = bundle
+                        activity?.supportFragmentManager?.beginTransaction()
+                            ?.add(slotDialog, null)?.commit()
+                    }))
                 }
                 is ExpertListState.Fail -> {
 
@@ -122,10 +132,9 @@ class MindFragment : Fragment() {
                             state.musicEntries[position]
                         )
 
-                        startActivity(Intent(context, PaymentActivity::class.java))
-                        /*activity?.supportFragmentManager?.beginTransaction()
+                        activity?.supportFragmentManager?.beginTransaction()
                             ?.replace(R.id.mainContainer, MusicPlayerFragment())
-                            ?.addToBackStack(null)?.commit()*/
+                            ?.addToBackStack(null)?.commit()
                     })
                 }
                 is MusicFetchState.Loading -> {
