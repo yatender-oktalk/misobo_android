@@ -25,7 +25,6 @@ import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.enter_otp_dialog.*
 import kotlinx.android.synthetic.main.enter_otp_dialog.chatWithExperts
 import kotlinx.android.synthetic.main.enter_otp_dialog.otpText
-import kotlinx.android.synthetic.main.login_bottom_sheet.*
 import java.util.concurrent.TimeUnit
 
 class OtpDialog : BottomSheetDialogFragment() {
@@ -50,6 +49,14 @@ class OtpDialog : BottomSheetDialogFragment() {
         super.onActivityCreated(savedInstanceState)
 
         resendOTP()
+
+        backIcon.setOnClickListener {
+            this.dismiss()
+        }
+
+        crossButton.setOnClickListener {
+            this.dismiss()
+        }
 
         resendText.setOnClickListener {
             val OtpPayload =

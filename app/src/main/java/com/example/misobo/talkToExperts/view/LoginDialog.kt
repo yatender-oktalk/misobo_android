@@ -37,6 +37,10 @@ class LoginDialog : BottomSheetDialogFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        crossButton.setOnClickListener {
+            this.dismiss()
+        }
+
         RxTextView.textChanges(otpText)
             .subscribe {
                 if (it.length >= 10) {

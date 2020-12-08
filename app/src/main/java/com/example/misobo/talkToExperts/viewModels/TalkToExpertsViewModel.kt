@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import com.example.misobo.mind.models.OrderPayload
 import com.example.misobo.mind.models.OrderResponse
 import com.example.misobo.mind.viewModels.OrderFetchState
-import com.example.misobo.myProfile.FetchState
 import com.example.misobo.talkToExperts.models.VerificationResponse
 import com.example.misobo.talkToExperts.api.ExpertsService
 import com.example.misobo.talkToExperts.models.*
@@ -30,10 +29,11 @@ class TalkToExpertsViewModel : ViewModel() {
     val currentOrder: MutableLiveData<OrderResponse> = MutableLiveData()
     val captureOrderLiveData: MutableLiveData<CaptureOrderState> = MutableLiveData()
     val packsLiveData: MutableLiveData<PacksFetchState> = MutableLiveData()
+    val userBookingsLiveData: MutableLiveData<UserBookingsFetchState> = MutableLiveData()
+
     var expertsService = ExpertsService.Creator.service
     var paymentAmount = 1.00
     var pack = 1000
-
 
 
     fun getExpertCategories() {
@@ -192,6 +192,23 @@ class TalkToExpertsViewModel : ViewModel() {
                 packsLiveData.postValue(it)
             })
     }
+
+    fun getUserBookings(userId: String) {
+        compositeDisposable.add(expertsService.fetchBookings(userId)
+            .subscribeOn(Schedulers.io())
+            .map {
+                UserBookingsFetchState.Success(it)
+                        as UserBookingsFetchState
+            }
+            .startWith(UserBookingsFetchState.Loading)
+            .onErrorReturn {
+                UserBookingsFetchState.Fail
+            }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                userBookingsLiveData.postValue(it)
+            })
+    }
 }
 
 sealed class CategoriesState {
@@ -236,4 +253,10 @@ sealed class PacksFetchState() {
     data class Success(val packsList: List<Packs>) : PacksFetchState()
     object Fail : PacksFetchState()
     object Loading : PacksFetchState()
+}
+
+sealed class UserBookingsFetchState() {
+    data class Success(val userBookings: UserBookings ): UserBookingsFetchState()
+    object Fail : UserBookingsFetchState()
+    object Loading : UserBookingsFetchState()
 }

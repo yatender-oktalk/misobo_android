@@ -33,7 +33,6 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.coins_bottom_sheet.*
-import kotlinx.android.synthetic.main.enter_otp_dialog.*
 import org.json.JSONObject
 import java.util.concurrent.TimeUnit
 
@@ -62,6 +61,9 @@ class CoinsBottomSheet : BottomSheetDialogFragment(), PaymentResultListener {
 
         Checkout.preload(requireContext())
 
+        crossButton.setOnClickListener{
+            this.dismiss()
+        }
         viewModel.getPacks()
         karmaCoinsText.text = SharedPreferenceManager.getUserProfile()?.data?.karmaPoints
 
@@ -171,21 +173,6 @@ class CoinsBottomSheet : BottomSheetDialogFragment(), PaymentResultListener {
                 viewModel.paymentAmount
             )
         )
-    }
-
-    private fun resendOTP() {
-        compositeDisposable.add(
-            Observable.interval(1, TimeUnit.SECONDS)
-                .take(32)
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnComplete {
-                    resendText.isClickable = true
-                    resendText.text = "Click to resend OTP"
-                }
-                .subscribe {
-                    resendText.text = "Resend in ${32 - it}s"
-                    resendText.isClickable = false
-                })
     }
 
     override fun setupDialog(dialog: Dialog, style: Int) {

@@ -75,6 +75,7 @@ interface ExpertsService {
     @Headers("Accept: application/json", "Content-Type: application/json")
     @GET("api/user/{userId}/expert_bookings?page=1")
     fun fetchBookings(
+        @Path(value = "userId") userId:String
     ): Observable<UserBookings>
 
     object Creator {

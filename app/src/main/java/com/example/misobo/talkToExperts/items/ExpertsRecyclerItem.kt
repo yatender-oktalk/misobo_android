@@ -2,6 +2,7 @@ package com.example.misobo.talkToExperts.items
 
 import com.example.misobo.R
 import com.example.misobo.talkToExperts.models.ExpertModel
+import com.example.misobo.talkToExperts.models.UserBookings
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.experts_recycler_item.view.*

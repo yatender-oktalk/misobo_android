@@ -62,7 +62,7 @@ class Misobo : Application() {
         )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { SharedPreferenceManager.setUserProfile(it)})
+            .subscribe ({ SharedPreferenceManager.setUserProfile(it)},{}))
     }
 
     override fun onTerminate() {
