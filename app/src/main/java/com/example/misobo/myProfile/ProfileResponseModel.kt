@@ -37,13 +37,12 @@ data class ProfileResponseModel(
 
     data class Streak(
         @SerializedName("1")
-        val one: Boolean,
-        @SerializedName("2") val two: Boolean,
-        @SerializedName("3") val three: Boolean,
-        @SerializedName("4") val four: Boolean,
-        @SerializedName("5") val five: Boolean,
-        @SerializedName("6") val six: Boolean,
-        @SerializedName("7") val seven: Boolean,
-        @SerializedName("user_id") val user_id: Int
+        val one: String?,
+        @SerializedName("2") val two: String?,
+        @SerializedName("3") val three: String?,
+        @SerializedName("4") val four: String?,
+        @SerializedName("5") val five: String?,
+        @SerializedName("6") val six: String?,
+        @SerializedName("7") val seven: String?
     )
 }

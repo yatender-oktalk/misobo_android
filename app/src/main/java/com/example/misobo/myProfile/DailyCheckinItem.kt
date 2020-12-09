@@ -7,14 +7,28 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.daily_checking_weekday_item.view.*
 
-class DailyCheckinItem(private val wasActive: Boolean, val day: String) : Item() {
+class DailyCheckinItem(private val status: String, val day: String) : Item() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.itemView.weekday_name.text = day
-        if (wasActive) {
-            Glide.with(viewHolder.itemView.context).load(R.drawable.ic_active).into(viewHolder.itemView.dailyCheckinStatusImage)
-        } else {
-            Glide.with(viewHolder.itemView.context).load(R.drawable.ic_remove_profile).into(viewHolder.itemView.dailyCheckinStatusImage)
+
+        val image = when (status) {
+            "FALSE" -> {
+                R.drawable.ic_remove_profile
+            }
+            "TRUE" -> {
+                R.drawable.ic_active
+            }
+            "TODAY" -> {
+                R.drawable.ic_today
+            }
+            else -> {
+                R.drawable.today_circle
+            }
         }
+
+
+        Glide.with(viewHolder.itemView.context).load(image)
+            .into(viewHolder.itemView.dailyCheckinStatusImage)
     }
 
     override fun getLayout(): Int = R.layout.daily_checking_weekday_item

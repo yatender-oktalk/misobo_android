@@ -81,43 +81,43 @@ class MyProfileFragment : Fragment() {
                     val section = Section()
                     section.add(
                         DailyCheckinItem(
-                            state.response.data?.loginStreak?.one ?: false,
+                            state.response.data?.loginStreak?.one ?:"",
                             "S"
                         )
                     )
                     section.add(
                         DailyCheckinItem(
-                            state.response.data?.loginStreak?.two ?: false,
+                            state.response.data?.loginStreak?.two ?: "",
                             "M"
                         )
                     )
                     section.add(
                         DailyCheckinItem(
-                            state.response.data?.loginStreak?.three ?: false,
+                            state.response.data?.loginStreak?.three ?: "",
                             "T"
                         )
                     )
                     section.add(
                         DailyCheckinItem(
-                            state.response.data?.loginStreak?.four ?: false,
+                            state.response.data?.loginStreak?.four ?: "",
                             "W"
                         )
                     )
                     section.add(
                         DailyCheckinItem(
-                            state.response.data?.loginStreak?.five ?: false,
+                            state.response.data?.loginStreak?.five ?: "",
                             "T"
                         )
                     )
                     section.add(
                         DailyCheckinItem(
-                            state.response.data?.loginStreak?.six ?: false,
+                            state.response.data?.loginStreak?.six ?: "",
                             "F"
                         )
                     )
                     section.add(
                         DailyCheckinItem(
-                            state.response.data?.loginStreak?.seven ?: false,
+                            state.response.data?.loginStreak?.seven ?: "",
                             "S"
                         )
                     )
