@@ -18,7 +18,7 @@ data class MusicResponseModel(
         @SerializedName("karma")
         val karma: Int?,
         @SerializedName("progress")
-        val progress: Int?,
+        var progress: Int?,
         @SerializedName("production_name")
         val productionName: String?,
         @SerializedName("title")

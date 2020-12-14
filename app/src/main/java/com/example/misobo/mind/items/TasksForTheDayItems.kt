@@ -25,5 +25,9 @@ class TasksForTheDayItems(
         adapter.add(musicSection)
     }
 
+    override fun bind(viewHolder: ViewHolder, position: Int, payloads: MutableList<Any>) {
+        super.bind(viewHolder, position, payloads)
+    }
+
     override fun getLayout(): Int = R.layout.tasks_for_the_day_layout
 }

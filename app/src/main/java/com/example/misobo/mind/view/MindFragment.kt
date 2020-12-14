@@ -2,6 +2,7 @@ package com.example.misobo.mind.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,6 +40,7 @@ class MindFragment : Fragment() {
     private val talkToExpertsViewModel: TalkToExpertsViewModel by activityViewModels()
     private val profileViewModel by lazy { ViewModelProvider(this).get(ProfileViewModel::class.java) }
     private val loadingFragment = LoadingFragment()
+    lateinit var taskForTheDayItem: TasksForTheDayItems
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -122,20 +124,21 @@ class MindFragment : Fragment() {
             }
         })
 
-        //if (mindViewModel.musicLiveData.value == null)
-        mindViewModel.fetchAllMusic()
+        if (mindViewModel.musicLiveData.value == null)
+            mindViewModel.fetchAllMusic()
         mindViewModel.musicLiveData.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is MusicFetchState.Success -> {
-                    taskForTheDaySection.setHeader(TasksForTheDayItems(state.musicEntries) { position ->
+                    mindViewModel.mutableMusicList = (state.musicEntries).toMutableList()
+                    taskForTheDayItem = TasksForTheDayItems(mindViewModel.mutableMusicList) { position ->
                         mindViewModel.playMusicLiveData.postValue(
-                            state.musicEntries[position]
+                            mindViewModel.mutableMusicList.get(position)
                         )
-
                         activity?.supportFragmentManager?.beginTransaction()
                             ?.replace(R.id.mainContainer, MusicPlayerFragment())
                             ?.addToBackStack(null)?.commit()
-                    })
+                    }
+                    taskForTheDaySection.add(taskForTheDayItem)
                 }
                 is MusicFetchState.Loading -> {
 
@@ -144,6 +147,12 @@ class MindFragment : Fragment() {
 
                 }
             }
+        })
+
+        mindViewModel.musicList.observe(viewLifecycleOwner, Observer {
+            Log.i("music", it.toString())
+            taskForTheDaySection.add(taskForTheDayItem)
+            taskForTheDayItem.notifyChanged(it)
         })
 
         if (blogsViewModel.blogLiveData.value == null)

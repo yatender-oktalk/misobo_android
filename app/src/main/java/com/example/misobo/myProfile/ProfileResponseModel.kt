@@ -16,7 +16,7 @@ data class ProfileResponseModel(
         @SerializedName("phone")
         val phone: String?,
         @SerializedName("karma_points")
-        val karmaPoints: String?,
+        val karmaPoints: String,
         @SerializedName("name")
         val name: String?,
         @SerializedName("registration_id")

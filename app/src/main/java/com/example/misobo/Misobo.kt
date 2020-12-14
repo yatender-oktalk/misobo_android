@@ -26,7 +26,7 @@ class Misobo : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
-        SharedPreferenceManager.init(this)
+        SharedPreferenceManager.init(instance)
         Stetho.initializeWithDefaults(this)
 
 

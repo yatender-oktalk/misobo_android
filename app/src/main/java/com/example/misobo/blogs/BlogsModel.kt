@@ -18,6 +18,8 @@ data class BlogsModel(
         @SerializedName("title")
         val title: String?,
         @SerializedName("image")
-        val image: String?
+        val image: String?,
+        @SerializedName("time_to_read")
+        val timeToRead: String?
     )
 }

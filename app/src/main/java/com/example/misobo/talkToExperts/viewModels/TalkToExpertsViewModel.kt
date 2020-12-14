@@ -1,13 +1,19 @@
 package com.example.misobo.talkToExperts.viewModels
 
+import android.app.Application
+import android.content.SharedPreferences
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.preference.Preference
 import com.example.misobo.mind.models.OrderPayload
 import com.example.misobo.mind.models.OrderResponse
 import com.example.misobo.mind.viewModels.OrderFetchState
 import com.example.misobo.talkToExperts.models.VerificationResponse
 import com.example.misobo.talkToExperts.api.ExpertsService
 import com.example.misobo.talkToExperts.models.*
+import com.example.misobo.utils.LiveSharedPreference
+import com.example.misobo.utils.SharedPreferenceManager
 import com.example.misobo.utils.SingleLiveEvent
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -34,7 +40,9 @@ class TalkToExpertsViewModel : ViewModel() {
     var expertsService = ExpertsService.Creator.service
     var paymentAmount = 1.00
     var pack = 1000
+    private val liveSharedPreference = LiveSharedPreference(SharedPreferenceManager.sharedPreferences!!)
 
+    fun getCoinsLiveData() = liveSharedPreference
 
     fun getExpertCategories() {
         compositeDisposable.add(expertsService.getExpertsCategories()
@@ -256,7 +264,7 @@ sealed class PacksFetchState() {
 }
 
 sealed class UserBookingsFetchState() {
-    data class Success(val userBookings: UserBookings ): UserBookingsFetchState()
+    data class Success(val userBookings: UserBookings) : UserBookingsFetchState()
     object Fail : UserBookingsFetchState()
     object Loading : UserBookingsFetchState()
 }

@@ -14,12 +14,12 @@ private const val IS_BODY_UNLOCKED = "is_body_unlocked"
 
 object SharedPreferenceManager {
 
-    private const val USER = "user"
-    private const val PROFILE = "profile"
-    private const val NAME = "name"
-    private const val PROFILE_IMAGE = "profileImage"
+    const val USER = "user"
+    const val PROFILE = "profile"
+    const val NAME = "name"
+    const val PROFILE_IMAGE = "profileImage"
 
-    private var sharedPreferences: SharedPreferences? = null
+    var sharedPreferences: SharedPreferences? = null
 
     fun init(context: Context) {
         sharedPreferences = context.getSharedPreferences(
@@ -59,7 +59,7 @@ object SharedPreferenceManager {
 
     fun getUserProfile(): ProfileResponseModel? = Gson().fromJson(
         sharedPreferences?.getString(
-            PROFILE, null
+            PROFILE, "no"
         ), ProfileResponseModel::class.java
     )
 

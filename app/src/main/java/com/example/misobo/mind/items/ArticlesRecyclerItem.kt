@@ -13,9 +13,8 @@ class ArticlesRecyclerItem(
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.itemView.articleTitle.text = model.title
         viewHolder.itemView.articlesDetailsTextView.text = model.content
-        viewHolder.itemView.readingTime.text = "3 min read "
-        viewHolder.itemView.soul.text = model.category?:"MIND"
-
+        viewHolder.itemView.readingTime.text = "${model.timeToRead} read"
+        viewHolder.itemView.soul.text = model.category ?: "MIND"
         viewHolder.itemView.setOnClickListener { onClick.invoke() }
     }
 
