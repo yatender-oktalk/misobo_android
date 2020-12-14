@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginStart="16sp"
+    android:layout_marginEnd="16sp"
+    android:layout_marginTop="22dp"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/claimedRewards"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_background_radius_10"
+        android:fontFamily="@font/manrope_extrabold"
+        android:lineSpacingExtra="22sp"
+        android:paddingStart="20dp"
+        android:paddingTop="23dp"
+        android:paddingBottom="22dp"
+        android:text="Claimed rewards"
+        android:textColor="#4d426d"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:textStyle="normal"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/claimedRewardsCount"
+        android:layout_width="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:text = "(453)"
+        android:fontFamily="@font/manrope_extrabold"
+        android:textStyle="normal"
+        android:textSize="16sp"
+        android:textColor="#4d426d"
+        android:layout_marginEnd="9dp"
+        android:gravity="center"
+        android:drawablePadding="4dp"
+        android:drawableEnd="@drawable/ic_keyboard_arrow_right_24px"
+        android:layout_height="wrap_content"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

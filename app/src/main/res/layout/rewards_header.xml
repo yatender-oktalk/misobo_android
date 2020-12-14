@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/rewardsHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16sp"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/manrope_extrabold"
+        android:lineSpacingExtra="12sp"
+        android:text="Rewards"
+        android:textColor="#4d426d"
+        android:textSize="26sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/solveYourMiseriesTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16sp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/manrope_medium"
+        android:lineSpacingExtra="6sp"
+        android:text="Solve your miseries by talking to astrologer\n
+Psychologists or therapist"
+        android:textColor="#4d426d"
+        android:textSize="12sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rewardsHeader" />
+
+    <TextView
+        android:id="@+id/karmaCoinsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:drawableStart="@drawable/ic_karma_coin"
+        android:drawablePadding="5dp"
+        android:fontFamily="@font/manrope_regular"
+        android:gravity="center"
+        android:lineSpacingExtra="16sp"
+        android:text="100"
+        android:textColor="#4d426d"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/rewardsHeader"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/rewardsHeader" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
