@@ -11,6 +11,7 @@ import com.example.misobo.mind.view.MindFragment
 import com.example.misobo.mind.viewModels.MindViewModel
 import com.example.misobo.myProfile.MyProfileFragment
 import com.example.misobo.rewards.RewardsFragment
+import com.example.misobo.rewards.RewardsViewModel
 import com.example.misobo.utils.SharedPreferenceManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -19,6 +20,9 @@ class MainActivity : AppCompatActivity() {
 
     private val viewModel: MindViewModel by lazy { ViewModelProvider(this).get(MindViewModel::class.java) }
     private val blogsViewModel: BlogsViewModel by lazy { ViewModelProvider(this).get(BlogsViewModel::class.java) }
+    private val rewardsViewModel: RewardsViewModel by lazy {
+        ViewModelProvider(this).get(RewardsViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

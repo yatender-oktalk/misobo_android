@@ -26,6 +26,8 @@ data class RewardsModel(
         @SerializedName("people_unlocked")
         val peopleUnlocked: Long?,
         @SerializedName("is_active")
-        val isActive: Boolean?
+        val isActive: Boolean?,
+        @SerializedName("id")
+        val id: Int?
     )
 }

@@ -1,7 +1,5 @@
 package com.example.misobo.rewards
 
-import com.example.misobo.onBoarding.api.OnBoardingService
-import com.example.misobo.onBoarding.models.CategoriesModel
 import com.example.misobo.utils.SharedPreferenceManager
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -16,6 +14,14 @@ interface RewardsService {
     @Headers("Accept: application/json", "Content-Type: application/json")
     @GET("api/rewards")
     fun getRewards(): Observable<RewardsModel>
+
+    @Headers("Accept: application/json", "Content-Type: application/json")
+    @POST("api/rewards/{id}/redeem")
+    fun redeemReward(@Path("id") rewardId: Int?): Observable<RewardsModel.Reward>
+
+    @Headers("Accept: application/json", "Content-Type: application/json")
+    @GET("api/rewards/{userId}/redeemed")
+    fun getClaimedRewards(@Path("userId") userId: Int?): Observable<ClaimedRewardsModel>
 
     object Creator {
         private const val url: String = "http://143.110.176.70:4000/"
