@@ -1,10 +1,7 @@
 package com.example.misobo.onBoarding.api
 
+import com.example.misobo.onBoarding.models.*
 import com.example.misobo.utils.SharedPreferenceManager
-import com.example.misobo.onBoarding.models.CategoriesModel
-import com.example.misobo.onBoarding.models.CategoriesRequestModel
-import com.example.misobo.onBoarding.models.RegistrationModel
-import com.example.misobo.onBoarding.models.User
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import io.reactivex.Observable
@@ -37,6 +34,13 @@ interface OnBoardingService {
     @POST("api/registration")
     fun registerUser(@Body deviceId: RegistrationModel): Observable<User>
 
+    @Headers("Accept: application/json", "Content-Type: application/json")
+    @POST("api/user/{userId}/send_sms")
+    fun resendOTP(
+        @Path("userId") userId: String,
+        @Body phoneNumber: ResendOTPModel
+    ): Observable<ResendOtpRespnse>
+
     object Creator {
         private const val url: String = "http://143.110.176.70:4000/"
         private val token = SharedPreferenceManager.getUser()?.data?.token ?: ""
@@ -50,7 +54,10 @@ interface OnBoardingService {
                             .addInterceptor {
                                 it.proceed(
                                     it.request().newBuilder()
-                                        .addHeader("token", SharedPreferenceManager.getUser()?.data?.token ?: "")
+                                        .addHeader(
+                                            "token",
+                                            SharedPreferenceManager.getUser()?.data?.token ?: ""
+                                        )
                                         .build()
                                 )
                             }

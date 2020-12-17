@@ -1,5 +1,6 @@
 package com.example.misobo.onBoarding.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,10 +9,12 @@ import android.widget.NumberPicker
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.example.misobo.MainActivity
 import com.example.misobo.R
 import com.example.misobo.utils.Util
 import com.example.misobo.onBoarding.viewModels.OnBoardingViewModel
 import com.example.misobo.onBoarding.viewModels.ReminderTime
+import com.example.misobo.utils.SharedPreferenceManager
 import kotlinx.android.synthetic.main.fragment_reminder.*
 
 class ReminderFragment : Fragment() {
@@ -48,6 +51,12 @@ class ReminderFragment : Fragment() {
                     ReminderSuccessFragment()
                 )
                 ?.addToBackStack(null)?.commitAllowingStateLoss()
+        }
+
+        laterTextView.setOnClickListener {
+            SharedPreferenceManager.setOnBoarded(true)
+            startActivity(Intent(context, MainActivity::class.java))
+            activity?.finish()
         }
     }
 

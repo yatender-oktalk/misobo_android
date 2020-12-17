@@ -8,9 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.misobo.R
+import com.example.misobo.onBoarding.LoginDialog
 import com.example.misobo.onBoarding.models.RegistrationModel
 import com.example.misobo.onBoarding.viewModels.OnBoardingViewModel
 import com.example.misobo.utils.SharedPreferenceManager
@@ -49,35 +51,25 @@ class OnBoardingFragment : Fragment() {
                 mindTextView.text = it
             },{}))
 
-        onBoardingViewModel.userLiveData.observe(viewLifecycleOwner, Observer { user ->
-            SharedPreferenceManager.setUser(user)
-        })
+
 
         try {
-            val registrationModel =
+            /* val registrationModel =
                 RegistrationModel(
                     Settings.Secure.getString(
                         context?.contentResolver,
                         Settings.Secure.ANDROID_ID
                     )
-                )
-           /* if (SharedPreferenceManager.getUser() == null) {
-                onBoardingViewModel.registerUser(
-                    registrationModel
-                )
-            }*/
+                )*/
         } catch (e: Exception) {
             Toast.makeText(context, e.localizedMessage, Toast.LENGTH_SHORT).show()
         }
 
-        getStartedText.setOnClickListener {
+        registerText.setOnClickListener {
+            val loginDialog =
+                LoginDialog()
             activity?.supportFragmentManager?.beginTransaction()
-                ?.replace(
-                    R.id.onBoardingFrameContainer,
-                    MisoboMembersFragment()
-                )
-                ?.addToBackStack(null)
-                ?.commitAllowingStateLoss()
+                ?.add(loginDialog, null)?.commit()
         }
     }
 

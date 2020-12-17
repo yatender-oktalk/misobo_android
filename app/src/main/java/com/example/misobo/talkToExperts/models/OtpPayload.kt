@@ -6,6 +6,8 @@ data class OtpPayload(
     @SerializedName("phone")
     val phone: String,
     @SerializedName("otp")
-    val otp: Int?=null
+    val otp: Int? = null,
+    @SerializedName("id")
+    val id: Int? = null
 ) {
 }

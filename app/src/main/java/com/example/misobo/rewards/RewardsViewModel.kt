@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.misobo.myProfile.FetchState
 import com.example.misobo.talkToExperts.viewModels.BookSlotState
+import com.example.misobo.utils.ErrorHandler
 import com.example.misobo.utils.SingleLiveEvent
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -24,7 +25,9 @@ class RewardsViewModel : ViewModel() {
             .subscribeOn(Schedulers.io())
             .map { RewardsFetchState.Success(it) as RewardsFetchState }
             .startWith(RewardsFetchState.Loading)
-            .onErrorReturn { RewardsFetchState.Error(it) }
+            .onErrorReturn {
+                RewardsFetchState.Error(it)
+            }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { rewardsLiveData.postValue(it) })
     }

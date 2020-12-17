@@ -2,6 +2,8 @@ package com.example.misobo.talkToExperts.api
 
 import com.example.misobo.mind.models.OrderPayload
 import com.example.misobo.mind.models.OrderResponse
+import com.example.misobo.myProfile.ProfileResponseModel
+import com.example.misobo.onBoarding.models.User
 import com.example.misobo.talkToExperts.models.OtpPayload
 import com.example.misobo.talkToExperts.models.VerificationResponse
 import com.example.misobo.talkToExperts.models.*
@@ -53,7 +55,7 @@ interface ExpertsService {
     fun sendOtp(
         @Path("id") id: Int,
         @Body payload: OtpPayload
-    ): Observable<VerificationResponse>
+    ): Observable<ProfileResponseModel>
 
     @Headers("Accept: application/json", "Content-Type: application/json")
     @POST("api/order")

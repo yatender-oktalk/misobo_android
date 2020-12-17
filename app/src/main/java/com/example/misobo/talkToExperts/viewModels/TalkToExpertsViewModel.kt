@@ -9,6 +9,7 @@ import androidx.preference.Preference
 import com.example.misobo.mind.models.OrderPayload
 import com.example.misobo.mind.models.OrderResponse
 import com.example.misobo.mind.viewModels.OrderFetchState
+import com.example.misobo.myProfile.ProfileResponseModel
 import com.example.misobo.talkToExperts.models.VerificationResponse
 import com.example.misobo.talkToExperts.api.ExpertsService
 import com.example.misobo.talkToExperts.models.*
@@ -28,9 +29,7 @@ class TalkToExpertsViewModel : ViewModel() {
     val slotListLiveData: MutableLiveData<SlotFetchState> = MutableLiveData()
     val slotSelectedLiveData: MutableLiveData<Long> = MutableLiveData()
     val bookSlotLiveData: SingleLiveEvent<BookSlotState> = SingleLiveEvent()
-    val mobileRegistration: SingleLiveEvent<MobileRegistration> = SingleLiveEvent()
-    val otpVerification: MutableLiveData<MobileRegistration> = MutableLiveData()
-    val mobileNumber: MutableLiveData<String> = MutableLiveData()
+
     val orderLiveData: MutableLiveData<OrderFetchState> = MutableLiveData()
     val currentOrder: MutableLiveData<OrderResponse> = MutableLiveData()
     val captureOrderLiveData: MutableLiveData<CaptureOrderState> = MutableLiveData()
@@ -40,7 +39,8 @@ class TalkToExpertsViewModel : ViewModel() {
     var expertsService = ExpertsService.Creator.service
     var paymentAmount = 1.00
     var pack = 1000
-    private val liveSharedPreference = LiveSharedPreference(SharedPreferenceManager.sharedPreferences!!)
+    private val liveSharedPreference =
+        LiveSharedPreference(SharedPreferenceManager.sharedPreferences!!)
 
     fun getCoinsLiveData() = liveSharedPreference
 
@@ -97,32 +97,6 @@ class TalkToExpertsViewModel : ViewModel() {
             .startWith(SlotFetchState.Loading)
             .onErrorReturn { SlotFetchState.Fail }
             .subscribe { slotListLiveData.postValue(it) })
-    }
-
-    fun mobileRegistration(otpModel: OtpPayload) {
-        compositeDisposable.add(expertsService.mobileRegistration(otpModel)
-            .subscribeOn(Schedulers.io())
-            .map {
-                MobileRegistration.Success(
-                    it
-                ) as MobileRegistration
-            }
-            .startWith(MobileRegistration.Loading)
-            .onErrorReturn { MobileRegistration.Fail }
-            .subscribe { mobileRegistration.postValue(it) })
-    }
-
-    fun verifyOtp(id: Int, otpModel: OtpPayload) {
-        compositeDisposable.add(expertsService.sendOtp(id, otpModel)
-            .subscribeOn(Schedulers.io())
-            .map {
-                MobileRegistration.Success(
-                    it
-                ) as MobileRegistration
-            }
-            .startWith(MobileRegistration.Loading)
-            .onErrorReturn { MobileRegistration.Fail }
-            .subscribe { otpVerification.postValue(it) })
     }
 
     fun bookSlot(expertId: Int, payload: BookSlotPayload) {
@@ -246,7 +220,7 @@ sealed class BookSlotState() {
 }
 
 sealed class MobileRegistration() {
-    data class Success(val verificationResponse: VerificationResponse) : MobileRegistration()
+    data class Success(val profileResponseModel: ProfileResponseModel) : MobileRegistration()
     object Fail : MobileRegistration()
     object Loading : MobileRegistration()
 }

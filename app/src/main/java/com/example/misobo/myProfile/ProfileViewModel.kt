@@ -2,6 +2,7 @@ package com.example.misobo.myProfile
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.misobo.utils.ErrorHandler
 import com.example.misobo.utils.SharedPreferenceManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -25,7 +26,7 @@ class ProfileViewModel() : ViewModel() {
             }
             .startWith(ProfileResponseAction.Loading)
             .onErrorReturn {
-                ProfileResponseAction.Error(it.localizedMessage)
+                ProfileResponseAction.Error(ErrorHandler.handleError(it))
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { profileLiveData.postValue(it) })

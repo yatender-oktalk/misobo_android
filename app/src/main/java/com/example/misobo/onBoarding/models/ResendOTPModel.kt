@@ -2,11 +2,8 @@ package com.example.misobo.onBoarding.models
 
 import com.google.gson.annotations.SerializedName
 
-data class RegistrationModel(
+data class ResendOTPModel(
     @SerializedName("phone")
-    val phone: String?,
-    @SerializedName("device_id")
-    val deviceId: String?
+    val phone: String?
 ) {
-
 }

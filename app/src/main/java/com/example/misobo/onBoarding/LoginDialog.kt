@@ -1,24 +1,31 @@
-package com.example.misobo.talkToExperts.view
+package com.example.misobo.onBoarding
 
 import android.app.Dialog
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.misobo.R
+import com.example.misobo.onBoarding.models.RegistrationModel
+import com.example.misobo.onBoarding.viewModels.OnBoardingViewModel
 import com.example.misobo.talkToExperts.viewModels.MobileRegistration
 import com.example.misobo.talkToExperts.models.OtpPayload
 import com.example.misobo.talkToExperts.viewModels.TalkToExpertsViewModel
+import com.example.misobo.utils.SharedPreferenceManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.jakewharton.rxbinding2.widget.RxTextView
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.login_bottom_sheet.*
 
 class LoginDialog : BottomSheetDialogFragment() {
 
-    private val viewModel: TalkToExpertsViewModel by activityViewModels()
+    private val viewModel: OnBoardingViewModel by activityViewModels()
+    private val compositeDisposable = CompositeDisposable()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,7 +37,6 @@ class LoginDialog : BottomSheetDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogStyle)
     }
 
@@ -41,7 +47,7 @@ class LoginDialog : BottomSheetDialogFragment() {
             this.dismiss()
         }
 
-        RxTextView.textChanges(otpText)
+        compositeDisposable.add(RxTextView.textChanges(otpText)
             .subscribe {
                 if (it.length >= 10) {
                     sendOtpButton.alpha = 1f
@@ -50,17 +56,12 @@ class LoginDialog : BottomSheetDialogFragment() {
                     sendOtpButton.alpha = .7f
                     sendOtpButton.isEnabled = false
                 }
-            }
+            })
 
         viewModel.mobileRegistration.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is MobileRegistration.Success -> {
-                    this.dismiss()
-                    viewModel.mobileNumber.postValue(state.verificationResponse.data.phone)
-                    val otpDialog =
-                        OtpDialog()
-                    activity?.supportFragmentManager?.beginTransaction()
-                        ?.add(otpDialog, null)?.commit()
+
                 }
                 is MobileRegistration.Fail -> {
                 }
@@ -69,10 +70,31 @@ class LoginDialog : BottomSheetDialogFragment() {
             }
         })
 
+        viewModel.userLiveData.observe(viewLifecycleOwner, Observer { user ->
+            //this.dismiss()
+            activity?.supportFragmentManager?.beginTransaction()
+                ?.add(OtpDialog(), null)?.commit()
+        })
+
         sendOtpButton.setOnClickListener {
-            val OtpPayload =
-                OtpPayload(otpText.text.toString())
-            viewModel.mobileRegistration(OtpPayload)
+            if (!otpText.text.isNullOrEmpty() || !otpText.text.isNullOrBlank()) {
+                viewModel.mobileNumber.postValue(otpText.text.toString())
+                val registrationModel =
+                    RegistrationModel(
+                        otpText.text.toString(),
+                        Settings.Secure.getString(
+                            activity?.contentResolver,
+                            Settings.Secure.ANDROID_ID
+                        )
+                    )
+                viewModel.registerUser(registrationModel)
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Please enter your Phone number",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 
@@ -83,5 +105,10 @@ class LoginDialog : BottomSheetDialogFragment() {
         (contentView.parent as View).setBackgroundColor(
             resources.getColor(android.R.color.transparent)
         )
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        compositeDisposable.dispose()
     }
 }

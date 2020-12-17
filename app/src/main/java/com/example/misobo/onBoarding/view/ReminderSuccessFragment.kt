@@ -1,6 +1,7 @@
 package com.example.misobo.onBoarding.view
 
 import android.animation.ObjectAnimator
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.core.animation.doOnEnd
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import com.example.misobo.MainActivity
 import com.example.misobo.R
 import com.example.misobo.onBoarding.viewModels.OnBoardingViewModel
 import com.example.misobo.onBoarding.viewModels.ReminderTime
@@ -41,7 +43,9 @@ class ReminderSuccessFragment : Fragment() {
         anim.setDuration(3000)
         anim.doOnEnd {
             SharedPreferenceManager.setOnBoarded(true)
-            onBoardingViewModel.startMainActivityTrigger.postValue(true)
+            //onBoardingViewModel.startMainActivityTrigger.postValue(true)
+            startActivity(Intent(context, MainActivity::class.java))
+            activity?.finish()
         }
         anim.start()
 

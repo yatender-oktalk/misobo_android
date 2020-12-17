@@ -1,19 +1,26 @@
-package com.example.misobo.talkToExperts.view
+package com.example.misobo.onBoarding
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.misobo.R
+import com.example.misobo.onBoarding.models.ResendOTPModel
+import com.example.misobo.onBoarding.view.MisoboMembersActivity
+import com.example.misobo.onBoarding.view.MisoboMembersFragment
+import com.example.misobo.onBoarding.viewModels.OnBoardingViewModel
+import com.example.misobo.onBoarding.viewModels.ResendOTPAction
 import com.example.misobo.talkToExperts.models.BookSlotPayload
 import com.example.misobo.talkToExperts.viewModels.MobileRegistration
 import com.example.misobo.talkToExperts.models.OtpPayload
+import com.example.misobo.talkToExperts.view.BookSuccessDialog
+import com.example.misobo.talkToExperts.view.CoinsBottomSheet
 import com.example.misobo.talkToExperts.viewModels.BookSlotState
 import com.example.misobo.talkToExperts.viewModels.TalkToExpertsViewModel
 import com.example.misobo.utils.SharedPreferenceManager
@@ -29,7 +36,7 @@ import java.util.concurrent.TimeUnit
 
 class OtpDialog : BottomSheetDialogFragment() {
 
-    val viewModel: TalkToExpertsViewModel by activityViewModels()
+    val viewModel: OnBoardingViewModel by activityViewModels()
     val compositeDisposable = CompositeDisposable()
 
     override fun onCreateView(
@@ -59,17 +66,36 @@ class OtpDialog : BottomSheetDialogFragment() {
         }
 
         resendText.setOnClickListener {
-            val OtpPayload =
-                OtpPayload(viewModel.mobileNumber.value.toString())
-            viewModel.mobileRegistration(OtpPayload)
+            viewModel.resendOTP(
+                SharedPreferenceManager.getUser()?.data?.userId.toString(),
+                ResendOTPModel(viewModel.mobileNumber.value.toString())
+            )
         }
+
+        viewModel.resendOTPAction.observe(viewLifecycleOwner, Observer { state ->
+            when (state) {
+                is ResendOTPAction.Success -> {
+                    chatWithExperts.text =
+                        "OTP resent to ${viewModel.mobileNumber.value.toString()}"
+                    chatWithExperts.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.successGreen
+                        )
+                    )
+                    otpText.text.clear()
+                    invalidOtpText.visibility = View.INVISIBLE
+                    otpText.backgroundTintList =
+                        ContextCompat.getColorStateList(requireContext(), R.color.darkGrey)
+                    resendOTP()
+                }
+            }
+        })
 
         viewModel.mobileRegistration.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is MobileRegistration.Success -> {
                     resendOTP()
-                    chatWithExperts.text =
-                        "OTP resent to ${viewModel.mobileNumber.value.toString()}"
                 }
                 is MobileRegistration.Fail -> {
                 }
@@ -97,7 +123,8 @@ class OtpDialog : BottomSheetDialogFragment() {
             val verificationPayload =
                 OtpPayload(
                     viewModel.mobileNumber.value.toString(),
-                    otpText.text.toString().toInt()
+                    otpText.text.toString().toInt(),
+                    SharedPreferenceManager.getUser()?.data?.registrationId?.toInt()
                 )
             //Save id here.
             viewModel.verifyOtp(
@@ -106,7 +133,7 @@ class OtpDialog : BottomSheetDialogFragment() {
             )
         }
 
-        viewModel.bookSlotLiveData.observe(
+        /*viewModel.bookSlotLiveData.observe(
             viewLifecycleOwner,
             androidx.lifecycle.Observer { state ->
                 when (state) {
@@ -123,23 +150,28 @@ class OtpDialog : BottomSheetDialogFragment() {
                     }
                 }
             })
-
+*/
         viewModel.otpVerification.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is MobileRegistration.Success -> {
-                    if (SharedPreferenceManager.getUserProfile()?.data?.karmaPoints?.toInt()!! < viewModel.selectedExpertLiveDate.value?.karmaCoinsNeeded ?: 0)
+                    SharedPreferenceManager.setUserProfile(state.profileResponseModel)
+                    startActivity(Intent(context, MisoboMembersActivity::class.java))
+                    activity?.finish()
+
+
+                    /*if (SharedPreferenceManager.getUserProfile()?.data?.karmaPoints?.toInt()!! < viewModel.selectedExpertLiveDate.value?.karmaCoinsNeeded ?: 0)
                         activity?.supportFragmentManager?.beginTransaction()
                             ?.add(CoinsBottomSheet(), null)?.commit()
-                    else
-                        viewModel.selectedExpertLiveDate.value?.id?.let { it1 ->
-                            viewModel.bookSlot(
-                                it1,
-                                BookSlotPayload(
-                                    viewModel.slotSelectedLiveData.value
-                                )
-                            )
-                        }
-
+                    else*/
+                    /* viewModel.selectedExpertLiveDate.value?.id?.let { it1 ->
+                         viewModel.bookSlot(
+                             it1,
+                             BookSlotPayload(
+                                 viewModel.slotSelectedLiveData.value
+                             )
+                         )
+                     }
+*/
                 }
                 is MobileRegistration.Loading -> {
                     invalidOtpText.visibility = View.INVISIBLE
@@ -161,10 +193,10 @@ class OtpDialog : BottomSheetDialogFragment() {
             .observeOn(AndroidSchedulers.mainThread())
             .doOnComplete {
                 resendText.isClickable = true
-                resendText.text = "Click to resend OTP"
+                resendText.text = " Resend OTP"
             }
             .subscribe {
-                resendText.text = "Resend in ${32 - it}s"
+                resendText.text = " Resend in ${32 - it}s"
                 resendText.isClickable = false
             })
     }

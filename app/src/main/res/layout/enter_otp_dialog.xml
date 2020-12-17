@@ -61,7 +61,7 @@
             android:alpha=".7"
             android:fontFamily="@font/manrope_medium"
             android:lineSpacingExtra="14sp"
-            android:text="OTP sent to 8969710404"
+            tools:text="OTP sent to 8969710404"
             android:textColor="#4d426d"
             android:textSize="16sp"
             android:textStyle="normal"
