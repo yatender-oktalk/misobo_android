@@ -4,6 +4,7 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.format.DateFormat
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -23,6 +24,8 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.fragment_my_profile.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MyProfileFragment : Fragment() {
     private val groupAdapter = GroupAdapter<ViewHolder>()
@@ -64,7 +67,14 @@ class MyProfileFragment : Fragment() {
             false
         }
 
-        bmiScoreLayout.setOnClickListener { startActivity(Intent(context,BmiActivity::class.java)) }
+        bmiScoreLayout.setOnClickListener {
+            startActivity(
+                Intent(
+                    context,
+                    BmiActivity::class.java
+                )
+            )
+        }
 
         profileViewModel.getProfile(SharedPreferenceManager.getUser()?.data?.userId ?: -1)
 
@@ -73,15 +83,23 @@ class MyProfileFragment : Fragment() {
                 is ProfileResponseAction.Success -> {
                     SharedPreferenceManager.setUserProfile(state.response)
                     karmaCoinsText.text = state.response.data?.karmaPoints ?: "0"
-                    if (state.response.data?.bmi != null)
+                    if (state.response.data?.bmi != null) {
                         bmiScore.text = state.response.data.bmi
-                    else
+                        if (state.response.data.bmiCheckedDate != null) {
+                            val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+                            val parsedDate: Date = dateFormat.parse(state.response.data.bmiCheckedDate)
+                            val date = DateFormat.format("dd", parsedDate)
+                            val month = DateFormat.format("MMM", parsedDate)
+                            val year = DateFormat.format("yy", parsedDate)
+                            calculationDateTextView.text ="Calculated on ${date} ${month}'${year}"
+                        }
+                    } else
                         bmiScoreLayout.visibility = View.GONE
                     groupAdapter.clear()
                     val section = Section()
                     section.add(
                         DailyCheckinItem(
-                            state.response.data?.loginStreak?.one ?:"",
+                            state.response.data?.loginStreak?.one ?: "",
                             "S"
                         )
                     )

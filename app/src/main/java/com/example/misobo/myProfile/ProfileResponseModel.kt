@@ -32,7 +32,9 @@ data class ProfileResponseModel(
         @SerializedName("login_streak_days")
         val loginStreakDays: Int?,
         @SerializedName("login_streak")
-        val loginStreak: Streak?
+        val loginStreak: Streak?,
+        @SerializedName("bmi_checked_at")
+        val bmiCheckedDate:String?
     )
 
     data class Streak(
