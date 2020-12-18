@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -40,7 +41,6 @@ class MindFragment : Fragment() {
     private val talkToExpertsViewModel: TalkToExpertsViewModel by activityViewModels()
     private val profileViewModel by lazy { ViewModelProvider(this).get(ProfileViewModel::class.java) }
     private val loadingFragment = LoadingFragment()
-    lateinit var taskForTheDayItem: TasksForTheDayItems
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -124,21 +124,21 @@ class MindFragment : Fragment() {
             }
         })
 
-        if (mindViewModel.musicLiveData.value == null)
-            mindViewModel.fetchAllMusic()
+        //if (mindViewModel.musicLiveData.value == null)
+        mindViewModel.fetchAllMusic()
         mindViewModel.musicLiveData.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is MusicFetchState.Success -> {
-                    mindViewModel.mutableMusicList = (state.musicEntries).toMutableList()
-                    taskForTheDayItem = TasksForTheDayItems(mindViewModel.mutableMusicList) { position ->
+                    //adapter.remove(taskForTheDaySection)
+                    taskForTheDaySection.add(TasksForTheDayItems(state.musicEntries) { position ->
                         mindViewModel.playMusicLiveData.postValue(
-                            mindViewModel.mutableMusicList.get(position)
+                            state.musicEntries[position]
                         )
                         activity?.supportFragmentManager?.beginTransaction()
                             ?.replace(R.id.mainContainer, MusicPlayerFragment())
                             ?.addToBackStack(null)?.commit()
-                    }
-                    taskForTheDaySection.add(taskForTheDayItem)
+                    })
+                    //adapter.up(1,taskForTheDaySection)
                 }
                 is MusicFetchState.Loading -> {
 
@@ -149,10 +149,18 @@ class MindFragment : Fragment() {
             }
         })
 
-        mindViewModel.musicList.observe(viewLifecycleOwner, Observer {
-            Log.i("music", it.toString())
-            taskForTheDaySection.add(taskForTheDayItem)
-            taskForTheDayItem.notifyChanged(it)
+        mindViewModel.congratsListenerLiveData.observe(viewLifecycleOwner, Observer { coins ->
+            val bundle = Bundle()
+            bundle.putString("COINS", coins.toString())
+            val congratsFragment = CongratsFragment()
+            congratsFragment.arguments = bundle
+            activity?.supportFragmentManager?.beginTransaction()
+                ?.add(
+                    R.id.mainContainer,
+                    congratsFragment
+                )
+                ?.addToBackStack(null)
+                ?.commit()
         })
 
         if (blogsViewModel.blogLiveData.value == null)

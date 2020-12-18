@@ -19,6 +19,7 @@ import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -32,7 +33,7 @@ class MusicPlayerFragment : Fragment() {
     private val mindViewModel: MindViewModel by activityViewModels()
     private val compositeDisposable = CompositeDisposable()
     lateinit var simpleExoPlayer: SimpleExoPlayer
-    var musicId: Int?= 0
+    var musicId: Int? = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,7 +48,7 @@ class MusicPlayerFragment : Fragment() {
 
         activity?.bottomNavigationView?.visibility = View.GONE
         mindViewModel.playMusicLiveData.observe(viewLifecycleOwner, Observer { musicModel ->
-            mindViewModel.selectedMusicId = musicModel.id?:0
+            mindViewModel.selectedMusicId = musicModel.id ?: 0
             musicModel.title?.let {
                 songTitle.text = it
             }
@@ -152,6 +153,10 @@ class MusicPlayerFragment : Fragment() {
 
     private fun updateProgress() {
         val progressToMilli = simpleExoPlayer.currentPosition
+        val progressInSec = TimeUnit.MILLISECONDS.toSeconds(progressToMilli)
+        val durationInSec = TimeUnit.MILLISECONDS.toSeconds(simpleExoPlayer.duration)
+        val progress =
+            progressInSec.toFloat().div(durationInSec.toFloat()).times(100)
         mindViewModel.updateProgress(
             mindViewModel.selectedMusicId,
             ProgressPayload(
@@ -159,5 +164,7 @@ class MusicPlayerFragment : Fragment() {
                 progress = TimeUnit.MILLISECONDS.toSeconds(progressToMilli)
             )
         )
+        if (progress > 95)
+            mindViewModel.congratsListenerLiveData.postValue(mindViewModel.playMusicLiveData.value?.karma)
     }
 }

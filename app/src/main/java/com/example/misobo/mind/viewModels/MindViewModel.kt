@@ -18,6 +18,7 @@ class MindViewModel : ViewModel() {
     private val compositeDisposable = CompositeDisposable()
     private var mindService = MindService.Creator.service
     val musicLiveData: SingleLiveEvent<MusicFetchState> = SingleLiveEvent()
+    val congratsListenerLiveData: SingleLiveEvent<Int> = SingleLiveEvent()
     val progressLiveData: MutableLiveData<FetchState> = MutableLiveData()
     val playMusicLiveData: MutableLiveData<MusicResponseModel.MusicModel> = MutableLiveData()
     var mutableMusicList: MutableList<MusicResponseModel.MusicModel> = mutableListOf()
