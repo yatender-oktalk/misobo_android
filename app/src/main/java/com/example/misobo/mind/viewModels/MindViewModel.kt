@@ -8,6 +8,8 @@ import com.example.misobo.mind.models.OrderPayload
 import com.example.misobo.mind.models.OrderResponse
 import com.example.misobo.mind.models.ProgressPayload
 import com.example.misobo.myProfile.FetchState
+import com.example.misobo.utils.LiveSharedPreference
+import com.example.misobo.utils.SharedPreferenceManager
 import com.example.misobo.utils.SingleLiveEvent
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -24,6 +26,10 @@ class MindViewModel : ViewModel() {
     var mutableMusicList: MutableList<MusicResponseModel.MusicModel> = mutableListOf()
     val musicList: MutableLiveData<List<MusicResponseModel.MusicModel>> = MutableLiveData()
     var selectedMusicId: Int = 0
+    private val liveSharedPreference =
+        LiveSharedPreference(SharedPreferenceManager.sharedPreferences!!)
+
+    fun getCoinsLiveData() = liveSharedPreference
 
     fun fetchAllMusic() {
         compositeDisposable.add(mindService.fetchAllMusic(1)

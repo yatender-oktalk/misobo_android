@@ -17,7 +17,6 @@ private const val ARG_PARAM1 = "param1"
 
 class BlogsDetailFragment : Fragment() {
     private var blogId: Int? = null
-
     private val blogsViewModel: BlogsViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {

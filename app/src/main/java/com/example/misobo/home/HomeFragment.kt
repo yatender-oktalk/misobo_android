@@ -11,6 +11,7 @@ import android.view.inputmethod.EditorInfo
 import com.example.misobo.R
 import com.example.misobo.bmi.view.BmiActivity
 import com.example.misobo.mind.view.MindFragment
+import com.example.misobo.onBoarding.KarmaCoinsLayoutFragment
 import com.example.misobo.utils.SharedPreferenceManager
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -42,18 +43,34 @@ class HomeFragment : Fragment() {
 
         activity?.bottomNavigationView?.visibility = View.VISIBLE
         unlockButtonBody.setOnClickListener {
-            startActivity(Intent(context, BmiActivity::class.java))
+            val bundle = Bundle()
+            bundle.putInt("TO", 1)
+            val karmaCoinsFragment = KarmaCoinsLayoutFragment()
+            karmaCoinsFragment.arguments = bundle
+            activity?.supportFragmentManager
+                ?.beginTransaction()
+                ?.replace(R.id.mainContainer, karmaCoinsFragment)
+                ?.commit()
+            //startActivity(Intent(context, BmiActivity::class.java))
         }
 
         unlockButtonMind.setOnClickListener {
-            SharedPreferenceManager.setMindUnlock(true)
+            val bundle = Bundle()
+            bundle.putInt("TO", 2)
+            val karmaCoinsFragment = KarmaCoinsLayoutFragment()
+            karmaCoinsFragment.arguments = bundle
             activity?.supportFragmentManager
+                ?.beginTransaction()
+                ?.replace(R.id.mainContainer, karmaCoinsFragment)
+                ?.commit()
+            SharedPreferenceManager.setMindUnlock(true)
+            /*activity?.supportFragmentManager
                 ?.beginTransaction()
                 ?.replace(
                     R.id.mainContainer,
                     MindFragment()
                 )
-                ?.commit()
+                ?.commit()*/
             //startActivity(Intent(context, MindActivity::class.java))
         }
     }

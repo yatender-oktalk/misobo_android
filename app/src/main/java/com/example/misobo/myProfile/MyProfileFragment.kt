@@ -15,14 +15,17 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.example.misobo.Misobo
 import com.example.misobo.R
 import com.example.misobo.bmi.view.BmiActivity
+import com.example.misobo.utils.AuthState
 import com.example.misobo.utils.SharedPreferenceManager
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_my_profile.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -74,6 +77,15 @@ class MyProfileFragment : Fragment() {
                     BmiActivity::class.java
                 )
             )
+        }
+
+        rewardsTextView.setOnClickListener {
+            activity?.bottomNavigationView?.selectedItemId = R.id.rewards
+        }
+
+        logoutTextView.setOnClickListener {
+            SharedPreferenceManager.clear()
+            Misobo.authRelay.onNext(AuthState.FAILED)
         }
 
         profileViewModel.getProfile(SharedPreferenceManager.getUser()?.data?.userId ?: -1)
@@ -141,11 +153,6 @@ class MyProfileFragment : Fragment() {
                     )
 
                     groupAdapter.add(section)
-                    Toast.makeText(
-                        context,
-                        state.response.data?.loginStreak?.two.toString(),
-                        Toast.LENGTH_SHORT
-                    ).show()
                 }
                 is ProfileResponseAction.Loading -> {
 

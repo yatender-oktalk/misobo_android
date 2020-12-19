@@ -8,7 +8,11 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.curated_articles_item_layout.view.*
 
-class CuratedArticlesItem(val blogsModel: BlogsModel, val onCLick: (Int) -> Unit) : Item() {
+class CuratedArticlesItem(
+    val blogsModel: BlogsModel,
+    val onCLick: (Int) -> Unit,
+    val viewAllClicked: () -> Unit
+) : Item() {
     val adapter = GroupAdapter<ViewHolder>()
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
@@ -16,11 +20,12 @@ class CuratedArticlesItem(val blogsModel: BlogsModel, val onCLick: (Int) -> Unit
         viewHolder.itemView.curatedArticlesRecyclerView.adapter = adapter
         adapter.clear()
         val blogSection = Section()
-        blogsModel.data?.forEachIndexed { index,model ->
+        blogsModel.data?.forEachIndexed { index, model ->
             blogSection.add(ArticlesRecyclerItem(model) {
                 onCLick.invoke(index)
             })
         }
+        viewHolder.itemView.viewAll.setOnClickListener { viewAllClicked.invoke() }
         adapter.add(blogSection)
     }
 

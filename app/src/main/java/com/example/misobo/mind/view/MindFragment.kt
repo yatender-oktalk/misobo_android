@@ -72,6 +72,10 @@ class MindFragment : Fragment() {
             adapter.remove(unlockSection)
         })
 
+        mindViewModel.getCoinsLiveData().observe(viewLifecycleOwner, Observer { response->
+            fillName(helloSection)
+        })
+
         profileViewModel.nameLiveData.observe(requireActivity(), Observer { state ->
             when (state) {
                 is FetchState.Success -> {
@@ -168,7 +172,7 @@ class MindFragment : Fragment() {
         blogsViewModel.blogLiveData.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is BlogsFetchState.Success -> {
-                    blogsSection.add(CuratedArticlesItem(state.blogsModel) {
+                    blogsSection.add(CuratedArticlesItem(state.blogsModel, {
                         blogsViewModel.detailedBlogLiveData.postValue(
                             BlogDetailedFetchState.Success(
                                 state.blogsModel.data?.get(it)!!
@@ -177,7 +181,11 @@ class MindFragment : Fragment() {
                         activity?.supportFragmentManager?.beginTransaction()
                             ?.replace(R.id.mainContainer, BlogsDetailFragment.newInstance(it))
                             ?.addToBackStack(null)?.commit()
-                    })
+                    }, {
+                        activity?.supportFragmentManager?.beginTransaction()
+                            ?.replace(R.id.mainContainer, ArticlesFragment())
+                            ?.addToBackStack(null)?.commit()
+                    }))
                 }
                 is BlogsFetchState.Loading -> {
                 }

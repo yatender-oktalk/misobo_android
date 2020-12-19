@@ -11,6 +11,7 @@ import com.example.misobo.R
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_claimed_rewards.*
 
 class ClaimedRewardsFragment : Fragment() {
@@ -30,6 +31,7 @@ class ClaimedRewardsFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        activity?.bottomNavigationView?.visibility = View.GONE
         recyclerView.adapter = groupedAdapter
         rewardsViewModel.claimedRewardsList.observe(viewLifecycleOwner, Observer { rewardsList ->
             rewardsList.forEach {
@@ -39,5 +41,11 @@ class ClaimedRewardsFragment : Fragment() {
         })
         backIcon.setOnClickListener { activity?.onBackPressed() }
         groupedAdapter.add(section)
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        activity?.bottomNavigationView?.visibility = View.VISIBLE
     }
 }

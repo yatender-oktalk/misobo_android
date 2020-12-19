@@ -83,6 +83,10 @@ class MainActivity : AppCompatActivity(),PaymentResultListener {
 
     }
 
+    fun redirectToRewardstab(){
+        bottomNavigationView.selectedItemId = R.id.rewards
+    }
+
     override fun onPaymentSuccess(p0: String?) {
         talkToExpertsViewModel.captureOrder(
             CaptureOrderPayload(

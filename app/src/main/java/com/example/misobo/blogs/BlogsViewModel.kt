@@ -2,6 +2,7 @@ package com.example.misobo.blogs
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.misobo.utils.SingleLiveEvent
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
@@ -10,7 +11,7 @@ class BlogsViewModel : ViewModel() {
     val compositeDisposable = CompositeDisposable()
     private var blogService = BlogsService.Creator.service
     val blogLiveData: MutableLiveData<BlogsFetchState> = MutableLiveData()
-    val detailedBlogLiveData: MutableLiveData<BlogDetailedFetchState> = MutableLiveData()
+    val detailedBlogLiveData: SingleLiveEvent<BlogDetailedFetchState> = SingleLiveEvent()
 
     fun fetchBlogs() {
         compositeDisposable.add(blogService.fetchAllBlogs()
