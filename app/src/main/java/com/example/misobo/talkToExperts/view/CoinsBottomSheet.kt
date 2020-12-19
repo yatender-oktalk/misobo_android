@@ -147,8 +147,8 @@ class CoinsBottomSheet : BottomSheetDialogFragment(), PaymentResultListener {
             options.put("amount", viewModel.paymentAmount.toString())//pass amount in currency subunits
 
             val prefill = JSONObject()
-            prefill.put("email", "akshay@gmail.com")
-            prefill.put("contact", "9876543210")
+            //prefill.put("email", "akshay@gmail.com")
+            //prefill.put("contact", "9876543210")
             options.put("prefill", prefill)
             co.open(activity, options)
         } catch (e: Exception) {

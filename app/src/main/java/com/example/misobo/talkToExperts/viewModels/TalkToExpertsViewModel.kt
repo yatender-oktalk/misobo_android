@@ -1,17 +1,12 @@
 package com.example.misobo.talkToExperts.viewModels
 
-import android.app.Application
-import android.content.SharedPreferences
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.preference.Preference
 import com.example.misobo.mind.models.OrderPayload
 import com.example.misobo.mind.models.OrderResponse
 import com.example.misobo.mind.viewModels.OrderFetchState
 import com.example.misobo.myProfile.FetchState
 import com.example.misobo.myProfile.ProfileResponseModel
-import com.example.misobo.talkToExperts.models.VerificationResponse
 import com.example.misobo.talkToExperts.api.ExpertsService
 import com.example.misobo.talkToExperts.models.*
 import com.example.misobo.utils.ErrorHandler
@@ -32,7 +27,7 @@ class TalkToExpertsViewModel : ViewModel() {
     val slotSelectedLiveData: MutableLiveData<Long> = MutableLiveData()
     val bookSlotLiveData: SingleLiveEvent<BookSlotState> = SingleLiveEvent()
 
-    val orderLiveData: MutableLiveData<OrderFetchState> = MutableLiveData()
+    val orderLiveData: SingleLiveEvent<OrderFetchState> = SingleLiveEvent()
     val currentOrder: MutableLiveData<OrderResponse> = MutableLiveData()
     val captureOrderLiveData: MutableLiveData<CaptureOrderState> = MutableLiveData()
     val packsLiveData: MutableLiveData<PacksFetchState> = MutableLiveData()
@@ -107,6 +102,7 @@ class TalkToExpertsViewModel : ViewModel() {
         compositeDisposable.add(expertsService.bookSlot(expertId, payload)
             .subscribeOn(Schedulers.io())
             .map {
+                getUserBookings(SharedPreferenceManager.getUser()?.data?.userId.toString())
                 BookSlotState.Success(
                     it
                 ) as BookSlotState

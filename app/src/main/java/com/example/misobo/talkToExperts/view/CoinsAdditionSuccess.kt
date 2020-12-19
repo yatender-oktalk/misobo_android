@@ -46,6 +46,10 @@ class CoinsAdditionSuccess : BottomSheetDialogFragment() {
 
         karmaCoinsText.text =viewModel.pack.toString()
 
+        crossButton.setOnClickListener {
+            this.dismiss()
+        }
+
         viewModel.selectedExpertLiveDate.value?.id?.let { it1 ->
             viewModel.bookSlot(
                 it1,
@@ -60,6 +64,7 @@ class CoinsAdditionSuccess : BottomSheetDialogFragment() {
             androidx.lifecycle.Observer { state ->
                 when (state) {
                     is BookSlotState.Success -> {
+                        this.dismiss()
                         activity?.supportFragmentManager?.beginTransaction()
                             ?.add(BookSuccessDialog(), null)?.commit()
                     }
