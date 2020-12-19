@@ -77,8 +77,14 @@ interface ExpertsService {
     @Headers("Accept: application/json", "Content-Type: application/json")
     @GET("api/user/{userId}/expert_bookings?page=1")
     fun fetchBookings(
-        @Path(value = "userId") userId:String
+        @Path(value = "userId") userId: String
     ): Observable<UserBookings>
+
+    @Headers("Accept: application/json", "Content-Type: application/json")
+    @POST("api/rating")
+    fun submitRating(
+        @Body payload: RatingPayload
+    ): Observable<RatingResponse>
 
     object Creator {
         private const val url: String = "http://143.110.176.70:4000/"

@@ -1,5 +1,7 @@
 package com.example.misobo.talkToExperts.models
 
+import com.google.gson.annotations.SerializedName
+
 data class UserBookings(
     val data:Data?
 ) {
@@ -12,7 +14,10 @@ data class UserBookings(
         val karma:Int?,
         val expertId:Int?,
         val startTime:String?,
+        @SerializedName("end_time")
         val endTime:String?,
+        @SerializedName("is_rated")
+        val isRated:Boolean?,
         val expert:ExpertModel.Expert?
     )
 

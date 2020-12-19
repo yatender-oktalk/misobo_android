@@ -9,10 +9,12 @@ import androidx.preference.Preference
 import com.example.misobo.mind.models.OrderPayload
 import com.example.misobo.mind.models.OrderResponse
 import com.example.misobo.mind.viewModels.OrderFetchState
+import com.example.misobo.myProfile.FetchState
 import com.example.misobo.myProfile.ProfileResponseModel
 import com.example.misobo.talkToExperts.models.VerificationResponse
 import com.example.misobo.talkToExperts.api.ExpertsService
 import com.example.misobo.talkToExperts.models.*
+import com.example.misobo.utils.ErrorHandler
 import com.example.misobo.utils.LiveSharedPreference
 import com.example.misobo.utils.SharedPreferenceManager
 import com.example.misobo.utils.SingleLiveEvent
@@ -35,6 +37,8 @@ class TalkToExpertsViewModel : ViewModel() {
     val captureOrderLiveData: MutableLiveData<CaptureOrderState> = MutableLiveData()
     val packsLiveData: MutableLiveData<PacksFetchState> = MutableLiveData()
     val userBookingsLiveData: MutableLiveData<UserBookingsFetchState> = MutableLiveData()
+
+    val submitRatingLiveData: MutableLiveData<FetchState> = MutableLiveData()
 
     var expertsService = ExpertsService.Creator.service
     var paymentAmount = 1.00
@@ -189,6 +193,23 @@ class TalkToExpertsViewModel : ViewModel() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 userBookingsLiveData.postValue(it)
+            })
+    }
+
+    fun submitRating(ratingPayload: RatingPayload) {
+        compositeDisposable.add(expertsService.submitRating(ratingPayload)
+            .subscribeOn(Schedulers.io())
+            .map {
+                FetchState.Success
+                        as FetchState
+            }
+            .startWith(FetchState.Loading)
+            .onErrorReturn {
+                FetchState.Error(ErrorHandler.handleError(it))
+            }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                submitRatingLiveData.postValue(it)
             })
     }
 }

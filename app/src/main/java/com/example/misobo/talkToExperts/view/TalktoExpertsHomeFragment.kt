@@ -9,22 +9,23 @@ import android.view.ViewGroup.MarginLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.preference.PreferenceManager
-import com.example.misobo.Misobo
 import com.example.misobo.R
-import com.example.misobo.talkToExperts.items.BookingsRecyclerItem
+import com.example.misobo.myProfile.FetchState
+import com.example.misobo.talkToExperts.items.SubmitRatingItems
 import com.example.misobo.talkToExperts.items.UserBookingsItem
 import com.example.misobo.talkToExperts.viewModels.CategoriesState
 import com.example.misobo.talkToExperts.viewModels.TalkToExpertsViewModel
 import com.example.misobo.talkToExperts.models.ExpertCategoriesModel
+import com.example.misobo.talkToExperts.models.RatingPayload
 import com.example.misobo.talkToExperts.viewModels.UserBookingsFetchState
-import com.example.misobo.utils.LiveSharedPreference
 import com.example.misobo.utils.SharedPreferenceManager
 import com.example.misobo.utils.Util
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.fragment_talkto_experts_home.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class TalktoExpertsHomeFragment : Fragment() {
 
@@ -49,8 +50,8 @@ class TalktoExpertsHomeFragment : Fragment() {
         viewModel.getCoinsLiveData()
             .observe(viewLifecycleOwner,
                 Observer { response ->
-                    karmaCoinsText.text = response.data?.karmaPoints?:"0"
-                    Log.i("profile" , response.toString())
+                    karmaCoinsText.text = response.data?.karmaPoints ?: "0"
+                    Log.i("profile", response.toString())
                 })
 
         viewModel.getExpertCategories()
@@ -67,8 +68,25 @@ class TalktoExpertsHomeFragment : Fragment() {
                         currentBookingsGroup.visibility = View.VISIBLE
                         groupAdapter.clear()
                         val section = Section()
+                        val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+                        val currentDateTime = Date().time
+                        Log.i("date", Date().time.toString())
                         state.userBookings.data?.entries?.forEach {
-                            section.add(UserBookingsItem(it))
+                            val callCompleted =
+                                currentDateTime.compareTo(dateFormat.parse(it.endTime).time)
+                            if (callCompleted == 1 && it.isRated == false) {
+                                section.add(SubmitRatingItems(it) { rating ->
+                                    viewModel.submitRating(
+                                        RatingPayload(
+                                            bookingId = it.id ?: 0,
+                                            rating = rating
+                                        )
+                                    )
+                                })
+                            } else if (callCompleted != 1 && it.isRated == false) {
+                                section.add(UserBookingsItem(it))
+                            }
+                            //Log.i("comp", currentDateTime.compareTo(dateFormat.parse(it.endTime).time).toString())
                         }
                         groupAdapter.add(section)
                     } else {
@@ -77,6 +95,17 @@ class TalktoExpertsHomeFragment : Fragment() {
                 }
                 is UserBookingsFetchState.Fail -> {
                     currentBookingsGroup.visibility = View.GONE
+                }
+            }
+        })
+
+        viewModel.submitRatingLiveData.observe(viewLifecycleOwner, Observer { state->
+            when(state){
+                is FetchState.Success->{
+                    viewModel.getUserBookings(SharedPreferenceManager.getUser()?.data?.userId.toString())
+                }
+                is FetchState.Error->{
+                    viewModel.getUserBookings(SharedPreferenceManager.getUser()?.data?.userId.toString())
                 }
             }
         })
