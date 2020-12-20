@@ -1,10 +1,13 @@
 package com.example.misobo.talkToExperts.view
 
 import android.app.Dialog
+import android.content.DialogInterface
+import android.content.res.Resources
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -12,6 +15,8 @@ import com.example.misobo.R
 import com.example.misobo.myProfile.ProfileViewModel
 import com.example.misobo.talkToExperts.viewModels.TalkToExpertsViewModel
 import com.example.misobo.utils.SharedPreferenceManager
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.book_success_dialog.*
 
@@ -36,6 +41,22 @@ class BookSuccessDialog:BottomSheetDialogFragment() {
         (contentView.parent as View).setBackgroundColor(
             resources.getColor(android.R.color.transparent)
         )
+    }
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val bottomSheetDialog =
+            super.onCreateDialog(savedInstanceState) as BottomSheetDialog
+        bottomSheetDialog.setOnShowListener { dialog: DialogInterface ->
+            val dialogc = dialog as BottomSheetDialog
+            // When using AndroidX the resource can be found at com.google.android.material.R.id.design_bottom_sheet
+            val bottomSheet =
+                dialogc.findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
+            val bottomSheetBehavior: BottomSheetBehavior<*> =
+                BottomSheetBehavior.from<FrameLayout?>(bottomSheet!!)
+            bottomSheetBehavior.peekHeight = Resources.getSystem().displayMetrics.heightPixels
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED)
+        }
+        return bottomSheetDialog
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
