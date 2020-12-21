@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.fragment.app.activityViewModels
+import com.example.misobo.Misobo
 import com.example.misobo.R
 import com.example.misobo.onBoarding.LoginDialog
 import com.example.misobo.talkToExperts.items.DateRecyclerItem
@@ -19,6 +20,8 @@ import com.example.misobo.talkToExperts.models.ExpertSlotsResponse
 import com.example.misobo.talkToExperts.viewModels.BookSlotState
 import com.example.misobo.talkToExperts.viewModels.SlotFetchState
 import com.example.misobo.talkToExperts.viewModels.TalkToExpertsViewModel
+import com.example.misobo.utils.AuthState
+import com.example.misobo.utils.SharedPreferenceManager
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -130,14 +133,10 @@ class BookASlotDialog : BottomSheetDialogFragment() {
                     }
                     is BookSlotState.NotAuthorised -> {
                         this.dismiss()
-                        val loginDialog =
-                            LoginDialog()
-                        activity?.supportFragmentManager?.beginTransaction()
-                            ?.add(loginDialog, null)?.commit()
+                        SharedPreferenceManager.clear()
+                        Misobo.authRelay.onNext(AuthState.FAILED)
                     }
-                    is BookSlotState.NotSufficientKarma->{
-                        val loginDialog =
-                            LoginDialog()
+                    is BookSlotState.NotSufficientKarma -> {
                         activity?.supportFragmentManager?.beginTransaction()
                             ?.add(CoinsBottomSheet(), null)?.commit()
                     }

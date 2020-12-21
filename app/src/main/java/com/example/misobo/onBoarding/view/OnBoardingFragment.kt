@@ -78,5 +78,4 @@ class OnBoardingFragment : Fragment() {
                 ?.add(loginDialog, null)?.commit()
         }
     }
-
 }

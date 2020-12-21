@@ -20,7 +20,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.book_success_dialog.*
 
-class BookSuccessDialog:BottomSheetDialogFragment() {
+class BookSuccessDialog : BottomSheetDialogFragment() {
 
     val viewModel: TalkToExpertsViewModel by activityViewModels()
     val profileViewModel: ProfileViewModel by lazy { ViewModelProvider(this).get(ProfileViewModel::class.java) }
@@ -31,7 +31,7 @@ class BookSuccessDialog:BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.book_success_dialog,container,false)
+        return inflater.inflate(R.layout.book_success_dialog, container, false)
     }
 
     override fun setupDialog(dialog: Dialog, style: Int) {
@@ -53,6 +53,7 @@ class BookSuccessDialog:BottomSheetDialogFragment() {
                 dialogc.findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
             val bottomSheetBehavior: BottomSheetBehavior<*> =
                 BottomSheetBehavior.from<FrameLayout?>(bottomSheet!!)
+            bottomSheetDialog.setCancelable(false)
             bottomSheetBehavior.peekHeight = Resources.getSystem().displayMetrics.heightPixels
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED)
         }
@@ -65,11 +66,16 @@ class BookSuccessDialog:BottomSheetDialogFragment() {
         profileViewModel.getProfile(
             SharedPreferenceManager.getUser()?.data?.userId ?: 0
         )
-        viewModel.selectedExpertLiveDate.observe(viewLifecycleOwner, Observer { response->
-            nameTextView.text=response.name
+        viewModel.selectedExpertLiveDate.observe(viewLifecycleOwner, Observer { response ->
+            nameTextView.text = response.name
             expertLanguage.text = response.language
         })
 
-        okayButton.setOnClickListener { this.dismiss() }
+        okayButton.setOnClickListener {
+            activity?.supportFragmentManager?.fragments
+                .takeIf { it?.isNotEmpty() ?: false }
+                ?.map { (it as? BottomSheetDialogFragment)?.dismiss() }
+            //this.dismiss()
+        }
     }
 }

@@ -14,9 +14,6 @@ import com.example.misobo.R
 import com.example.misobo.onBoarding.models.RegistrationModel
 import com.example.misobo.onBoarding.viewModels.OnBoardingViewModel
 import com.example.misobo.talkToExperts.viewModels.MobileRegistration
-import com.example.misobo.talkToExperts.models.OtpPayload
-import com.example.misobo.talkToExperts.viewModels.TalkToExpertsViewModel
-import com.example.misobo.utils.SharedPreferenceManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.jakewharton.rxbinding2.widget.RxTextView
 import io.reactivex.disposables.CompositeDisposable

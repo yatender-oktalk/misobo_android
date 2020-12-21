@@ -38,6 +38,8 @@ class TalkToExpertsViewModel : ViewModel() {
     var expertsService = ExpertsService.Creator.service
     var paymentAmount = 1.00
     var pack = 1000
+
+
     private val liveSharedPreference =
         LiveSharedPreference(SharedPreferenceManager.sharedPreferences!!)
 

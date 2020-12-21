@@ -16,13 +16,8 @@ import com.example.misobo.onBoarding.view.MisoboMembersActivity
 import com.example.misobo.onBoarding.view.MisoboMembersFragment
 import com.example.misobo.onBoarding.viewModels.OnBoardingViewModel
 import com.example.misobo.onBoarding.viewModels.ResendOTPAction
-import com.example.misobo.talkToExperts.models.BookSlotPayload
 import com.example.misobo.talkToExperts.viewModels.MobileRegistration
 import com.example.misobo.talkToExperts.models.OtpPayload
-import com.example.misobo.talkToExperts.view.BookSuccessDialog
-import com.example.misobo.talkToExperts.view.CoinsBottomSheet
-import com.example.misobo.talkToExperts.viewModels.BookSlotState
-import com.example.misobo.talkToExperts.viewModels.TalkToExpertsViewModel
 import com.example.misobo.utils.SharedPreferenceManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.jakewharton.rxbinding2.widget.RxTextView
