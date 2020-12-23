@@ -48,7 +48,5 @@ class ReminderSuccessFragment : Fragment() {
             activity?.finish()
         }
         anim.start()
-
-
     }
 }

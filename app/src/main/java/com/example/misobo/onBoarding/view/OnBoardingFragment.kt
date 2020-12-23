@@ -54,8 +54,6 @@ class OnBoardingFragment : Fragment() {
                 mindTextView.text = it
             },{}))
 
-
-
         try {
             /* val registrationModel =
                 RegistrationModel(

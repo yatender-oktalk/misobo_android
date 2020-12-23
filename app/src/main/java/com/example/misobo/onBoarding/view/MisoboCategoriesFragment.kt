@@ -51,13 +51,13 @@ class MisoboCategoriesFragment : Fragment() {
                 onBoardingViewModel.saveCategories(
                     CategoriesRequestModel(
                         listOf(
-                            onBoardingViewModel.categorySelectedPosition.value
+                            onBoardingViewModel.categorySelectedPosition.value?.plus(1)
                         )
                     ),
                     SharedPreferenceManager.getUser()?.data?.registrationId ?: -1
                 )
             } else {
-                Toast.makeText(context,"Please select a category" ,Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Please select a category", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -76,7 +76,7 @@ class MisoboCategoriesFragment : Fragment() {
                 is ResponseAction.Loading -> categoriesContinueButton.isEnabled = false
                 is ResponseAction.Failure -> {
                     categoriesContinueButton.isEnabled = true
-                    Toast.makeText(context,"Please try again" ,Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Please try again", Toast.LENGTH_SHORT).show()
                 }
             }
         })

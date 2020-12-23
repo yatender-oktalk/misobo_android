@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import com.example.misobo.MainActivity
 import com.example.misobo.R
 import com.example.misobo.onBoarding.models.ResendOTPModel
 import com.example.misobo.onBoarding.view.MisoboMembersActivity
@@ -150,8 +151,13 @@ class OtpDialog : BottomSheetDialogFragment() {
             when (state) {
                 is MobileRegistration.Success -> {
                     SharedPreferenceManager.setUserProfile(state.profileResponseModel)
-                    startActivity(Intent(context, MisoboMembersActivity::class.java))
-                    activity?.finish()
+                    if (state.profileResponseModel.isNewUser != true) {
+                        startActivity(Intent(context, MainActivity::class.java))
+                        activity?.finish()
+                    } else {
+                        startActivity(Intent(context, MisoboMembersActivity::class.java))
+                        activity?.finish()
+                    }
 
 
                     /*if (SharedPreferenceManager.getUserProfile()?.data?.karmaPoints?.toInt()!! < viewModel.selectedExpertLiveDate.value?.karmaCoinsNeeded ?: 0)

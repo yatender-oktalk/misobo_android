@@ -6,7 +6,9 @@ data class ProfileResponseModel(
     @SerializedName("data")
     val data: Data?,
     @SerializedName("msg")
-    val message: String?
+    val message: String?,
+    @SerializedName("is_new_user")
+    val isNewUser: Boolean? = false
 ) {
     data class Data(
         @SerializedName("id")
@@ -34,7 +36,11 @@ data class ProfileResponseModel(
         @SerializedName("login_streak")
         val loginStreak: Streak?,
         @SerializedName("bmi_checked_at")
-        val bmiCheckedDate:String?
+        val bmiCheckedDate: String?,
+        @SerializedName("is_body_pack_unlocked")
+        val isBodyPackUnlocked: Boolean?,
+        @SerializedName("is_mind_pack_unlocked")
+        val isMindPackUnlocked: Boolean?
     )
 
     data class Streak(
