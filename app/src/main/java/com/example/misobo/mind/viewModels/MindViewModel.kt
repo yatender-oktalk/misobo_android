@@ -8,12 +8,15 @@ import com.example.misobo.mind.models.OrderPayload
 import com.example.misobo.mind.models.OrderResponse
 import com.example.misobo.mind.models.ProgressPayload
 import com.example.misobo.myProfile.FetchState
+import com.example.misobo.myProfile.ProfileService
 import com.example.misobo.utils.LiveSharedPreference
 import com.example.misobo.utils.SharedPreferenceManager
 import com.example.misobo.utils.SingleLiveEvent
+import com.google.gson.JsonObject
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import org.json.JSONObject
 
 class MindViewModel : ViewModel() {
 
@@ -47,6 +50,17 @@ class MindViewModel : ViewModel() {
             .subscribe {
                 musicLiveData.postValue(it)
             })
+    }
+
+    fun updatePackUnlock(userId: Int, jsonObject: JsonObject) {
+        compositeDisposable.add(
+            ProfileService.Creator.service.updatePack(userId, jsonObject)
+                .switchMap { ProfileService.Creator.service.getProfile(userId) }
+                .map { profileResponse -> SharedPreferenceManager.setUserProfile(profileResponse) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe()
+        )
     }
 
     fun updateProgress(musicId: Int, progressPayload: ProgressPayload) {

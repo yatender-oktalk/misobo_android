@@ -18,7 +18,7 @@ class OnBoardingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_onboarding)
-        if (SharedPreferenceManager.getUser() != null && SharedPreferenceManager.getUserProfile() != null && SharedPreferenceManager.isOnBoarded()) {
+        if (SharedPreferenceManager.getUserProfile() != null) {
             startMainActivity()
         } else {
             supportFragmentManager.beginTransaction()

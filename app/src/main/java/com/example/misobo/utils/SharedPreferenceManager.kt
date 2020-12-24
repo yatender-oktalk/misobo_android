@@ -59,7 +59,7 @@ object SharedPreferenceManager {
 
     fun getUserProfile(): ProfileResponseModel? = Gson().fromJson(
         sharedPreferences?.getString(
-            PROFILE, "no"
+            PROFILE, null
         ), ProfileResponseModel::class.java
     )
 

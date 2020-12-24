@@ -8,15 +8,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import com.example.misobo.R
 import com.example.misobo.bmi.view.BmiActivity
 import com.example.misobo.mind.view.MindFragment
+import com.example.misobo.mind.viewModels.MindViewModel
 import com.example.misobo.onBoarding.KarmaCoinsLayoutFragment
 import com.example.misobo.utils.SharedPreferenceManager
+import com.google.gson.JsonElement
+import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import org.json.JSONObject
 
 class HomeFragment : Fragment() {
+
+    private val mindViewModel: MindViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,6 +51,7 @@ class HomeFragment : Fragment() {
 
         activity?.bottomNavigationView?.visibility = View.VISIBLE
         unlockButtonBody.setOnClickListener {
+
             val bundle = Bundle()
             bundle.putInt("TO", 1)
             val karmaCoinsFragment = KarmaCoinsLayoutFragment()
@@ -55,6 +64,12 @@ class HomeFragment : Fragment() {
         }
 
         unlockButtonMind.setOnClickListener {
+            val jsonObject = JsonObject()
+            jsonObject.addProperty("is_mind_pack_unlocked", true)
+            mindViewModel.updatePackUnlock(
+                SharedPreferenceManager.getUser()?.data?.userId ?: 0,
+                jsonObject
+            )
             val bundle = Bundle()
             bundle.putInt("TO", 2)
             val karmaCoinsFragment = KarmaCoinsLayoutFragment()
@@ -63,7 +78,7 @@ class HomeFragment : Fragment() {
                 ?.beginTransaction()
                 ?.replace(R.id.mainContainer, karmaCoinsFragment)
                 ?.commit()
-            SharedPreferenceManager.setMindUnlock(true)
+            //SharedPreferenceManager.setMindUnlock(true)
             /*activity?.supportFragmentManager
                 ?.beginTransaction()
                 ?.replace(

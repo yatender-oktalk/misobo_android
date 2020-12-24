@@ -5,9 +5,11 @@ import com.example.misobo.mind.models.MusicResponseModel
 import com.example.misobo.mind.models.SuccessResponse
 import com.example.misobo.utils.SharedPreferenceManager
 import com.facebook.stetho.okhttp3.StethoInterceptor
+import com.google.gson.JsonObject
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import io.reactivex.Observable
 import okhttp3.OkHttpClient
+import org.json.JSONObject
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
@@ -25,6 +27,13 @@ interface ProfileService {
     fun updateName(
         @Path(value = "userId") userId: Int,
         @Body namePayload: NamePayload
+    ): Observable<SuccessResponse>
+
+    @Headers("Accept: application/json", "Content-Type: application/json")
+    @PUT("api/user/{userId}")
+    fun updatePack(
+        @Path(value = "userId") userId: Int,
+        @Body jsonObject: JsonObject
     ): Observable<SuccessResponse>
 
     object Creator {

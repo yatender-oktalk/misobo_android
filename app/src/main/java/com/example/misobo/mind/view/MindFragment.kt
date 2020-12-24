@@ -29,6 +29,7 @@ import com.example.misobo.talkToExperts.view.TalkToExpertActivity
 import com.example.misobo.talkToExperts.viewModels.ExpertListState
 import com.example.misobo.talkToExperts.viewModels.TalkToExpertsViewModel
 import com.example.misobo.utils.SharedPreferenceManager
+import com.google.gson.JsonObject
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
@@ -68,11 +69,18 @@ class MindFragment : Fragment() {
             if (it)
                 startActivity(Intent(context, BmiActivity::class.java))
             else
-                SharedPreferenceManager.setMindUnlock(true)
+            {
+                val jsonObject = JsonObject()
+                jsonObject.addProperty("is_mind_pack_unlocked", true)
+                mindViewModel.updatePackUnlock(
+                    SharedPreferenceManager.getUser()?.data?.userId ?: 0,
+                    jsonObject
+                )
+            }
             adapter.remove(unlockSection)
         })
 
-        mindViewModel.getCoinsLiveData().observe(viewLifecycleOwner, Observer { response->
+        mindViewModel.getCoinsLiveData().observe(viewLifecycleOwner, Observer { response ->
             fillName(helloSection)
         })
 
@@ -145,10 +153,8 @@ class MindFragment : Fragment() {
                     //adapter.up(1,taskForTheDaySection)
                 }
                 is MusicFetchState.Loading -> {
-
                 }
                 is MusicFetchState.Error -> {
-
                 }
             }
         })
@@ -190,14 +196,13 @@ class MindFragment : Fragment() {
                 is BlogsFetchState.Loading -> {
                 }
                 is BlogsFetchState.Error -> {
-
                 }
             }
         })
 
         adapter.apply {
             add(helloSection)
-            if (!SharedPreferenceManager.isMindUnlocked() || !SharedPreferenceManager.isBodyUnlocked())
+            if (SharedPreferenceManager.getUserProfile()?.data?.isMindPackUnlocked == false || SharedPreferenceManager.getUserProfile()?.data?.isBodyPackUnlocked == false)
                 add(unlockSection)
 
             add(taskForTheDaySection)

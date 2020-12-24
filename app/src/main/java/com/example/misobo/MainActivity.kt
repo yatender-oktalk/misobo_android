@@ -19,7 +19,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.razorpay.PaymentResultListener
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(),PaymentResultListener {
+class MainActivity : AppCompatActivity(), PaymentResultListener {
 
     private val viewModel: MindViewModel by lazy { ViewModelProvider(this).get(MindViewModel::class.java) }
     private val blogsViewModel: BlogsViewModel by lazy { ViewModelProvider(this).get(BlogsViewModel::class.java) }
@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity(),PaymentResultListener {
     }
 
     private fun showHome() {
-        if (SharedPreferenceManager.isBodyUnlocked() || SharedPreferenceManager.isMindUnlocked()) {
+        if (SharedPreferenceManager.getUserProfile()?.data?.isBodyPackUnlocked == true || SharedPreferenceManager.getUserProfile()?.data?.isMindPackUnlocked == true) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.mainContainer, MindFragment()).commit()
         } else {
@@ -83,7 +83,7 @@ class MainActivity : AppCompatActivity(),PaymentResultListener {
 
     }
 
-    fun redirectToRewardstab(){
+    fun redirectToRewardstab() {
         bottomNavigationView.selectedItemId = R.id.rewards
     }
 
