@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide
 import com.example.misobo.Misobo
 import com.example.misobo.R
 import com.example.misobo.bmi.view.BmiActivity
+import com.example.misobo.bmi.view.BmiFullReportFragment
 import com.example.misobo.utils.AuthState
 import com.example.misobo.utils.SharedPreferenceManager
 import com.theartofdev.edmodo.cropper.CropImage
@@ -56,7 +57,7 @@ class MyProfileFragment : Fragment() {
             .into(profileImage);
 
         if (SharedPreferenceManager.getUserProfile()?.data?.bmi != null)
-            bmiScore.text = SharedPreferenceManager.getUserProfile()?.data?.bmi
+            bmiScore.text = SharedPreferenceManager.getUserProfile()?.data?.bmi.toString()
         else
             bmiScoreLayout.visibility = View.GONE
 
@@ -71,12 +72,22 @@ class MyProfileFragment : Fragment() {
         }
 
         bmiScoreLayout.setOnClickListener {
-            startActivity(
+            val bundle = Bundle()
+            bundle.putDouble(
+                "BMI",
+                SharedPreferenceManager.getUserProfile()?.data?.bmi ?: 0.0
+            )
+            bundle.putString("RESULT", SharedPreferenceManager.getUserProfile()?.data?.result ?: "")
+            activity?.supportFragmentManager?.beginTransaction()?.replace(
+                R.id.mainContainer,
+                BmiFullReportFragment().apply { arguments = bundle }
+            )?.addToBackStack(null)?.commit()
+            /*startActivity(
                 Intent(
                     context,
                     BmiActivity::class.java
                 )
-            )
+            )*/
         }
 
         rewardsTextView.setOnClickListener {
@@ -96,14 +107,15 @@ class MyProfileFragment : Fragment() {
                     SharedPreferenceManager.setUserProfile(state.response)
                     karmaCoinsText.text = state.response.data?.karmaPoints ?: "0"
                     if (state.response.data?.bmi != null) {
-                        bmiScore.text = state.response.data.bmi
+                        bmiScore.text = state.response.data.bmi.toString()
                         if (state.response.data.bmiCheckedDate != null) {
                             val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-                            val parsedDate: Date = dateFormat.parse(state.response.data.bmiCheckedDate)
+                            val parsedDate: Date =
+                                dateFormat.parse(state.response.data.bmiCheckedDate)
                             val date = DateFormat.format("dd", parsedDate)
                             val month = DateFormat.format("MMM", parsedDate)
                             val year = DateFormat.format("yy", parsedDate)
-                            calculationDateTextView.text ="Calculated on ${date} ${month}'${year}"
+                            calculationDateTextView.text = "Calculated on ${date} ${month}'${year}"
                         }
                     } else
                         bmiScoreLayout.visibility = View.GONE

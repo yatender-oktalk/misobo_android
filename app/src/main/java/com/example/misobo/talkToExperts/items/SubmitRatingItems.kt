@@ -15,8 +15,10 @@ class SubmitRatingItems(val it: UserBookings.Entry, val submitRating: (Int) -> U
 
         viewHolder.itemView.bookCallAgainText.setOnClickListener {
             submitRating.invoke(userRating)
-            viewHolder.itemView.submittedGroup.visibility = View.VISIBLE
-            viewHolder.itemView.bookCallAgainText.visibility = View.GONE
+            if (userRating != 0) {
+                viewHolder.itemView.submittedGroup.visibility = View.VISIBLE
+                viewHolder.itemView.bookCallAgainText.visibility = View.GONE
+            }
         }
 
         viewHolder.itemView.star1.setOnClickListener {

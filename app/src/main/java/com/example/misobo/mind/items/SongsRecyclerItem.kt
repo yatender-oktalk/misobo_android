@@ -18,6 +18,7 @@ class SongsRecyclerItem(
         viewHolder.itemView.musicNameText.text = model.title.toString()
         viewHolder.itemView.productionName.text = model.productionName.toString()
         viewHolder.itemView.musicTime.text = "${model.duration?.div(60)} min"
+        viewHolder.itemView.soul.text = "${model.tag}"
 
         viewHolder.itemView.playButton.setOnClickListener {
             onClick.invoke(position)

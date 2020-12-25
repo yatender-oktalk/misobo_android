@@ -76,12 +76,20 @@ class TalktoExpertsHomeFragment : Fragment() {
                                 currentDateTime.compareTo(dateFormat.parse(it.endTime).time)
                             if (callCompleted == 1 && it.isRated == false) {
                                 section.add(SubmitRatingItems(it) { rating ->
-                                    viewModel.submitRating(
-                                        RatingPayload(
-                                            bookingId = it.id ?: 0,
-                                            rating = rating
+                                    if (rating != 0) {
+                                        viewModel.submitRating(
+                                            RatingPayload(bookingId = it.id ?: 0, rating = rating)
                                         )
-                                    )
+                                    } else {
+                                        viewModel.selectedExpertLiveDate.postValue(it.expert)
+                                        val slotDialog =
+                                            BookASlotDialog()
+                                        val bundle = Bundle()
+                                        it.id?.let { it1 -> bundle.putInt("ID", it1) }
+                                        slotDialog.arguments = bundle
+                                        activity?.supportFragmentManager?.beginTransaction()
+                                            ?.add(slotDialog, null)?.commit()
+                                    }
                                 })
                             } else if (callCompleted != 1 && it.isRated == false) {
                                 section.add(UserBookingsItem(it))
@@ -99,12 +107,12 @@ class TalktoExpertsHomeFragment : Fragment() {
             }
         })
 
-        viewModel.submitRatingLiveData.observe(viewLifecycleOwner, Observer { state->
-            when(state){
-                is FetchState.Success->{
+        viewModel.submitRatingLiveData.observe(viewLifecycleOwner, Observer { state ->
+            when (state) {
+                is FetchState.Success -> {
                     viewModel.getUserBookings(SharedPreferenceManager.getUser()?.data?.userId.toString())
                 }
-                is FetchState.Error->{
+                is FetchState.Error -> {
                     viewModel.getUserBookings(SharedPreferenceManager.getUser()?.data?.userId.toString())
                 }
             }

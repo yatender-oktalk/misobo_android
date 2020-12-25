@@ -28,7 +28,7 @@ data class ProfileResponseModel(
         @SerializedName("weight")
         val weight: Int?,
         @SerializedName("bmi")
-        val bmi: String?,
+        val bmi: Double?,
         @SerializedName("height")
         val height: String?,
         @SerializedName("login_streak_days")
@@ -40,7 +40,9 @@ data class ProfileResponseModel(
         @SerializedName("is_body_pack_unlocked")
         val isBodyPackUnlocked: Boolean?,
         @SerializedName("is_mind_pack_unlocked")
-        val isMindPackUnlocked: Boolean?
+        val isMindPackUnlocked: Boolean?,
+        @SerializedName("result")
+        val result: String?
     )
 
     data class Streak(

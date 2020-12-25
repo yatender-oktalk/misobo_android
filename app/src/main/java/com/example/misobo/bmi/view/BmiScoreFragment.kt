@@ -41,9 +41,12 @@ class BmiScoreFragment : Fragment() {
         })
 
         fullReportButton.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putDouble("BMI", bmiViewModel.bmiDetails.value?.data?.bmi ?: 0.0)
+            bundle.putString("RESULT", bmiViewModel.bmiDetails.value?.data?.result ?: "")
             activity?.supportFragmentManager?.beginTransaction()?.replace(
                 R.id.bmiFrameContainer,
-                BmiFullReportFragment()
+                BmiFullReportFragment().apply { arguments = bundle }
             )?.addToBackStack(null)?.commit()
         }
 
