@@ -3,6 +3,7 @@ package com.example.misobo
 import android.app.Application
 import android.content.Intent
 import android.provider.Settings
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.misobo.myProfile.ProfileResponseAction
@@ -14,6 +15,8 @@ import com.example.misobo.onBoarding.viewModels.OnBoardingViewModel
 import com.example.misobo.utils.AuthState
 import com.example.misobo.utils.SharedPreferenceManager
 import com.facebook.stetho.Stetho
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.iid.FirebaseInstanceId
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -34,26 +37,27 @@ class Misobo : Application() {
         SharedPreferenceManager.init(instance)
         Stetho.initializeWithDefaults(this)
         initAuthRelay()
+
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w("TAG", "getInstanceId failed", task.exception)
+                    return@OnCompleteListener
+                }
+
+                // Get new Instance ID token
+                val token = task.result?.token
+
+                // Log and toast
+                //val msg = getString(R.string.msg_token_fmt, token)
+                Log.d("TAG", token.toString())
+                Toast.makeText(baseContext, token.toString(), Toast.LENGTH_SHORT).show()
+            })
+
+
         try {
-            /*val registrationModel =
-                RegistrationModel(
-                    Settings.Secure.getString(
-                        this?.contentResolver,
-                        Settings.Secure.ANDROID_ID
-                    )
-                )*/
             if (SharedPreferenceManager.getUser() == null) {
-                /*compositeDisposable.add(OnBoardingService.Creator.service.registerUser(
-                    registrationModel
-                )
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { user ->
-                        SharedPreferenceManager.setUser(user)
-                        updatekarmaCoins()
-                    })*/
             } else {
-                //updatekarmaCoins()
             }
         } catch (e: Exception) {
             Toast.makeText(this, e.localizedMessage, Toast.LENGTH_SHORT).show()

@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -29,6 +30,7 @@ import com.example.misobo.talkToExperts.view.TalkToExpertActivity
 import com.example.misobo.talkToExperts.viewModels.ExpertListState
 import com.example.misobo.talkToExperts.viewModels.TalkToExpertsViewModel
 import com.example.misobo.utils.SharedPreferenceManager
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.JsonObject
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
@@ -68,14 +70,14 @@ class MindFragment : Fragment() {
         unlockSection.add(UnlockItems() {
             if (it)
                 startActivity(Intent(context, BmiActivity::class.java))
-            else
-            {
+            else {
                 val jsonObject = JsonObject()
                 jsonObject.addProperty("is_mind_pack_unlocked", true)
                 mindViewModel.updatePackUnlock(
                     SharedPreferenceManager.getUser()?.data?.userId ?: 0,
                     jsonObject
                 )
+                showSnackBar()
             }
             adapter.remove(unlockSection)
         })
@@ -211,16 +213,28 @@ class MindFragment : Fragment() {
         }
     }
 
-    fun fillName(helloSection: Section) {
-        helloSection.removeHeader()
-        helloSection.setHeader(HelloItem(SharedPreferenceManager.getName()) {
-            SharedPreferenceManager.setName(it)
-            fillName(helloSection)
-            /*profileViewModel.updateName(
-                SharedPreferenceManager.getUser()?.data?.userId ?: -1,
-                namePayload = NamePayload(NamePayload.Data(it))
-            )*/
-        })
+    fun showSnackBar() {
+        val snackBar: Snackbar =
+            Snackbar.make(topLevelView, "Mind Pack Unlocked", Snackbar.LENGTH_SHORT)
+        val snackBarLayout = snackBar.view
+        val textView =
+            snackBarLayout.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
+        textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_outlined_tick, 0, 0, 0)
+        textView.compoundDrawablePadding =
+            resources.getDimensionPixelOffset(R.dimen.snackbar_icon_padding)
+        snackBar.show()
     }
-
 }
+
+fun fillName(helloSection: Section) {
+    helloSection.removeHeader()
+    helloSection.setHeader(HelloItem(SharedPreferenceManager.getName()) {
+        SharedPreferenceManager.setName(it)
+        fillName(helloSection)
+        /*profileViewModel.updateName(
+            SharedPreferenceManager.getUser()?.data?.userId ?: -1,
+            namePayload = NamePayload(NamePayload.Data(it))
+        )*/
+    })
+}
+

@@ -4,4 +4,7 @@
     <dimen name="design_bottom_navigation_active_text_size" tools:override="true">8sp</dimen>
     <dimen name="design_bottom_navigation_icon_size" tools:override="true">20dp</dimen>
 
+    <dimen name="snackbar_icon_padding">12dp</dimen>
+
+
 </resources>
