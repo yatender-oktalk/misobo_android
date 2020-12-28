@@ -1,7 +1,10 @@
 package com.example.misobo.talkToExperts.viewModels
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import com.example.misobo.mind.models.OrderPayload
 import com.example.misobo.mind.models.OrderResponse
 import com.example.misobo.mind.viewModels.OrderFetchState
@@ -9,6 +12,7 @@ import com.example.misobo.myProfile.FetchState
 import com.example.misobo.myProfile.ProfileResponseModel
 import com.example.misobo.talkToExperts.api.ExpertsService
 import com.example.misobo.talkToExperts.models.*
+import com.example.misobo.talkToExperts.pagination.BookingsDataSourceFactory
 import com.example.misobo.utils.ErrorHandler
 import com.example.misobo.utils.LiveSharedPreference
 import com.example.misobo.utils.SharedPreferenceManager
@@ -31,7 +35,7 @@ class TalkToExpertsViewModel : ViewModel() {
     val currentOrder: MutableLiveData<OrderResponse> = MutableLiveData()
     val captureOrderLiveData: MutableLiveData<CaptureOrderState> = MutableLiveData()
     val packsLiveData: MutableLiveData<PacksFetchState> = MutableLiveData()
-    val userBookingsLiveData: MutableLiveData<UserBookingsFetchState> = MutableLiveData()
+    var userBookingsLiveData: LiveData<PagedList<UserBookings.Entry>> = MutableLiveData()
 
     val submitRatingLiveData: MutableLiveData<FetchState> = MutableLiveData()
 
@@ -178,7 +182,21 @@ class TalkToExpertsViewModel : ViewModel() {
     }
 
     fun getUserBookings(userId: String) {
-        compositeDisposable.add(expertsService.fetchBookings(userId)
+        val bookingsDataSourceFactory = BookingsDataSourceFactory(
+            compositeDisposable = compositeDisposable,
+            networkService = expertsService,
+            userId = userId
+        )
+
+        val config = PagedList.Config.Builder()
+            .setPageSize(2)
+            .setInitialLoadSizeHint(2 * 2)
+            .setEnablePlaceholders(false)
+            .build()
+
+        userBookingsLiveData = LivePagedListBuilder(bookingsDataSourceFactory,config).build()
+
+        /*compositeDisposable.add(expertsService.fetchBookings(userId)
             .subscribeOn(Schedulers.io())
             .map {
                 UserBookingsFetchState.Success(it)
@@ -191,7 +209,7 @@ class TalkToExpertsViewModel : ViewModel() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 userBookingsLiveData.postValue(it)
-            })
+            })*/
     }
 
     fun submitRating(ratingPayload: RatingPayload) {

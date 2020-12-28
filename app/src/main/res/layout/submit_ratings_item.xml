@@ -122,7 +122,7 @@
             app:layout_constraintTop_toTopOf="@id/star1" />
 
         <TextView
-            android:id="@+id/bookCallAgainText"
+            android:id="@+id/submitRatingText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"

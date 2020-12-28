@@ -11,26 +11,23 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.misobo.R
 import com.example.misobo.myProfile.FetchState
-import com.example.misobo.talkToExperts.items.SubmitRatingItems
-import com.example.misobo.talkToExperts.items.UserBookingsItem
 import com.example.misobo.talkToExperts.viewModels.CategoriesState
 import com.example.misobo.talkToExperts.viewModels.TalkToExpertsViewModel
 import com.example.misobo.talkToExperts.models.ExpertCategoriesModel
 import com.example.misobo.talkToExperts.models.RatingPayload
-import com.example.misobo.talkToExperts.viewModels.UserBookingsFetchState
+import com.example.misobo.talkToExperts.pagination.BookingsListAdapter
 import com.example.misobo.utils.SharedPreferenceManager
 import com.example.misobo.utils.Util
 import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.fragment_talkto_experts_home.*
-import java.text.SimpleDateFormat
-import java.util.*
 
 class TalktoExpertsHomeFragment : Fragment() {
 
     private val viewModel: TalkToExpertsViewModel by activityViewModels()
     private val groupAdapter = GroupAdapter<ViewHolder>()
+    private lateinit var bookingsListAdapter: BookingsListAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -55,57 +52,71 @@ class TalktoExpertsHomeFragment : Fragment() {
                 })
 
         viewModel.getExpertCategories()
-        bookingsRecyclerView.adapter = groupAdapter
 
+        bookingsRecyclerView.adapter = groupAdapter
 
         backIcon.setOnClickListener { activity?.onBackPressed() }
 
+        bookingsListAdapter = BookingsListAdapter { entry, rating ->
+            if (rating != 0) {
+                viewModel.submitRating(
+                    RatingPayload(bookingId = entry?.id ?: 0, rating = rating)
+                )
+            } else {
+                viewModel.selectedExpertLiveDate.postValue(entry?.expert)
+                val slotDialog =
+                    BookASlotDialog()
+                val bundle = Bundle()
+                entry?.expert?.id?.let { it1 -> bundle.putInt("ID", it1) }
+                slotDialog.arguments = bundle
+                activity?.supportFragmentManager?.beginTransaction()
+                    ?.add(slotDialog, null)?.commit()
+            }
+        }
+
         viewModel.getUserBookings(SharedPreferenceManager.getUser()?.data?.userId.toString())
         viewModel.userBookingsLiveData.observe(viewLifecycleOwner, Observer { state ->
-            when (state) {
-                is UserBookingsFetchState.Success -> {
-                    if (!state.userBookings.data?.entries.isNullOrEmpty()) {
-                        currentBookingsGroup.visibility = View.VISIBLE
-                        groupAdapter.clear()
-                        val section = Section()
-                        val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-                        val currentDateTime = Date().time
-                        Log.i("date", Date().time.toString())
-                        state.userBookings.data?.entries?.forEach {
-                            val callCompleted =
-                                currentDateTime.compareTo(dateFormat.parse(it.endTime).time)
-                            if (callCompleted == 1 && it.isRated == false) {
-                                section.add(SubmitRatingItems(it) { rating ->
-                                    if (rating != 0) {
-                                        viewModel.submitRating(
-                                            RatingPayload(bookingId = it.id ?: 0, rating = rating)
-                                        )
-                                    } else {
-                                        viewModel.selectedExpertLiveDate.postValue(it.expert)
-                                        val slotDialog =
-                                            BookASlotDialog()
-                                        val bundle = Bundle()
-                                        it.id?.let { it1 -> bundle.putInt("ID", it1) }
-                                        slotDialog.arguments = bundle
-                                        activity?.supportFragmentManager?.beginTransaction()
-                                            ?.add(slotDialog, null)?.commit()
-                                    }
-                                })
-                            } else if (callCompleted != 1 && it.isRated == false) {
-                                section.add(UserBookingsItem(it))
-                            }
-                            //Log.i("comp", currentDateTime.compareTo(dateFormat.parse(it.endTime).time).toString())
-                        }
-                        groupAdapter.add(section)
-                    } else {
-                        currentBookingsGroup.visibility = View.GONE
-                    }
-                }
-                is UserBookingsFetchState.Fail -> {
-                    currentBookingsGroup.visibility = View.GONE
-                }
+            if (!state.isNullOrEmpty()) {
+                currentBookingsGroup.visibility = View.VISIBLE
+                bookingsListAdapter.submitList(state)
+            } else {
+                currentBookingsGroup.visibility = View.GONE
             }
-        })
+        }
+        )
+
+        /* currentBookingsGroup.visibility = View.VISIBLE
+                    groupAdapter.clear()
+                    val section = Section()
+                    val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+                    val currentDateTime = Date().time
+                    Log.i("date", Date().time.toString())
+                    state.userBookings.data?.entries?.forEach {
+                        val callCompleted =
+                            currentDateTime.compareTo(dateFormat.parse(it.endTime).time)
+                        if (callCompleted == 1 && it.isRated == false) {
+                            section.add(SubmitRatingItems(it) { rating ->
+                                if (rating != 0) {
+                                    viewModel.submitRating(
+                                        RatingPayload(bookingId = it.id ?: 0, rating = rating)
+                                    )
+                                } else {
+                                    viewModel.selectedExpertLiveDate.postValue(it.expert)
+                                    val slotDialog =
+                                        BookASlotDialog()
+                                    val bundle = Bundle()
+                                    it.expert?.id?.let { it1 -> bundle.putInt("ID", it1) }
+                                    slotDialog.arguments = bundle
+                                    activity?.supportFragmentManager?.beginTransaction()
+                                        ?.add(slotDialog, null)?.commit()
+                                }
+                            })
+                        } else if (callCompleted != 1 && it.isRated == false) {
+                            section.add(UserBookingsItem(it))
+                        }
+                        //Log.i("comp", currentDateTime.compareTo(dateFormat.parse(it.endTime).time).toString())
+                    }
+                    groupAdapter.add(section)*/
 
         viewModel.submitRatingLiveData.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
@@ -158,7 +169,5 @@ class TalktoExpertsHomeFragment : Fragment() {
                 }
             }
         })
-
-
     }
 }

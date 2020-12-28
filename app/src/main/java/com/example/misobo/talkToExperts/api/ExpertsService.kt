@@ -75,8 +75,9 @@ interface ExpertsService {
     ): Observable<List<Packs>>
 
     @Headers("Accept: application/json", "Content-Type: application/json")
-    @GET("api/user/{userId}/expert_bookings?page=1")
+    @GET("api/user/{userId}/expert_bookings")
     fun fetchBookings(
+        @Query(value = "page") pageNumber:Int,
         @Path(value = "userId") userId: String
     ): Observable<UserBookings>
 

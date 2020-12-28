@@ -13,17 +13,17 @@ class SubmitRatingItems(val it: UserBookings.Entry, val submitRating: (Int) -> U
         var userRating = 0
         viewHolder.itemView.expertNameTextView.text = it.expert?.name
 
-        viewHolder.itemView.bookCallAgainText.setOnClickListener {
+        viewHolder.itemView.submitRatingText.setOnClickListener {
             submitRating.invoke(userRating)
             if (userRating != 0) {
                 viewHolder.itemView.submittedGroup.visibility = View.VISIBLE
-                viewHolder.itemView.bookCallAgainText.visibility = View.GONE
+                viewHolder.itemView.submitRatingText.visibility = View.GONE
             }
         }
 
         viewHolder.itemView.star1.setOnClickListener {
             userRating = 1
-            viewHolder.itemView.bookCallAgainText.text = "Submit Rating"
+            viewHolder.itemView.submitRatingText.text = "Submit Rating"
             Glide.with(viewHolder.containerView.context).load(R.drawable.ratings_rated_star)
                 .into(viewHolder.itemView.star1)
             Glide.with(viewHolder.containerView.context).load(R.drawable.rating_unrated)
@@ -37,7 +37,7 @@ class SubmitRatingItems(val it: UserBookings.Entry, val submitRating: (Int) -> U
         }
         viewHolder.itemView.star2.setOnClickListener {
             userRating = 2
-            viewHolder.itemView.bookCallAgainText.text = "Submit Rating"
+            viewHolder.itemView.submitRatingText.text = "Submit Rating"
             Glide.with(viewHolder.containerView.context).load(R.drawable.ratings_rated_star)
                 .into(viewHolder.itemView.star1)
             Glide.with(viewHolder.containerView.context).load(R.drawable.ratings_rated_star)
@@ -52,7 +52,7 @@ class SubmitRatingItems(val it: UserBookings.Entry, val submitRating: (Int) -> U
         }
         viewHolder.itemView.star3.setOnClickListener {
             userRating = 3
-            viewHolder.itemView.bookCallAgainText.text = "Submit Rating"
+            viewHolder.itemView.submitRatingText.text = "Submit Rating"
             Glide.with(viewHolder.containerView.context).load(R.drawable.ratings_rated_star)
                 .into(viewHolder.itemView.star1)
             Glide.with(viewHolder.containerView.context).load(R.drawable.ratings_rated_star)
@@ -67,7 +67,7 @@ class SubmitRatingItems(val it: UserBookings.Entry, val submitRating: (Int) -> U
 
         viewHolder.itemView.star4.setOnClickListener {
             userRating = 4
-            viewHolder.itemView.bookCallAgainText.text = "Submit Rating"
+            viewHolder.itemView.submitRatingText.text = "Submit Rating"
             Glide.with(viewHolder.containerView.context).load(R.drawable.ratings_rated_star)
                 .into(viewHolder.itemView.star1)
             Glide.with(viewHolder.containerView.context).load(R.drawable.ratings_rated_star)
@@ -81,7 +81,7 @@ class SubmitRatingItems(val it: UserBookings.Entry, val submitRating: (Int) -> U
         }
         viewHolder.itemView.star5.setOnClickListener {
             userRating = 5
-            viewHolder.itemView.bookCallAgainText.text = "Submit Rating"
+            viewHolder.itemView.submitRatingText.text = "Submit Rating"
             Glide.with(viewHolder.containerView.context).load(R.drawable.ratings_rated_star)
                 .into(viewHolder.itemView.star1)
             Glide.with(viewHolder.containerView.context).load(R.drawable.ratings_rated_star)
