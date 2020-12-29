@@ -18,17 +18,18 @@ class PageKeyedBookingsDataSource(
         callback: LoadInitialCallback<Int, UserBookings.Entry>
     ) {
         //compositeDisposable.add(networkService.fetchBookings())
-        compositeDisposable.add(networkService.fetchBookings(pageNumber = 1, userId = userId)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { bookings ->
-                callback.onResult(
-                    bookings.data?.entries?.toMutableList() ?: mutableListOf(),
-                    null,
-                    2
-                )
-                //userBookingsLiveData.postValue(it)
-            })
+        compositeDisposable.add(
+            networkService.fetchBookings(pageNumber = 1, userId = userId)
+                .subscribe({ bookings ->
+                    callback.onResult(
+                        bookings.data?.entries!!,
+                        null,
+                        if (bookings.data.pageNumber!! < bookings.data.totalPages!!) 2 else null
+
+                    )
+                    //userBookingsLiveData.postValue(it)
+                }, {})
+        )
     }
 
     override fun loadAfter(
@@ -39,12 +40,10 @@ class PageKeyedBookingsDataSource(
             pageNumber = params.key,
             userId = userId
         )
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
             .subscribe { bookings ->
                 callback.onResult(
-                    bookings.data?.entries?.toMutableList() ?: mutableListOf(),
-                    params.key + 1
+                    bookings.data?.entries!!,
+                    if (bookings.data.pageNumber!! < bookings.data.totalPages!!) params.key + 1 else null
                 )
                 //userBookingsLiveData.postValue(it)
             })

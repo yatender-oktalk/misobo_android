@@ -4,9 +4,14 @@ import com.google.gson.annotations.SerializedName
 
 data class UserBookings(
     val data:Data?
+
 ) {
     data class Data(
-        val entries:List<Entry>?
+        val entries:List<Entry>?,
+        @SerializedName("page_number")
+        val pageNumber:Int?,
+        @SerializedName("total_pages")
+        val totalPages:Int?
     )
 
     data class Entry(

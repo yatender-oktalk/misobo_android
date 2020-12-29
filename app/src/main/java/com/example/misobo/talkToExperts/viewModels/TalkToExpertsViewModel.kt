@@ -35,7 +35,7 @@ class TalkToExpertsViewModel : ViewModel() {
     val currentOrder: MutableLiveData<OrderResponse> = MutableLiveData()
     val captureOrderLiveData: MutableLiveData<CaptureOrderState> = MutableLiveData()
     val packsLiveData: MutableLiveData<PacksFetchState> = MutableLiveData()
-    var userBookingsLiveData: LiveData<PagedList<UserBookings.Entry>> = MutableLiveData()
+    lateinit var userBookingsLiveData: LiveData<PagedList<UserBookings.Entry?>>
 
     val submitRatingLiveData: MutableLiveData<FetchState> = MutableLiveData()
 
@@ -189,8 +189,8 @@ class TalkToExpertsViewModel : ViewModel() {
         )
 
         val config = PagedList.Config.Builder()
-            .setPageSize(2)
-            .setInitialLoadSizeHint(2 * 2)
+            .setPageSize(20)
+            .setInitialLoadSizeHint(5)
             .setEnablePlaceholders(false)
             .build()
 

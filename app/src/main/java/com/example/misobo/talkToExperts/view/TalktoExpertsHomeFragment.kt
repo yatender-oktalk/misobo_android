@@ -52,8 +52,8 @@ class TalktoExpertsHomeFragment : Fragment() {
                 })
 
         viewModel.getExpertCategories()
+        viewModel.getUserBookings(SharedPreferenceManager.getUser()?.data?.userId.toString())
 
-        bookingsRecyclerView.adapter = groupAdapter
 
         backIcon.setOnClickListener { activity?.onBackPressed() }
 
@@ -74,7 +74,8 @@ class TalktoExpertsHomeFragment : Fragment() {
             }
         }
 
-        viewModel.getUserBookings(SharedPreferenceManager.getUser()?.data?.userId.toString())
+        bookingsRecyclerView.adapter = bookingsListAdapter
+
         viewModel.userBookingsLiveData.observe(viewLifecycleOwner, Observer { state ->
             if (!state.isNullOrEmpty()) {
                 currentBookingsGroup.visibility = View.VISIBLE
@@ -121,10 +122,10 @@ class TalktoExpertsHomeFragment : Fragment() {
         viewModel.submitRatingLiveData.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is FetchState.Success -> {
-                    viewModel.getUserBookings(SharedPreferenceManager.getUser()?.data?.userId.toString())
+                    //viewModel.getUserBookings(SharedPreferenceManager.getUser()?.data?.userId.toString())
                 }
                 is FetchState.Error -> {
-                    viewModel.getUserBookings(SharedPreferenceManager.getUser()?.data?.userId.toString())
+                    //viewModel.getUserBookings(SharedPreferenceManager.getUser()?.data?.userId.toString())
                 }
             }
         })
