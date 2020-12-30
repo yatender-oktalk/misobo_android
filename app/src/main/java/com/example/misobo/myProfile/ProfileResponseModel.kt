@@ -42,7 +42,9 @@ data class ProfileResponseModel(
         @SerializedName("is_mind_pack_unlocked")
         val isMindPackUnlocked: Boolean?,
         @SerializedName("result")
-        val result: String?
+        val result: String?,
+        @SerializedName("fcm_registration_token")
+        val fcmToken: String?
     )
 
     data class Streak(

@@ -1,12 +1,16 @@
 package com.example.misobo.onBoarding
 
 import android.app.Dialog
+import android.content.DialogInterface
+import android.content.res.Resources
 import android.os.Bundle
 import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -14,6 +18,8 @@ import com.example.misobo.R
 import com.example.misobo.onBoarding.models.RegistrationModel
 import com.example.misobo.onBoarding.viewModels.OnBoardingViewModel
 import com.example.misobo.talkToExperts.viewModels.MobileRegistration
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.jakewharton.rxbinding2.widget.RxTextView
 import io.reactivex.disposables.CompositeDisposable
@@ -80,7 +86,7 @@ class LoginDialog : BottomSheetDialogFragment() {
                     RegistrationModel(
                         otpText.text.toString(),
                         Settings.Secure.getString(
-                            activity?.contentResolver,
+                            requireActivity()?.contentResolver,
                             Settings.Secure.ANDROID_ID
                         )
                     )
@@ -100,12 +106,28 @@ class LoginDialog : BottomSheetDialogFragment() {
             View.inflate(context, R.layout.login_bottom_sheet, null)
         dialog.setContentView(contentView)
         (contentView.parent as View).setBackgroundColor(
-            resources.getColor(android.R.color.transparent)
+            ContextCompat.getColor(requireContext(),android.R.color.transparent)
         )
     }
 
     override fun onDestroy() {
         super.onDestroy()
         compositeDisposable.dispose()
+    }
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val bottomSheetDialog =
+            super.onCreateDialog(savedInstanceState) as BottomSheetDialog
+        bottomSheetDialog.setOnShowListener { dialog: DialogInterface ->
+            val dialogc = dialog as BottomSheetDialog
+            // When using AndroidX the resource can be found at com.google.android.material.R.id.design_bottom_sheet
+            val bottomSheet =
+                dialogc.findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
+            val bottomSheetBehavior: BottomSheetBehavior<*> =
+                BottomSheetBehavior.from<FrameLayout?>(bottomSheet!!)
+            bottomSheetBehavior.peekHeight = Resources.getSystem().displayMetrics.heightPixels
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED)
+        }
+        return bottomSheetDialog
     }
 }

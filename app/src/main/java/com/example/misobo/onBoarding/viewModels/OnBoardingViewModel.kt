@@ -2,6 +2,7 @@ package com.example.misobo.onBoarding.viewModels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.misobo.myProfile.ProfileService
 import com.example.misobo.utils.SingleLiveEvent
 import com.example.misobo.onBoarding.api.OnBoardingService
 import com.example.misobo.onBoarding.models.*
@@ -10,6 +11,7 @@ import com.example.misobo.talkToExperts.models.OtpPayload
 import com.example.misobo.talkToExperts.viewModels.MobileRegistration
 import com.example.misobo.utils.ErrorHandler
 import com.example.misobo.utils.SharedPreferenceManager
+import com.google.gson.JsonObject
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -80,6 +82,13 @@ class OnBoardingViewModel : ViewModel() {
         )
     }
 
+    fun sendDailyReminder(userId: Int, reminderJson: JsonObject) {
+        compositeDisposable.add(ProfileService.Creator.service.updatePack(userId, reminderJson)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { startMainActivityTrigger.postValue(true) })
+    }
+
     fun resendOTP(userId: String, resendOTPModel: ResendOTPModel) {
         compositeDisposable.add(
             OnBoardingService.Creator.service.resendOTP(userId, resendOTPModel)
@@ -93,6 +102,7 @@ class OnBoardingViewModel : ViewModel() {
                 }
         )
     }
+
 
     fun saveCategories(
         categoryModel: CategoriesRequestModel,
@@ -129,19 +139,19 @@ class OnBoardingViewModel : ViewModel() {
         )
     }
 
-   /* fun mobileRegistration(otpModel: OtpPayload) {
-        compositeDisposable.add(ExpertsService.Creator.service.mobileRegistration(otpModel)
-            .subscribeOn(Schedulers.io())
-            .map {
-                MobileRegistration.Success(
-                    it
-                ) as MobileRegistration
-            }
-            .startWith(MobileRegistration.Loading)
-            .onErrorReturn { MobileRegistration.Fail }
-            .subscribe { mobileRegistration.postValue(it) })
-    }
-*/
+    /* fun mobileRegistration(otpModel: OtpPayload) {
+         compositeDisposable.add(ExpertsService.Creator.service.mobileRegistration(otpModel)
+             .subscribeOn(Schedulers.io())
+             .map {
+                 MobileRegistration.Success(
+                     it
+                 ) as MobileRegistration
+             }
+             .startWith(MobileRegistration.Loading)
+             .onErrorReturn { MobileRegistration.Fail }
+             .subscribe { mobileRegistration.postValue(it) })
+     }
+ */
     fun verifyOtp(id: Int, otpModel: OtpPayload) {
         compositeDisposable.add(ExpertsService.Creator.service.sendOtp(id, otpModel)
             .subscribeOn(Schedulers.io())

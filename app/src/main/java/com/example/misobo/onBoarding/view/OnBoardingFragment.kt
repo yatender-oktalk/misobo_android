@@ -28,8 +28,7 @@ import java.util.concurrent.TimeUnit
 class OnBoardingFragment : Fragment() {
 
     val onBoardingViewModel: OnBoardingViewModel by activityViewModels()
-    val disposable = CompositeDisposable()
-
+    private val disposable = CompositeDisposable()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -73,7 +72,12 @@ class OnBoardingFragment : Fragment() {
             val loginDialog =
                 LoginDialog()
             activity?.supportFragmentManager?.beginTransaction()
-                ?.add(loginDialog, null)?.commit()
+                ?.add(loginDialog,null)?.commit()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disposable.dispose()
     }
 }

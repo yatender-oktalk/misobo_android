@@ -3,6 +3,7 @@ package com.example.misobo.onBoarding
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +12,9 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.misobo.MainActivity
+import com.example.misobo.Misobo
 import com.example.misobo.R
+import com.example.misobo.myProfile.ProfileService
 import com.example.misobo.onBoarding.models.ResendOTPModel
 import com.example.misobo.onBoarding.view.MisoboMembersActivity
 import com.example.misobo.onBoarding.view.MisoboMembersFragment
@@ -20,11 +23,15 @@ import com.example.misobo.onBoarding.viewModels.ResendOTPAction
 import com.example.misobo.talkToExperts.viewModels.MobileRegistration
 import com.example.misobo.talkToExperts.models.OtpPayload
 import com.example.misobo.utils.SharedPreferenceManager
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.firebase.iid.FirebaseInstanceId
+import com.google.gson.JsonObject
 import com.jakewharton.rxbinding2.widget.RxTextView
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.enter_otp_dialog.*
 import kotlinx.android.synthetic.main.enter_otp_dialog.chatWithExperts
 import kotlinx.android.synthetic.main.enter_otp_dialog.otpText
@@ -129,28 +136,11 @@ class OtpDialog : BottomSheetDialogFragment() {
             )
         }
 
-        /*viewModel.bookSlotLiveData.observe(
-            viewLifecycleOwner,
-            androidx.lifecycle.Observer { state ->
-                when (state) {
-                    is BookSlotState.Success -> {
-                        this.dismiss()
-                        activity?.supportFragmentManager?.beginTransaction()
-                            ?.add(BookSuccessDialog(), null)?.commit()
-                    }
-                    is BookSlotState.Loading -> {
-
-                    }
-                    is BookSlotState.Fail -> {
-
-                    }
-                }
-            })
-*/
         viewModel.otpVerification.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is MobileRegistration.Success -> {
                     SharedPreferenceManager.setUserProfile(state.profileResponseModel)
+                    Misobo.instance.sendFcmToken()
                     if (state.profileResponseModel.isNewUser != true) {
                         startActivity(Intent(context, MainActivity::class.java))
                         activity?.finish()
@@ -158,21 +148,6 @@ class OtpDialog : BottomSheetDialogFragment() {
                         startActivity(Intent(context, MisoboMembersActivity::class.java))
                         activity?.finish()
                     }
-
-
-                    /*if (SharedPreferenceManager.getUserProfile()?.data?.karmaPoints?.toInt()!! < viewModel.selectedExpertLiveDate.value?.karmaCoinsNeeded ?: 0)
-                        activity?.supportFragmentManager?.beginTransaction()
-                            ?.add(CoinsBottomSheet(), null)?.commit()
-                    else*/
-                    /* viewModel.selectedExpertLiveDate.value?.id?.let { it1 ->
-                         viewModel.bookSlot(
-                             it1,
-                             BookSlotPayload(
-                                 viewModel.slotSelectedLiveData.value
-                             )
-                         )
-                     }
-*/
                 }
                 is MobileRegistration.Loading -> {
                     invalidOtpText.visibility = View.INVISIBLE
