@@ -25,7 +25,6 @@ class BookSuccessDialog : BottomSheetDialogFragment() {
     val viewModel: TalkToExpertsViewModel by activityViewModels()
     val profileViewModel: ProfileViewModel by lazy { ViewModelProvider(this).get(ProfileViewModel::class.java) }
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -63,9 +62,14 @@ class BookSuccessDialog : BottomSheetDialogFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        //if (viewModel.userBookingsLiveData.value?.dataSource != null)
+
+        //viewModel.getUserBookings(SharedPreferenceManager.getUser()?.data?.userId.toString())
+
         profileViewModel.getProfile(
             SharedPreferenceManager.getUser()?.data?.userId ?: 0
         )
+
         viewModel.selectedExpertLiveDate.observe(viewLifecycleOwner, Observer { response ->
             nameTextView.text = response.name
             expertLanguage.text = response.language

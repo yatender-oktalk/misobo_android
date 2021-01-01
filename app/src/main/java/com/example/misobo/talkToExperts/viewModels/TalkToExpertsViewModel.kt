@@ -108,7 +108,7 @@ class TalkToExpertsViewModel : ViewModel() {
         compositeDisposable.add(expertsService.bookSlot(expertId, payload)
             .subscribeOn(Schedulers.io())
             .map {
-                getUserBookings(SharedPreferenceManager.getUser()?.data?.userId.toString())
+                //getUserBookings(SharedPreferenceManager.getUser()?.data?.userId.toString())
                 BookSlotState.Success(
                     it
                 ) as BookSlotState
@@ -196,20 +196,6 @@ class TalkToExpertsViewModel : ViewModel() {
 
         userBookingsLiveData = LivePagedListBuilder(bookingsDataSourceFactory,config).build()
 
-        /*compositeDisposable.add(expertsService.fetchBookings(userId)
-            .subscribeOn(Schedulers.io())
-            .map {
-                UserBookingsFetchState.Success(it)
-                        as UserBookingsFetchState
-            }
-            .startWith(UserBookingsFetchState.Loading)
-            .onErrorReturn {
-                UserBookingsFetchState.Fail
-            }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                userBookingsLiveData.postValue(it)
-            })*/
     }
 
     fun submitRating(ratingPayload: RatingPayload) {

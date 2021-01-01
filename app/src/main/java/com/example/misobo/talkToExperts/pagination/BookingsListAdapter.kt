@@ -17,12 +17,12 @@ import java.lang.IllegalArgumentException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class BookingsListAdapter(val submitRating:(UserBookings.Entry?,Int)->Unit) : PagedListAdapter<UserBookings.Entry, RecyclerView.ViewHolder>(
-    diffCallback
-) {
+class BookingsListAdapter(private val submitRating: (UserBookings.Entry?, Int) -> Unit) :
+    PagedListAdapter<UserBookings.Entry, RecyclerView.ViewHolder>(
+        diffCallback
+    ) {
 
     companion object {
-
         private val RATING_VIEW_TYPE = 0
         private val BOOKINGS_VIEW_TYPE = 1
 
@@ -64,14 +64,22 @@ class BookingsListAdapter(val submitRating:(UserBookings.Entry?,Int)->Unit) : Pa
                     )
                 )
             }
-            else -> throw IllegalArgumentException()
+            else -> {
+                return EmptyViewHolder(
+                    layoutInflator.inflate(
+                        R.layout.empty_layout,
+                        parent,
+                        false
+                    )
+                )
+            }
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is RatingViewHolder -> {
-                inflateView(holder,position)
+                inflateView(holder, position)
             }
             is BookingViewHolder -> {
                 holder.itemView.expertNameTextView.text = getItem(position)?.expert?.name
@@ -79,6 +87,8 @@ class BookingsListAdapter(val submitRating:(UserBookings.Entry?,Int)->Unit) : Pa
                 holder.itemView.expertLanguage.text = getItem(position)?.expert?.language
                 holder.itemView.coinsNeeded.text =
                     getItem(position)?.expert?.karmaCoinsNeeded.toString()
+            }
+            is EmptyViewHolder -> {
             }
         }
     }
@@ -90,20 +100,23 @@ class BookingsListAdapter(val submitRating:(UserBookings.Entry?,Int)->Unit) : Pa
         val callCompleted =
             currentDateTime.compareTo(dateFormat.parse(getItem(position)?.endTime).time)
 
-        return if (callCompleted == 1 && getItem(position)?.isRated == false) {
-            RATING_VIEW_TYPE
+        if (callCompleted == 1 && getItem(position)?.isRated == false) {
+            return RATING_VIEW_TYPE
+        } else if (callCompleted != 1 && getItem(position)?.isRated == false) {
+            return BOOKINGS_VIEW_TYPE
         } else {
-            BOOKINGS_VIEW_TYPE
+            return -1
         }
     }
 
-    private fun inflateView(viewHolder:RecyclerView.ViewHolder,position: Int){
+    private fun inflateView(viewHolder: RecyclerView.ViewHolder, position: Int) {
         var userRating = 0
         viewHolder.itemView.expertNameTextView.text = getItem(position)?.expert?.name
 
         viewHolder.itemView.submitRatingText.setOnClickListener {
-            submitRating.invoke(getItem(position),userRating)
+            submitRating.invoke(getItem(position), userRating)
             if (userRating != 0) {
+                this.notifyItemChanged(position)
                 viewHolder.itemView.submittedGroup.visibility = View.VISIBLE
                 viewHolder.itemView.submitRatingText.visibility = View.GONE
             }
@@ -186,5 +199,7 @@ class BookingsListAdapter(val submitRating:(UserBookings.Entry?,Int)->Unit) : Pa
     inner class RatingViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
     inner class BookingViewHolder(view: View) : RecyclerView.ViewHolder(view)
+
+    inner class EmptyViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
 }

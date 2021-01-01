@@ -93,7 +93,7 @@ class OnBoardingViewModel : ViewModel() {
         compositeDisposable.add(
             OnBoardingService.Creator.service.resendOTP(userId, resendOTPModel)
                 .subscribeOn(Schedulers.io())
-                .map { ResendOTPAction.Success as ResendOTPAction }
+                .map { ResendOTPAction.Success(it) as ResendOTPAction }
                 .startWith(ResendOTPAction.Loading)
                 .onErrorReturn { ResendOTPAction.Failure(ErrorHandler.handleError(it)) }
                 .observeOn(AndroidSchedulers.mainThread())
@@ -179,7 +179,7 @@ sealed class CategoriesAction {
 }
 
 sealed class ResendOTPAction {
-    object Success : ResendOTPAction()
+    data class Success(val it: ResendOtpRespnse) : ResendOTPAction()
     object Loading : ResendOTPAction()
     data class Failure(val message: String) : ResendOTPAction()
 }

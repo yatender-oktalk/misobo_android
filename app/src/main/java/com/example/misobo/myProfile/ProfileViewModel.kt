@@ -3,7 +3,9 @@ package com.example.misobo.myProfile
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.misobo.utils.ErrorHandler
+import com.example.misobo.utils.LiveSharedPreference
 import com.example.misobo.utils.SharedPreferenceManager
+import com.google.gson.JsonObject
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -14,6 +16,11 @@ class ProfileViewModel() : ViewModel() {
     var profileService = ProfileService.Creator.service
     val profileLiveData: MutableLiveData<ProfileResponseAction> = MutableLiveData()
     val nameLiveData: MutableLiveData<FetchState> = MutableLiveData()
+
+    private val liveSharedPreference =
+        LiveSharedPreference(SharedPreferenceManager.sharedPreferences!!)
+
+    fun getProfileLiveData() = liveSharedPreference
 
     fun getProfile(userId: Int) {
         compositeDisposable.add(profileService.getProfile(userId = userId)
@@ -32,20 +39,15 @@ class ProfileViewModel() : ViewModel() {
             .subscribe { profileLiveData.postValue(it) })
     }
 
-    fun updateName(userId: Int, namePayload: NamePayload) {
-        compositeDisposable.add(profileService.updateName(
-            userId = userId,
-            namePayload = namePayload)
-            .subscribeOn(Schedulers.io())
-            .map {
-                FetchState.Success as FetchState
-            }
-            .startWith(FetchState.Loading)
-            .onErrorReturn {
-                FetchState.Error(it.localizedMessage)
-            }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { nameLiveData.postValue(it) })
+    fun updateName(userId: Int, jsonObject: JsonObject) {
+        compositeDisposable.add(
+            ProfileService.Creator.service.updatePack(userId, jsonObject)
+                .switchMap { ProfileService.Creator.service.getProfile(userId) }
+                .map { profileResponse -> SharedPreferenceManager.setUserProfile(profileResponse) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe()
+        )
     }
 }
 

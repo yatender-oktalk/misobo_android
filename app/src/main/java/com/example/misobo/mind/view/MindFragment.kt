@@ -59,9 +59,9 @@ class MindFragment : Fragment() {
         val adapter = GroupAdapter<ViewHolder>()
         val helloSection = Section()
         val unlockSection = Section()
-        val taskForTheDaySection = Section()
         val talkToExpertsSection = Section()
         val blogsSection = Section()
+        val taskForTheDaySection = Section()
 
         mindHomeRecyclerView.adapter = adapter
 
@@ -84,32 +84,6 @@ class MindFragment : Fragment() {
 
         mindViewModel.getCoinsLiveData().observe(viewLifecycleOwner, Observer { response ->
             fillName(helloSection)
-        })
-
-        profileViewModel.nameLiveData.observe(requireActivity(), Observer { state ->
-            when (state) {
-                is FetchState.Success -> {
-                    activity?.supportFragmentManager?.popBackStack()
-
-                    /* val fragment: Fragment? =
-                         activity?.supportFragmentManager?.findFragmentByTag("LOADING")
-                     if (fragment != null) activity?.supportFragmentManager?.beginTransaction()
-                         ?.remove(fragment)?.commit()*/
-                }
-                is FetchState.Loading -> {
-                    activity?.supportFragmentManager?.beginTransaction()
-                        ?.replace(R.id.mainContainer, loadingFragment, "LOADING")
-                        ?.addToBackStack(null)?.commit()
-                }
-                is FetchState.Error -> {
-                    activity?.supportFragmentManager?.popBackStack()
-
-                    /*val fragment: Fragment? =
-                        activity?.supportFragmentManager?.findFragmentByTag("LOADING")
-                    if (fragment != null) activity?.supportFragmentManager?.beginTransaction()
-                        ?.remove(fragment)?.commit()*/
-                }
-            }
         })
 
         if (talkToExpertsViewModel.expertListLiveData.value == null)
@@ -138,41 +112,30 @@ class MindFragment : Fragment() {
             }
         })
 
-        //if (mindViewModel.musicLiveData.value == null)
-        mindViewModel.fetchAllMusic()
-        mindViewModel.musicLiveData.observe(viewLifecycleOwner, Observer { state ->
-            when (state) {
-                is MusicFetchState.Success -> {
-                    //adapter.remove(taskForTheDaySection)
-                    taskForTheDaySection.add(TasksForTheDayItems(state.musicEntries) { position ->
-                        mindViewModel.playMusicLiveData.postValue(
-                            state.musicEntries[position]
-                        )
-                        activity?.supportFragmentManager?.beginTransaction()
-                            ?.replace(R.id.mainContainer, MusicPlayerFragment())
-                            ?.addToBackStack(null)?.commit()
-                    })
-                    //adapter.up(1,taskForTheDaySection)
-                }
-                is MusicFetchState.Loading -> {
-                }
-                is MusicFetchState.Error -> {
-                }
-            }
+        mindViewModel.musicPagedList.observe(viewLifecycleOwner, Observer { pagedList ->
+            taskForTheDaySection.setHeader(TasksForTheDayItems(pagedList) { position ->
+                mindViewModel.playMusicLiveData.postValue(
+                    pagedList[position])
+                activity?.supportFragmentManager?.beginTransaction()
+                    ?.replace(R.id.mainContainer, MusicPlayerFragment())
+                    ?.addToBackStack(null)?.commit()
+            })
         })
 
-        mindViewModel.congratsListenerLiveData.observe(viewLifecycleOwner, Observer { coins ->
-            val bundle = Bundle()
-            bundle.putString("COINS", coins.toString())
-            val congratsFragment = CongratsFragment()
-            congratsFragment.arguments = bundle
-            activity?.supportFragmentManager?.beginTransaction()
-                ?.add(
-                    R.id.mainContainer,
-                    congratsFragment
-                )
-                ?.addToBackStack(null)
-                ?.commit()
+        mindViewModel.coinsAcquiredLiveData.observe(viewLifecycleOwner, Observer { coins ->
+            if (coins.first) {
+                val bundle = Bundle()
+                bundle.putString("COINS", coins.second.toString())
+                val congratsFragment = CongratsFragment()
+                congratsFragment.arguments = bundle
+                activity?.supportFragmentManager?.beginTransaction()
+                    ?.add(
+                        R.id.mainContainer,
+                        congratsFragment
+                    )
+                    ?.addToBackStack(null)
+                    ?.commit()
+            }
         })
 
         if (blogsViewModel.blogLiveData.value == null)
@@ -224,17 +187,18 @@ class MindFragment : Fragment() {
             resources.getDimensionPixelOffset(R.dimen.snackbar_icon_padding)
         snackBar.show()
     }
+
+    private fun fillName(helloSection: Section) {
+        helloSection.removeHeader()
+        helloSection.setHeader(HelloItem(SharedPreferenceManager.getUserProfile()?.data?.name) {
+            profileViewModel.updateName(
+                SharedPreferenceManager.getUserProfile()?.data?.id ?: 0,
+                JsonObject().apply { addProperty("name", it) }
+            )
+        })
+    }
 }
 
-fun fillName(helloSection: Section) {
-    helloSection.removeHeader()
-    helloSection.setHeader(HelloItem(SharedPreferenceManager.getName()) {
-        SharedPreferenceManager.setName(it)
-        fillName(helloSection)
-        /*profileViewModel.updateName(
-            SharedPreferenceManager.getUser()?.data?.userId ?: -1,
-            namePayload = NamePayload(NamePayload.Data(it))
-        )*/
-    })
-}
+
+
 

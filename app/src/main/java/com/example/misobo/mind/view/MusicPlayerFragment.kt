@@ -19,7 +19,6 @@ import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util
-import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -162,9 +161,9 @@ class MusicPlayerFragment : Fragment() {
             ProgressPayload(
                 userId = SharedPreferenceManager.getUser()?.data?.userId,
                 progress = TimeUnit.MILLISECONDS.toSeconds(progressToMilli)
-            )
+            ),mindViewModel.playMusicLiveData.value?.karma
         )
-        if (progress > 95)
-            mindViewModel.congratsListenerLiveData.postValue(mindViewModel.playMusicLiveData.value?.karma)
+        //if (progress > 95)
+            //mindViewModel.congratsListenerLiveData.postValue(mindViewModel.playMusicLiveData.value?.karma)
     }
 }

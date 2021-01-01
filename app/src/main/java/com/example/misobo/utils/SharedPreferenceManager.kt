@@ -63,20 +63,6 @@ object SharedPreferenceManager {
         ), ProfileResponseModel::class.java
     )
 
-    fun setName(name: String): Completable {
-        sharedPreferences?.edit()?.apply {
-            if (name != null) {
-                putString(NAME, name)
-            }
-            apply()
-        }
-        return Completable.complete()
-    }
-
-    fun getName(): String? = sharedPreferences?.getString(
-        NAME, null
-    )
-
     fun setProfileImage(uri: String): Completable {
         sharedPreferences?.edit()?.apply {
             if (uri != null) {

@@ -47,6 +47,7 @@ class TalktoExpertsHomeFragment : Fragment() {
         viewModel.getCoinsLiveData()
             .observe(viewLifecycleOwner,
                 Observer { response ->
+                    viewModel.userBookingsLiveData.value?.dataSource?.invalidate()
                     karmaCoinsText.text = response.data?.karmaPoints ?: "0"
                     Log.i("profile", response.toString())
                 })
@@ -83,8 +84,7 @@ class TalktoExpertsHomeFragment : Fragment() {
             } else {
                 currentBookingsGroup.visibility = View.GONE
             }
-        }
-        )
+        })
 
         /* currentBookingsGroup.visibility = View.VISIBLE
                     groupAdapter.clear()
@@ -122,9 +122,11 @@ class TalktoExpertsHomeFragment : Fragment() {
         viewModel.submitRatingLiveData.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is FetchState.Success -> {
+                    viewModel.userBookingsLiveData.value?.dataSource?.invalidate()
                     //viewModel.getUserBookings(SharedPreferenceManager.getUser()?.data?.userId.toString())
                 }
                 is FetchState.Error -> {
+                    viewModel.userBookingsLiveData.value?.dataSource?.invalidate()
                     //viewModel.getUserBookings(SharedPreferenceManager.getUser()?.data?.userId.toString())
                 }
             }

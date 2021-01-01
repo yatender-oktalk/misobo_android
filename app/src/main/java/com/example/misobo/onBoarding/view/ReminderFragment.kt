@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.fragment_reminder.*
 
 class ReminderFragment : Fragment() {
 
-    val onBoardingViewModel: OnBoardingViewModel by activityViewModels()
+    private val onBoardingViewModel: OnBoardingViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

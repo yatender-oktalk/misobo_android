@@ -10,20 +10,20 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.hello_item_layout.view.*
 
 
-class HelloItem(val name:String?,val onClick: (String) -> Unit) : Item() {
+class HelloItem(val name: String?, val onClick: (String) -> Unit) : Item() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
 
-        if (name!=null){
+        if (name != null) {
             viewHolder.itemView.editNameGroup.visibility = View.GONE
             viewHolder.itemView.nameTextView.text = name
             viewHolder.itemView.nameTextView.visibility = View.VISIBLE
-        }else
-        {
+        } else {
             viewHolder.itemView.nameTextView.visibility = View.GONE
             viewHolder.itemView.editNameGroup.visibility = View.VISIBLE
         }
 
-        viewHolder.itemView.karmaCoinsText.text = SharedPreferenceManager.getUserProfile()?.data?.karmaPoints
+        viewHolder.itemView.karmaCoinsText.text =
+            SharedPreferenceManager.getUserProfile()?.data?.karmaPoints
 
         viewHolder.itemView.editName.setOnEditorActionListener { v, actionId, event ->
             if (event != null && event.keyCode === KeyEvent.KEYCODE_ENTER || actionId == EditorInfo.IME_ACTION_DONE) {

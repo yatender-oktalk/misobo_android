@@ -21,6 +21,7 @@ import com.example.misobo.bmi.view.BmiActivity
 import com.example.misobo.bmi.view.BmiFullReportFragment
 import com.example.misobo.utils.AuthState
 import com.example.misobo.utils.SharedPreferenceManager
+import com.google.gson.JsonObject
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import com.xwray.groupie.GroupAdapter
@@ -64,12 +65,18 @@ class MyProfileFragment : Fragment() {
         editName.setOnEditorActionListener { v, actionId, event ->
             if (event != null && event.keyCode === KeyEvent.KEYCODE_ENTER || actionId == EditorInfo.IME_ACTION_DONE) {
                 if (!editName.text.isNullOrEmpty()) {
-                    SharedPreferenceManager.setName(editName.text.toString())
-                    fillName()
+                    profileViewModel.updateName(SharedPreferenceManager.getUserProfile()?.data?.id?:0,
+                        JsonObject().apply { addProperty("name" ,editName.text.toString() ) }
+                    )
+                    //fillName()
                 }
             }
             false
         }
+
+        profileViewModel.getProfileLiveData().observe(viewLifecycleOwner, Observer { model->
+            fillName()
+        })
 
         bmiScoreLayout.setOnClickListener {
             val bundle = Bundle()
@@ -201,9 +208,9 @@ class MyProfileFragment : Fragment() {
     }
 
     private fun fillName() {
-        if (SharedPreferenceManager.getName() != null) {
+        if (SharedPreferenceManager.getUserProfile()?.data?.name != null) {
             editNameGroup.visibility = View.INVISIBLE
-            nameTextView.text = SharedPreferenceManager.getName()
+            nameTextView.text = SharedPreferenceManager.getUserProfile()?.data?.name
             nameTextView.visibility = View.VISIBLE
         } else {
             nameTextView.visibility = View.INVISIBLE
