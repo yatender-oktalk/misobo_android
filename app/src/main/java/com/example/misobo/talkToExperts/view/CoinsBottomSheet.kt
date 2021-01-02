@@ -33,6 +33,7 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.coins_bottom_sheet.*
+import kotlinx.android.synthetic.main.rewards_bottom_sheet.*
 import org.json.JSONObject
 import java.util.concurrent.TimeUnit
 
@@ -42,6 +43,8 @@ class CoinsBottomSheet : BottomSheetDialogFragment(), PaymentResultListener {
     val profileViewModel: ProfileViewModel by lazy { ViewModelProvider(this).get(ProfileViewModel::class.java) }
     val compositeDisposable = CompositeDisposable()
     private val groupAdapter = GroupAdapter<ViewHolder>()
+    private val type by lazy { requireArguments().getString("TYPE", "CALL") }
+    private val rewardId: Int? by lazy { arguments?.getInt("REWARD_ID") }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,9 +62,18 @@ class CoinsBottomSheet : BottomSheetDialogFragment(), PaymentResultListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        when (type) {
+            "CALL" -> {
+                needMoreCoins.text = "You need more coins to\n book this call"
+            }
+            "REWARDS" -> {
+                needMoreCoins.text = "You have less coins to\n unlock this reward"
+            }
+        }
+
         Checkout.preload(requireContext())
 
-        crossButton.setOnClickListener{
+        crossButton.setOnClickListener {
             this.dismiss()
         }
         viewModel.getPacks()
@@ -76,7 +88,7 @@ class CoinsBottomSheet : BottomSheetDialogFragment(), PaymentResultListener {
                     state.packsList.forEach { pack ->
                         section.add(PacksItem(pack) {
                             viewModel.paymentAmount = pack.amount?.toDouble() ?: 1.00
-                            viewModel.pack=pack.karmaCoins?:0
+                            viewModel.pack = pack.karmaCoins ?: 0
                             viewModel.createOrder(
                                 OrderPayload(
                                     pack.amount?.toDouble() ?: 1.00,
@@ -108,9 +120,14 @@ class CoinsBottomSheet : BottomSheetDialogFragment(), PaymentResultListener {
         viewModel.captureOrderLiveData.observe(this, Observer { state ->
             when (state) {
                 is CaptureOrderState.Success -> {
-
+                    val bundle = Bundle()
+                    bundle.putString("TYPE", type)
+                    if (rewardId != null)
+                        bundle.putInt("REWARD_ID", rewardId ?: -1)
+                    val coinsAdditionSuccess = CoinsAdditionSuccess()
+                    coinsAdditionSuccess.arguments = bundle
                     activity?.supportFragmentManager?.beginTransaction()
-                        ?.add(CoinsAdditionSuccess(), null)?.commit()
+                        ?.add(coinsAdditionSuccess, null)?.commit()
 
                     profileViewModel.getProfile(
                         SharedPreferenceManager.getUser()?.data?.userId ?: 0
@@ -144,7 +161,10 @@ class CoinsBottomSheet : BottomSheetDialogFragment(), PaymentResultListener {
             options.put("theme.color", "#f1ab87");
             options.put("currency", "INR");
             options.put("order_id", paymentGatewayOrderId);
-            options.put("amount", viewModel.paymentAmount.toString())//pass amount in currency subunits
+            options.put(
+                "amount",
+                viewModel.paymentAmount.toString()
+            )//pass amount in currency subunits
 
             val prefill = JSONObject()
             //prefill.put("email", "akshay@gmail.com")

@@ -137,8 +137,12 @@ class BookASlotDialog : BottomSheetDialogFragment() {
                         Misobo.authRelay.onNext(AuthState.FAILED)
                     }
                     is BookSlotState.NotSufficientKarma -> {
+                        val bundle = Bundle()
+                        bundle.putString("TYPE", "CALL")
+                        val coinsBottomSheet = CoinsBottomSheet()
+                        coinsBottomSheet.arguments = bundle
                         activity?.supportFragmentManager?.beginTransaction()
-                            ?.add(CoinsBottomSheet(), null)?.commit()
+                            ?.add(coinsBottomSheet, null)?.commit()
                     }
                     is BookSlotState.Loading -> {
 

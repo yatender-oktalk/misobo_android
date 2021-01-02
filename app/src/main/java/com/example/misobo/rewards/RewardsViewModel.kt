@@ -15,7 +15,8 @@ class RewardsViewModel : ViewModel() {
     val rewardsLiveData: MutableLiveData<RewardsFetchState> = MutableLiveData()
     private val compositeDisposable = CompositeDisposable()
     val selectedRewardLiveData: MutableLiveData<RewardsModel.Reward> = MutableLiveData()
-    val redeemRewardsLiveData: SingleLiveEvent<RedeemFetchState> = SingleLiveEvent()
+    val redeemRewardsLiveData: SingleLiveEvent<Pair<RedeemFetchState, Int>> = SingleLiveEvent()
+    val snackBarLiveData: SingleLiveEvent<Unit> = SingleLiveEvent()
     val claimedRewardsLiveData: MutableLiveData<ClaimedRewardsFetchState> = MutableLiveData()
     val claimedRewardsList: MutableLiveData<List<ClaimedRewardsModel.ClaimedReward>> =
         MutableLiveData()
@@ -35,7 +36,9 @@ class RewardsViewModel : ViewModel() {
     fun redeemRewards(id: Int) {
         compositeDisposable.add(RewardsService.Creator.service.redeemReward(id)
             .subscribeOn(Schedulers.io())
-            .map { RedeemFetchState.Success as RedeemFetchState }
+            .map {
+                snackBarLiveData.postValue(Unit)
+                RedeemFetchState.Success as RedeemFetchState }
             .startWith(RedeemFetchState.Loading)
             .onErrorReturn {
                 val exception = it as com.jakewharton.retrofit2.adapter.rxjava2.HttpException
@@ -45,7 +48,9 @@ class RewardsViewModel : ViewModel() {
                     RedeemFetchState.Error
             }
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { redeemRewardsLiveData.postValue(it) })
+            .subscribe {
+                redeemRewardsLiveData.postValue(Pair(first = it, second = id))
+            })
     }
 
     fun claimedRewards(userId: Int) {
