@@ -17,7 +17,7 @@ class RewardsViewModel : ViewModel() {
     val selectedRewardLiveData: MutableLiveData<RewardsModel.Reward> = MutableLiveData()
     val redeemRewardsLiveData: SingleLiveEvent<Pair<RedeemFetchState, Int>> = SingleLiveEvent()
     val snackBarLiveData: SingleLiveEvent<Unit> = SingleLiveEvent()
-    val claimedRewardsLiveData: MutableLiveData<ClaimedRewardsFetchState> = MutableLiveData()
+    val claimedRewardsLiveData: SingleLiveEvent<ClaimedRewardsFetchState> = SingleLiveEvent()
     val claimedRewardsList: MutableLiveData<List<ClaimedRewardsModel.ClaimedReward>> =
         MutableLiveData()
 

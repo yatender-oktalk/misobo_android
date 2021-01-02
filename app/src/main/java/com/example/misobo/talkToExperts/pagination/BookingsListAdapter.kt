@@ -17,7 +17,8 @@ import java.lang.IllegalArgumentException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class BookingsListAdapter(private val submitRating: (UserBookings.Entry?, Int) -> Unit) :
+class BookingsListAdapter(
+    private val submitRating: (UserBookings.Entry?, Int) -> Unit) :
     PagedListAdapter<UserBookings.Entry, RecyclerView.ViewHolder>(
         diffCallback
     ) {
@@ -87,6 +88,9 @@ class BookingsListAdapter(private val submitRating: (UserBookings.Entry?, Int) -
                 holder.itemView.expertLanguage.text = getItem(position)?.expert?.language
                 holder.itemView.coinsNeeded.text =
                     getItem(position)?.expert?.karmaCoinsNeeded.toString()
+                holder.itemView.bookCallAgainText.setOnClickListener {
+                    //needHelpClick.invoke()
+                }
             }
             is EmptyViewHolder -> {
             }

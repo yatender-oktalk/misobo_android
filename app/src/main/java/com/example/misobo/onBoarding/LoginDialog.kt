@@ -3,6 +3,7 @@ package com.example.misobo.onBoarding
 import android.app.Dialog
 import android.content.DialogInterface
 import android.content.res.Resources
+import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.Toast
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
@@ -45,6 +47,13 @@ class LoginDialog : BottomSheetDialogFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        terms.setOnClickListener {
+            val url = "http://143.110.176.70:4000/api/terms"
+            val builder = CustomTabsIntent.Builder();
+            val customTabsIntent = builder.build();
+            customTabsIntent.launchUrl(requireContext(), Uri.parse(url));
+        }
 
         crossButton.setOnClickListener {
             this.dismiss()

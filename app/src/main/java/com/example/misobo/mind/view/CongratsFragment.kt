@@ -24,6 +24,8 @@ class CongratsFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         activity?.bottomNavigationView?.visibility = View.GONE
+        activity?.arcSeparator?.visibility = View.GONE
+        activity?.arc?.visibility = View.GONE
 
         karmaCoinsText.text = karmaCoin
         youEarnedCoins.text = "You earned $karmaCoin karma coins"
@@ -40,5 +42,7 @@ class CongratsFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         activity?.bottomNavigationView?.visibility = View.VISIBLE
+        activity?.arcSeparator?.visibility = View.VISIBLE
+        activity?.arc?.visibility = View.VISIBLE
     }
 }

@@ -46,6 +46,9 @@ class MusicPlayerFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         activity?.bottomNavigationView?.visibility = View.GONE
+        activity?.arcSeparator?.visibility = View.GONE
+        activity?.arc?.visibility = View.GONE
+
         mindViewModel.playMusicLiveData.observe(viewLifecycleOwner, Observer { musicModel ->
             mindViewModel.selectedMusicId = musicModel.id ?: 0
             musicModel.title?.let {
@@ -148,6 +151,8 @@ class MusicPlayerFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         activity?.bottomNavigationView?.visibility = View.VISIBLE
+        activity?.arcSeparator?.visibility = View.VISIBLE
+        activity?.arc?.visibility = View.VISIBLE
     }
 
     private fun updateProgress() {

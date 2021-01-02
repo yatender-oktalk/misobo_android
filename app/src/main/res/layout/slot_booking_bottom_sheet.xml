@@ -140,7 +140,7 @@
                 tools:text="Hindi" />
 
             <View
-                android:id="@+id/separator"
+                android:id="@+id/arcSeparator"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="25dp"
@@ -163,7 +163,7 @@
                 android:textSize="16sp"
                 android:textStyle="normal"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/separator" />
+                app:layout_constraintTop_toBottomOf="@id/arcSeparator" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/dateRecyclerView"

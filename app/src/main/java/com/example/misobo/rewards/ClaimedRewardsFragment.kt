@@ -32,6 +32,9 @@ class ClaimedRewardsFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         activity?.bottomNavigationView?.visibility = View.GONE
+        activity?.arcSeparator?.visibility = View.GONE
+        activity?.arc?.visibility = View.GONE
+
         recyclerView.adapter = groupedAdapter
         rewardsViewModel.claimedRewardsList.observe(viewLifecycleOwner, Observer { rewardsList ->
             rewardsList.forEach {
@@ -47,5 +50,7 @@ class ClaimedRewardsFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         activity?.bottomNavigationView?.visibility = View.VISIBLE
+        activity?.arcSeparator?.visibility = View.VISIBLE
+        activity?.arc?.visibility = View.VISIBLE
     }
 }

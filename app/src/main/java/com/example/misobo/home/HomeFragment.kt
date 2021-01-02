@@ -58,6 +58,9 @@ class HomeFragment : Fragment() {
         })
 
         activity?.bottomNavigationView?.visibility = View.VISIBLE
+        activity?.arcSeparator?.visibility = View.VISIBLE
+        activity?.arc?.visibility = View.VISIBLE
+
         unlockButtonBody.setOnClickListener {
 
             val bundle = Bundle()

@@ -156,6 +156,7 @@ class OnBoardingViewModel : ViewModel() {
         compositeDisposable.add(ExpertsService.Creator.service.sendOtp(id, otpModel)
             .subscribeOn(Schedulers.io())
             .map {
+                SharedPreferenceManager.setUserProfile(it)
                 MobileRegistration.Success(
                     it
                 ) as MobileRegistration

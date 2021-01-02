@@ -42,7 +42,7 @@ interface MindService {
                                     it.request().newBuilder()
                                         .addHeader(
                                             "token",
-                                            token
+                                            SharedPreferenceManager.getUser()?.data?.token ?: ""
                                         )
                                         .build()
                                 )

@@ -71,7 +71,7 @@ class Misobo : Application() {
                         }
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe())
+                        .subscribe({},{}))
                 })
         }
     }

@@ -10,6 +10,8 @@
     <style name="bottomNavigationStyle"
         parent="Widget.Design.BottomNavigationView">
         <item name="fontFamily">@font/manrope_light</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:letterSpacing" type="dimen" format="float">0.48</item>
         <item name="lineHeight" >24sp</item>
         <item name="iconPadding">0dp</item>

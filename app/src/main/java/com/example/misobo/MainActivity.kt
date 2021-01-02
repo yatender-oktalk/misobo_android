@@ -10,6 +10,7 @@ import com.example.misobo.mind.view.MindActivity
 import com.example.misobo.mind.view.MindFragment
 import com.example.misobo.mind.viewModels.MindViewModel
 import com.example.misobo.myProfile.MyProfileFragment
+import com.example.misobo.myProfile.ProfileViewModel
 import com.example.misobo.rewards.RewardsFragment
 import com.example.misobo.rewards.RewardsViewModel
 import com.example.misobo.talkToExperts.models.CaptureOrderPayload
@@ -26,7 +27,9 @@ class MainActivity : AppCompatActivity(), PaymentResultListener {
     private val rewardsViewModel: RewardsViewModel by lazy {
         ViewModelProvider(this).get(RewardsViewModel::class.java)
     }
-    val talkToExpertsViewModel: TalkToExpertsViewModel by lazy {
+    private val profileViewModel by lazy { ViewModelProvider(this).get(ProfileViewModel::class.java) }
+
+    private val talkToExpertsViewModel: TalkToExpertsViewModel by lazy {
         ViewModelProvider(this).get(
             TalkToExpertsViewModel::class.java
         )

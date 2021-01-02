@@ -51,13 +51,13 @@
             android:fontFamily="@font/manrope_regular"
             android:gravity="center"
             android:lineSpacingExtra="16sp"
-            tools:text="100"
             android:textColor="#4d426d"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/profileHeader"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/profileHeader" />
+            app:layout_constraintTop_toTopOf="@id/profileHeader"
+            tools:text="100" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profileImage"
@@ -200,10 +200,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
-            android:paddingBottom="16sp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/rounded_background_radius_10"
             android:backgroundTint="#f7f7f7"
+            android:paddingBottom="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/bmiScoreLayout">
@@ -212,8 +212,8 @@
                 android:id="@+id/dailyCheckinTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16sp"
                 android:layout_marginStart="16sp"
+                android:layout_marginTop="16sp"
                 android:fontFamily="@font/manrope_extrabold"
                 android:lineSpacingExtra="18sp"
                 android:text="Daily Checkin"
@@ -229,13 +229,13 @@
                 android:id="@+id/checkDailyDetails"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16sp"
                 android:layout_marginTop="8dp"
                 android:breakStrategy="simple"
                 android:fontFamily="@font/manrope_regular"
                 android:lineSpacingExtra="7sp"
                 android:maxEms="9"
                 android:maxLines="3"
-                android:layout_marginStart="16sp"
                 android:text="Checkin daily for faster results and
 earn karma points"
                 android:textColor="#744d426d"
@@ -251,9 +251,9 @@ earn karma points"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"
                 android:clipToPadding="false"
+                android:orientation="horizontal"
                 android:paddingStart="16sp"
                 android:paddingEnd="16sp"
-                android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -291,6 +291,21 @@ earn karma points"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/logoutTextView" />
 
+        <TextView
+            android:id="@+id/editProfileTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="26dp"
+            android:fontFamily="@font/manrope_regular"
+            android:lineSpacingExtra="24sp"
+            android:text="Edit Profile"
+            android:textColor="#4d426d"
+            android:textSize="14sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rewardsTextView" />
+
         <ImageView
             android:id="@+id/misobo"
             android:layout_width="wrap_content"
@@ -299,7 +314,7 @@ earn karma points"
             android:src="@drawable/ic_misobo_mbs"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rewardsTextView" />
+            app:layout_constraintTop_toBottomOf="@id/editProfileTextView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

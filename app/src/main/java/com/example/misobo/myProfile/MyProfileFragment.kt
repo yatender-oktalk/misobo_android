@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
@@ -19,6 +20,7 @@ import com.example.misobo.Misobo
 import com.example.misobo.R
 import com.example.misobo.bmi.view.BmiActivity
 import com.example.misobo.bmi.view.BmiFullReportFragment
+import com.example.misobo.onBoarding.OtpDialog
 import com.example.misobo.utils.AuthState
 import com.example.misobo.utils.SharedPreferenceManager
 import com.google.gson.JsonObject
@@ -33,8 +35,9 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class MyProfileFragment : Fragment() {
+
     private val groupAdapter = GroupAdapter<ViewHolder>()
-    private val profileViewModel by lazy { ViewModelProvider(this).get(ProfileViewModel::class.java) }
+    private val profileViewModel: ProfileViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,8 +68,9 @@ class MyProfileFragment : Fragment() {
         editName.setOnEditorActionListener { v, actionId, event ->
             if (event != null && event.keyCode === KeyEvent.KEYCODE_ENTER || actionId == EditorInfo.IME_ACTION_DONE) {
                 if (!editName.text.isNullOrEmpty()) {
-                    profileViewModel.updateName(SharedPreferenceManager.getUserProfile()?.data?.id?:0,
-                        JsonObject().apply { addProperty("name" ,editName.text.toString() ) }
+                    profileViewModel.updateName(SharedPreferenceManager.getUserProfile()?.data?.id
+                        ?: 0,
+                        JsonObject().apply { addProperty("name", editName.text.toString()) }
                     )
                     //fillName()
                 }
@@ -74,7 +78,7 @@ class MyProfileFragment : Fragment() {
             false
         }
 
-        profileViewModel.getProfileLiveData().observe(viewLifecycleOwner, Observer { model->
+        profileViewModel.getProfileLiveData().observe(viewLifecycleOwner, Observer { model ->
             fillName()
         })
 
@@ -104,6 +108,11 @@ class MyProfileFragment : Fragment() {
         logoutTextView.setOnClickListener {
             SharedPreferenceManager.clear()
             Misobo.authRelay.onNext(AuthState.FAILED)
+        }
+
+        editProfileTextView.setOnClickListener {
+            activity?.supportFragmentManager?.beginTransaction()
+                ?.add(EditProfileBottomSheet(), null)?.commit()
         }
 
         profileViewModel.getProfile(SharedPreferenceManager.getUser()?.data?.userId ?: -1)

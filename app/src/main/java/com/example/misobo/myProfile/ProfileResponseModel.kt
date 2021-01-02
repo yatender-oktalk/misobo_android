@@ -44,7 +44,9 @@ data class ProfileResponseModel(
         @SerializedName("result")
         val result: String?,
         @SerializedName("fcm_registration_token")
-        val fcmToken: String?
+        val fcmToken: String?,
+        @SerializedName("email")
+        val email:String?
     )
 
     data class Streak(

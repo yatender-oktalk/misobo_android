@@ -1,5 +1,6 @@
 package com.example.misobo.onBoarding.view
 
+import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import androidx.fragment.app.Fragment
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.misobo.R
@@ -23,6 +25,7 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_on_boarding.*
+import kotlinx.android.synthetic.main.login_bottom_sheet.*
 import java.util.concurrent.TimeUnit
 
 class OnBoardingFragment : Fragment() {
@@ -41,38 +44,38 @@ class OnBoardingFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val textList = listOf("mind" , "body" , "soul")
+        val textList = listOf("mind", "body", "soul")
         val aniFade = AnimationUtils.loadAnimation(context, R.anim.mind_body_soul_anim)
+
+        privacyTextView.setOnClickListener {
+            val url = "http://143.110.176.70:4000/api/terms"
+            val builder = CustomTabsIntent.Builder();
+            val customTabsIntent = builder.build();
+            customTabsIntent.launchUrl(requireContext(), Uri.parse(url));
+        }
 
         disposable.add(Observable.interval(0, 2, TimeUnit.SECONDS)
             .map { textList[it.toInt()] }
             .retry()
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe ({
+            .subscribe({
                 mindTextView.startAnimation(aniFade)
                 mindTextView.text = it
-            },{}))
+            }, {})
+        )
 
         try {
-            /* val registrationModel =
-                RegistrationModel(
-                    Settings.Secure.getString(
-                        context?.contentResolver,
-                        Settings.Secure.ANDROID_ID
-                    )
-                )*/
+
         } catch (e: Exception) {
             Toast.makeText(context, e.localizedMessage, Toast.LENGTH_SHORT).show()
         }
 
         registerText.setOnClickListener {
-           // FirebaseAnalytics.sharedInstance().crash()
-            //throw RuntimeException("Test Crash") // Force a crash
 
             val loginDialog =
                 LoginDialog()
             activity?.supportFragmentManager?.beginTransaction()
-                ?.add(loginDialog,null)?.commit()
+                ?.add(loginDialog, null)?.commit()
         }
     }
 

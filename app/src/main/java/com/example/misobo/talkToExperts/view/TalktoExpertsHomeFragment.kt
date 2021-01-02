@@ -86,48 +86,13 @@ class TalktoExpertsHomeFragment : Fragment() {
             }
         })
 
-        /* currentBookingsGroup.visibility = View.VISIBLE
-                    groupAdapter.clear()
-                    val section = Section()
-                    val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-                    val currentDateTime = Date().time
-                    Log.i("date", Date().time.toString())
-                    state.userBookings.data?.entries?.forEach {
-                        val callCompleted =
-                            currentDateTime.compareTo(dateFormat.parse(it.endTime).time)
-                        if (callCompleted == 1 && it.isRated == false) {
-                            section.add(SubmitRatingItems(it) { rating ->
-                                if (rating != 0) {
-                                    viewModel.submitRating(
-                                        RatingPayload(bookingId = it.id ?: 0, rating = rating)
-                                    )
-                                } else {
-                                    viewModel.selectedExpertLiveDate.postValue(it.expert)
-                                    val slotDialog =
-                                        BookASlotDialog()
-                                    val bundle = Bundle()
-                                    it.expert?.id?.let { it1 -> bundle.putInt("ID", it1) }
-                                    slotDialog.arguments = bundle
-                                    activity?.supportFragmentManager?.beginTransaction()
-                                        ?.add(slotDialog, null)?.commit()
-                                }
-                            })
-                        } else if (callCompleted != 1 && it.isRated == false) {
-                            section.add(UserBookingsItem(it))
-                        }
-                        //Log.i("comp", currentDateTime.compareTo(dateFormat.parse(it.endTime).time).toString())
-                    }
-                    groupAdapter.add(section)*/
-
         viewModel.submitRatingLiveData.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is FetchState.Success -> {
                     viewModel.userBookingsLiveData.value?.dataSource?.invalidate()
-                    //viewModel.getUserBookings(SharedPreferenceManager.getUser()?.data?.userId.toString())
                 }
                 is FetchState.Error -> {
                     viewModel.userBookingsLiveData.value?.dataSource?.invalidate()
-                    //viewModel.getUserBookings(SharedPreferenceManager.getUser()?.data?.userId.toString())
                 }
             }
         })

@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingBottom="33dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
@@ -16,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         android:lineSpacingExtra="18sp"
         android:layout_marginStart="16dp"
-        android:text="Talk to therapists"
+        android:text="Talk to Experts"
         />
 
     <TextView

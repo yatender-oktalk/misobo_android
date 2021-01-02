@@ -23,6 +23,9 @@ class BmiHomeFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         activity?.bottomNavigationView?.visibility = View.GONE
+        activity?.arcSeparator?.visibility = View.GONE
+        activity?.arc?.visibility = View.GONE
+
         startedButton.setOnClickListener {
             activity?.supportFragmentManager?.beginTransaction()
                 ?.replace(
