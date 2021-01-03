@@ -81,6 +81,7 @@ class EditProfileBottomSheet : BottomSheetDialogFragment() {
 
         mobileEditText.setText(SharedPreferenceManager.getUserProfile()?.data?.phone.toString())
         nameEditText.setText(SharedPreferenceManager.getUserProfile()?.data?.name ?: "")
+        emailEditText.setText(SharedPreferenceManager.getUserProfile()?.data?.email ?: "")
         crossButton.setOnClickListener { this.dismiss() }
 
         profileImage.setOnClickListener {
