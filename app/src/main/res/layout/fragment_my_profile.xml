@@ -316,6 +316,11 @@ earn karma points"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/editProfileTextView" />
 
+        <FrameLayout
+            android:id="@+id/zeroStateContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

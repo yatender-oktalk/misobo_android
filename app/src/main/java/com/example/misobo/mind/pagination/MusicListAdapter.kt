@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.misobo.R
 import com.example.misobo.mind.models.MusicResponseModel
 import kotlinx.android.synthetic.main.music_recycler_item.view.*
@@ -46,6 +47,8 @@ class MusicListAdapter(private val onClick: (MusicResponseModel.MusicModel?, Int
         viewHolder.itemView.productionName.text = getItem(position)?.productionName.toString()
         viewHolder.itemView.musicTime.text = "${getItem(position)?.duration?.div(60)} min"
         viewHolder.itemView.soul.text = "${getItem(position)?.tag}"
+        Glide.with(viewHolder.itemView.context).load(getItem(position)?.image)
+            .placeholder(R.drawable.music_gradient).into(viewHolder.itemView.musicCardBackground)
 
         viewHolder.itemView.playButton.setOnClickListener {
             onClick.invoke(getItem(position), position)

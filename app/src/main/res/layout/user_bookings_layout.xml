@@ -26,9 +26,10 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/expertImage"
+                android:id="@+id/expertImages"
                 android:layout_width="61dp"
                 android:layout_height="71dp"
+                android:scaleType="fitXY"
                 android:src="@color/colorAccent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

@@ -22,6 +22,7 @@ import com.example.misobo.bmi.view.BmiActivity
 import com.example.misobo.bmi.view.BmiFullReportFragment
 import com.example.misobo.onBoarding.OtpDialog
 import com.example.misobo.utils.AuthState
+import com.example.misobo.utils.NetworkUtils
 import com.example.misobo.utils.SharedPreferenceManager
 import com.google.gson.JsonObject
 import com.theartofdev.edmodo.cropper.CropImage
@@ -53,6 +54,8 @@ class MyProfileFragment : Fragment() {
         val weekList = listOf("S", "M", "T", "W", "T", "F", "S")
 
         fillName()
+
+        profileViewModel.getProfile(SharedPreferenceManager.getUser()?.data?.userId ?: -1)
 
         Glide.with(requireContext())
             .load(SharedPreferenceManager.getProfileImage())
@@ -115,7 +118,6 @@ class MyProfileFragment : Fragment() {
                 ?.add(EditProfileBottomSheet(), null)?.commit()
         }
 
-        profileViewModel.getProfile(SharedPreferenceManager.getUser()?.data?.userId ?: -1)
 
         profileViewModel.profileLiveData.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
@@ -186,6 +188,10 @@ class MyProfileFragment : Fragment() {
 
                 }
                 is ProfileResponseAction.Error -> {
+                   /* if (!NetworkUtils.isConnected(requireContext())) {
+                        activity?.supportFragmentManager?.beginTransaction()
+                            ?.add(R.id.zeroStateContainer, ZeroStatesFragment())?.commit()
+                    }*/
                     Toast.makeText(context, state.error, Toast.LENGTH_SHORT).show()
                 }
             }

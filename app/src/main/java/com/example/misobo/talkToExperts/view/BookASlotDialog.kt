@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.fragment.app.activityViewModels
+import com.bumptech.glide.Glide
 import com.example.misobo.Misobo
 import com.example.misobo.R
 import com.example.misobo.onBoarding.LoginDialog
@@ -104,7 +105,9 @@ class BookASlotDialog : BottomSheetDialogFragment() {
             androidx.lifecycle.Observer { expert ->
                 expertNameTexView.text = expert.name
                 expertLanguage.text = expert.language
-                expertCategoryTextView.text = "Vedic Astrologer"
+                expertCategoryTextView.text = expert.qualification ?: ""
+                Glide.with(requireContext()).load(expert.image).placeholder(R.color.colorAccent)
+                    .into(expertImage)
             })
 
         viewModel.slotListLiveData.observe(

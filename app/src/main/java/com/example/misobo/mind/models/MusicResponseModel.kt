@@ -23,6 +23,8 @@ data class MusicResponseModel(
         val productionName: String?,
         @SerializedName("title")
         val title: String?,
+        @SerializedName("image")
+        val image:String?,
         @SerializedName("url")
         val url: String?,
         @SerializedName("tag")

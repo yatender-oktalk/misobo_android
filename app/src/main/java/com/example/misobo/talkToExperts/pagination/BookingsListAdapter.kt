@@ -18,7 +18,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class BookingsListAdapter(
-    private val submitRating: (UserBookings.Entry?, Int) -> Unit) :
+    private val submitRating: (UserBookings.Entry?, Int) -> Unit
+) :
     PagedListAdapter<UserBookings.Entry, RecyclerView.ViewHolder>(
         diffCallback
     ) {
@@ -84,13 +85,17 @@ class BookingsListAdapter(
             }
             is BookingViewHolder -> {
                 holder.itemView.expertNameTextView.text = getItem(position)?.expert?.name
-                holder.itemView.expertCategory.text = "Vedic Astrologer"
+                holder.itemView.expertCategory.text =
+                    getItem(position)?.expert?.qualification ?: ""
                 holder.itemView.expertLanguage.text = getItem(position)?.expert?.language
                 holder.itemView.coinsNeeded.text =
                     getItem(position)?.expert?.karmaCoinsNeeded.toString()
                 holder.itemView.bookCallAgainText.setOnClickListener {
                     //needHelpClick.invoke()
                 }
+                Glide.with(holder.itemView.context).load(getItem(position)?.expert?.image)
+                    .placeholder(R.color.colorAccent)
+                    .into(holder.itemView.expertImages)
             }
             is EmptyViewHolder -> {
             }

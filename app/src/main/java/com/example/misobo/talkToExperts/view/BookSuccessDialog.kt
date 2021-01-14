@@ -11,6 +11,7 @@ import android.widget.FrameLayout
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.example.misobo.R
 import com.example.misobo.myProfile.ProfileViewModel
 import com.example.misobo.talkToExperts.viewModels.TalkToExpertsViewModel
@@ -73,6 +74,9 @@ class BookSuccessDialog : BottomSheetDialogFragment() {
         viewModel.selectedExpertLiveDate.observe(viewLifecycleOwner, Observer { response ->
             nameTextView.text = response.name
             expertLanguage.text = response.language
+            Glide.with(requireContext()).load(response.image).placeholder(R.color.colorAccent)
+                .into(dailyCheckinStatusImage)
+            expertCategory.text = response.qualification?:""
         })
 
         okayButton.setOnClickListener {
