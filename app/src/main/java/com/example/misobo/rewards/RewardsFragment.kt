@@ -57,7 +57,11 @@ class RewardsFragment : Fragment() {
                             rewardsViewModel.selectedRewardLiveData.postValue(reward)
                             activity?.supportFragmentManager?.beginTransaction()
                                 ?.add(RewardsDetailsBottomSheet(), null)?.commit()
-                        })}}}})
+                        })
+                    }
+                }
+            }
+        })
 
         rewardsViewModel.snackBarLiveData.observe(viewLifecycleOwner, Observer {
             rewardsViewModel.claimedRewards(SharedPreferenceManager.getUser()?.data?.userId ?: -1)

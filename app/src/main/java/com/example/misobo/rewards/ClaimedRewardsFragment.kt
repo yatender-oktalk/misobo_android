@@ -39,12 +39,19 @@ class ClaimedRewardsFragment : Fragment() {
         rewardsViewModel.claimedRewardsList.observe(viewLifecycleOwner, Observer { rewardsList ->
             rewardsList.forEach {
                 section.add(RewardsItem(it.reward!!, it.code.toString()) {
+                    rewardsViewModel.selectedRewardLiveData.postValue(it.reward)
+                    val bundle = Bundle()
+                    bundle.putBoolean("hideButton", true)
+                    val rewardsBottomSheet = RewardsDetailsBottomSheet()
+                    rewardsBottomSheet.arguments = bundle
+                    rewardsBottomSheet.show(activity?.supportFragmentManager!!,null)
+                    /*activity?.supportFragmentManager?.beginTransaction()
+                        ?.add(rewardsBottomSheet, null)?.commitAllowingStateLoss()*/
                 })
             }
         })
         backIcon.setOnClickListener { activity?.onBackPressed() }
         groupedAdapter.add(section)
-
     }
 
     override fun onDestroy() {

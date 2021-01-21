@@ -55,7 +55,6 @@ class TalktoExpertsHomeFragment : Fragment() {
         viewModel.getExpertCategories()
         viewModel.getUserBookings(SharedPreferenceManager.getUser()?.data?.userId.toString())
 
-
         backIcon.setOnClickListener { activity?.onBackPressed() }
 
         bookingsListAdapter = BookingsListAdapter { entry, rating ->

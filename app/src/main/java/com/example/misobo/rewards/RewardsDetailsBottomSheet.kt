@@ -63,6 +63,10 @@ class RewardsDetailsBottomSheet : BottomSheetDialogFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        val hideButton = arguments?.getBoolean("hideButton", false)
+
+        redeemButtonGroup.visibility = if (hideButton == true) View.GONE else View.VISIBLE
+
         crossIcon.setOnClickListener { this.dismiss() }
 
         rewardsViewModel.selectedRewardLiveData.observe(viewLifecycleOwner, Observer { rewards ->
