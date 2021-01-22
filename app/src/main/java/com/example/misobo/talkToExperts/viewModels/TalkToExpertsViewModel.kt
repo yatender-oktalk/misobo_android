@@ -189,7 +189,6 @@ class TalkToExpertsViewModel : ViewModel() {
         )
 
         val config = PagedList.Config.Builder()
-            .setPageSize(20)
             .setInitialLoadSizeHint(5)
             .setEnablePlaceholders(false)
             .build()

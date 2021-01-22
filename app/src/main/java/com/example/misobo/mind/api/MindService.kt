@@ -25,8 +25,6 @@ interface MindService {
         @Body progressPayload: ProgressPayload
     ): Observable<ProgressResponse>
 
-
-
     object Creator {
         private const val url: String = "http://143.110.176.70:4000/"
         private val token = SharedPreferenceManager.getUser()?.data?.token ?: ""
