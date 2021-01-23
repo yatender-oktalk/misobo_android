@@ -80,7 +80,7 @@
             app:tint="@color/colorAccent" />
 
         <TextView
-            android:id="@+id/expertLanguage"
+            android:id="@+id/expertsLanguage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"

@@ -1,6 +1,10 @@
 package com.example.misobo.talkToExperts.view
 
+import android.content.ComponentName
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.telephony.PhoneNumberUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,16 +17,17 @@ import com.example.misobo.myProfile.FetchState
 import com.example.misobo.talkToExperts.items.BookingsRecyclerItem
 import com.example.misobo.talkToExperts.items.ExpertsViewPagerItem
 import com.example.misobo.talkToExperts.items.TalkToExpertsItem
-import com.example.misobo.talkToExperts.viewModels.CategoriesState
-import com.example.misobo.talkToExperts.viewModels.TalkToExpertsViewModel
 import com.example.misobo.talkToExperts.models.RatingPayload
 import com.example.misobo.talkToExperts.pagination.BookingsListAdapter
+import com.example.misobo.talkToExperts.viewModels.CategoriesState
+import com.example.misobo.talkToExperts.viewModels.TalkToExpertsViewModel
 import com.example.misobo.utils.SharedPreferenceManager
 import com.example.misobo.utils.ToggleGroup
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.fragment_talkto_experts_home.*
+
 
 class TalktoExpertsHomeFragment : Fragment() {
 
@@ -63,8 +68,7 @@ class TalktoExpertsHomeFragment : Fragment() {
 
         //backIcon.setOnClickListener { activity?.onBackPressed() }
 
-
-        bookingsListAdapter = BookingsListAdapter { entry, rating ->
+        bookingsListAdapter = BookingsListAdapter({ entry, rating ->
             if (rating != 0) {
                 viewModel.submitRating(
                     RatingPayload(bookingId = entry?.id ?: 0, rating = rating)
@@ -79,7 +83,10 @@ class TalktoExpertsHomeFragment : Fragment() {
                 activity?.supportFragmentManager?.beginTransaction()
                     ?.add(slotDialog, null)?.commit()
             }
+        }, {
+
         }
+        )
 
         //User Bookings
         userBookingsSection = BookingsRecyclerItem({ ratingPayload ->
@@ -93,15 +100,32 @@ class TalktoExpertsHomeFragment : Fragment() {
             slotDialog.arguments = bundle
             activity?.supportFragmentManager?.beginTransaction()
                 ?.add(slotDialog, null)?.commit()
+        },{
+            val sendIntent = Intent("android.intent.action.MAIN")
+            sendIntent.component = ComponentName("com.whatsapp", "com.whatsapp.Conversation")
+            sendIntent.putExtra("jid", PhoneNumberUtils.stripSeparators("9809740740") + "@s.whatsapp.net")
+            context?.startActivity(sendIntent)
+
+           /* val url = "https://api.whatsapp.com/send?phone=9809740740"
+            val i = Intent(Intent.ACTION_VIEW)
+            i.setPackage("com.whatsapp")
+            i.putExtra(Intent.EXTRA_TEXT, "YOUR TEXT");
+            i.data = Uri.parse(url)
+            startActivity(i)*/
         })
+
+
         userBookingsToggle = ToggleGroup()
         userBookingsToggle.add(userBookingsSection)
         viewModel.userBookingsLiveData.observe(viewLifecycleOwner, Observer { state ->
             if (!state.isNullOrEmpty()) {
                 userBookingsSection.update(state)
                 userBookingsToggle.show()
-                Log.i("stateSize" , userBookingsSection.bookingsListAdapter.itemCount.toString())
-                Log.i("stateSize2" , userBookingsSection.bookingsListAdapter.currentList?.size.toString())
+                Log.i("stateSize", userBookingsSection.bookingsListAdapter.itemCount.toString())
+                Log.i(
+                    "stateSize2",
+                    userBookingsSection.bookingsListAdapter.currentList?.size.toString()
+                )
 
                 //viewModel.userBookingsLiveData.value.
             } else {
@@ -126,7 +150,7 @@ class TalktoExpertsHomeFragment : Fragment() {
         viewModel.categoriesExpertLiveData.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is CategoriesState.Success -> {
-                    expertsViewPagerItem = ExpertsViewPagerItem(this,state)
+                    expertsViewPagerItem = ExpertsViewPagerItem(this, state)
                     expertsSection.add(expertsViewPagerItem)
                     expertsViewPagerItem.update()
                 }

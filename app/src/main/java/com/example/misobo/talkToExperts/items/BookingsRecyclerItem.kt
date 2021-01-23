@@ -14,18 +14,20 @@ import kotlinx.android.synthetic.main.user_bookings_recycler.view.*
 
 class BookingsRecyclerItem(
     val submitRating: (RatingPayload) -> Unit,
-    val openSlot: (ExpertModel.Expert?) -> Unit
+    val openSlot: (ExpertModel.Expert?) -> Unit,
+    val needHelpClicked: () -> Unit
+
 ) : Item() {
     //private lateinit var bookingsListAdapter: BookingsListAdapter
     private lateinit var pagedList: PagedList<UserBookings.Entry?>
 
-    val bookingsListAdapter = BookingsListAdapter { entry, rating ->
+    val bookingsListAdapter = BookingsListAdapter({ entry, rating ->
         if (rating != 0) {
             submitRating.invoke(RatingPayload(bookingId = entry?.id ?: 0, rating = rating))
         } else {
             openSlot.invoke(entry?.expert)
         }
-    }
+    }, { needHelpClicked.invoke() })
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
 

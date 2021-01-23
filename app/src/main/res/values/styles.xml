@@ -29,7 +29,7 @@
     </style>
 
     <style name="CustomExoMediaButton.Play" parent="ExoMediaButton.Play">
-        <item name="android:src">@drawable/ic_play_button</item>
+        <item name="android:src">@drawable/white_play_icon</item>
         <item name="android:contentDescription">@string/exo_controls_play_description</item>
     </style>
 

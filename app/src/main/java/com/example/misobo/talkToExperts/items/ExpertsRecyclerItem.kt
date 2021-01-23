@@ -13,7 +13,10 @@ class ExpertsRecyclerItem(val it: ExpertModel.Expert, val callClicked: () -> Uni
         viewHolder.itemView.expertName.text = it.name
         viewHolder.itemView.coinsNeeded.text = "${it.karmaCoinsNeeded ?: 0}/Min"
 
-        viewHolder.itemView.expertCategory.text = it.qualification ?: "Vedic Astrologer"
+        viewHolder.itemView.expertCategory.text = it.qualification ?: ""
+        if (it.qualification?.length?:0 > 24) {
+            viewHolder.itemView.expertCategory.text =it.qualification?.substring(0, 24) + "...";
+        }
         viewHolder.itemView.expertLanguage.text = it.language
         viewHolder.itemView.expertStar.text = it.rating ?: "4.5"
         viewHolder.itemView.customers.text = "${it.consultations ?: 432}"

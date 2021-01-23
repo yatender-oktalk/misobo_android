@@ -3,9 +3,9 @@ package com.example.misobo.talkToExperts.pagination
 import androidx.paging.PageKeyedDataSource
 import com.example.misobo.talkToExperts.api.ExpertsService
 import com.example.misobo.talkToExperts.models.UserBookings
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
+import java.text.SimpleDateFormat
+import java.util.*
 
 class PageKeyedBookingsDataSource(
     private val compositeDisposable: CompositeDisposable,
@@ -22,14 +22,26 @@ class PageKeyedBookingsDataSource(
             networkService.fetchBookings(pageNumber = 1, userId = userId)
                 .subscribe({ bookings ->
                     callback.onResult(
-                        bookings.data?.entries!!,
+                        getFilteredList(bookings.data?.entries!!),
                         null,
                         if (bookings.data.pageNumber!! < bookings.data.totalPages!!) 2 else null
-
                     )
-                    //userBookingsLiveData.postValue(it)
                 }, {})
         )
+    }
+
+    private fun getFilteredList(entries: List<UserBookings.Entry>): MutableList<UserBookings.Entry> {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+        val currentDateTime = Date().time
+        val filteredEntries = mutableListOf<UserBookings.Entry>()
+        entries.forEach {
+            val callCompleted =
+                currentDateTime.compareTo(dateFormat.parse(it?.endTime).time)
+            if (!(callCompleted == 1 && it.isRated == true)) {
+                filteredEntries.add(it)
+            }
+        }
+        return filteredEntries
     }
 
     override fun loadAfter(

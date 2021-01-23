@@ -52,7 +52,11 @@ class ExpertsListAdapter(private val callClicked: (ExpertModel.Expert?) -> Unit)
         viewHolder.itemView.coinsNeeded.text = "${getItem(position)?.karmaCoinsNeeded ?: 0}/Min"
 
         viewHolder.itemView.expertCategory.text =
-            getItem(position)?.qualification ?: "Vedic Astrologer"
+            getItem(position)?.qualification ?: ""
+        if (getItem(position)?.qualification?.length ?: 0 > 24) {
+            viewHolder.itemView.expertCategory.text =
+                getItem(position)?.qualification?.substring(0, 24) + "...";
+        }
         viewHolder.itemView.expertLanguage.text = getItem(position)?.language
         viewHolder.itemView.expertStar.text = getItem(position)?.rating ?: "4.5"
         viewHolder.itemView.customers.text = "${getItem(position)?.consultations ?: 432}"

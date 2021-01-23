@@ -9,8 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.misobo.R
 import com.example.misobo.talkToExperts.models.UserBookings
+import kotlinx.android.synthetic.main.experts_recycler_item.view.*
 import kotlinx.android.synthetic.main.submit_ratings_item.view.*
 import kotlinx.android.synthetic.main.user_bookings_layout.view.*
+import kotlinx.android.synthetic.main.user_bookings_layout.view.coinsNeeded
 import kotlinx.android.synthetic.main.user_bookings_layout.view.expertCategory
 import kotlinx.android.synthetic.main.user_bookings_layout.view.expertNameTextView
 import java.lang.IllegalArgumentException
@@ -18,7 +20,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class BookingsListAdapter(
-    private val submitRating: (UserBookings.Entry?, Int) -> Unit
+    private val submitRating: (UserBookings.Entry?, Int) -> Unit,
+    private val needHelpClicked: () -> Unit
 ) :
     PagedListAdapter<UserBookings.Entry, RecyclerView.ViewHolder>(
         diffCallback
@@ -87,11 +90,18 @@ class BookingsListAdapter(
                 holder.itemView.expertNameTextView.text = getItem(position)?.expert?.name
                 holder.itemView.expertCategory.text =
                     getItem(position)?.expert?.qualification ?: ""
-                holder.itemView.expertLanguage.text = getItem(position)?.expert?.language
+
+                if (getItem(position)?.expert?.qualification?.length ?: 0 > 10) {
+                    holder.itemView.expertCategory.text =
+                        getItem(position)?.expert?.qualification?.substring(0, 10) + "...";
+                }
+
+                holder.itemView.expertsLanguage.text = getItem(position)?.expert?.language
                 holder.itemView.coinsNeeded.text =
                     getItem(position)?.expert?.karmaCoinsNeeded.toString()
                 holder.itemView.bookCallAgainText.setOnClickListener {
                     //needHelpClick.invoke()
+                    needHelpClicked.invoke()
                 }
                 Glide.with(holder.itemView.context).load(getItem(position)?.expert?.image)
                     .placeholder(R.color.colorAccent)
