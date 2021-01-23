@@ -15,7 +15,8 @@ import kotlinx.android.synthetic.main.fragment_bmi_full_report.*
 
 class BmiFullReportFragment : Fragment() {
 
-    private val bmiViewModel: BmiViewModel by activityViewModels()
+    private val bmi by lazy { requireArguments().getDouble("BMI", 0.0) }
+    private val result by lazy { requireArguments().getString("RESULT", "") }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,19 +29,18 @@ class BmiFullReportFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        bmiViewModel.bmiDetails.observe(viewLifecycleOwner, Observer { responseBody ->
-            bmiValue.text = responseBody.data?.bmi.toString()
-            bmiStatus.text = "You are in the ${responseBody.data?.result}  range"
-        })
+        bmiValue.text = bmi.toString()
+        bmiStatus.text = "You are in the $result  range"
 
         calculateBmiButton.setOnClickListener {
-            startActivity(Intent(requireContext(),BmiActivity::class.java))
+            startActivity(Intent(requireContext(), BmiActivity::class.java))
             activity?.finish()
         }
 
         startYourFitnessJourney.setOnClickListener {
-            startActivity(Intent(requireContext(),MainActivity::class.java))
-            activity?.finish() }
+            startActivity(Intent(requireContext(), MainActivity::class.java))
+            activity?.finish()
+        }
 
         bmiReportBackIcon.setOnClickListener {
             activity?.onBackPressed()

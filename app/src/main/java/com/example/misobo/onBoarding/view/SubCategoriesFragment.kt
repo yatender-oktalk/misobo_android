@@ -64,7 +64,11 @@ class SubCategoriesFragment : Fragment() {
             if (onBoardingViewModel.subCategorySelectedPosition.value != -1) {
                 onBoardingViewModel.saveSubCategories(
                     CategoriesRequestModel(
-                        subCategories = listOf(onBoardingViewModel.subCategorySelectedPosition.value)
+                        subCategories = listOf(
+                            onBoardingViewModel.subCategorySelectedPosition.value?.plus(
+                                1
+                            )
+                        )
                     ),
                     SharedPreferenceManager.getUser()?.data?.registrationId ?: -1
                 )

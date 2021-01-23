@@ -4,6 +4,7 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.format.DateFormat
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -11,22 +12,33 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.example.misobo.Misobo
 import com.example.misobo.R
 import com.example.misobo.bmi.view.BmiActivity
+import com.example.misobo.bmi.view.BmiFullReportFragment
+import com.example.misobo.onBoarding.OtpDialog
+import com.example.misobo.utils.AuthState
+import com.example.misobo.utils.NetworkUtils
 import com.example.misobo.utils.SharedPreferenceManager
+import com.google.gson.JsonObject
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_my_profile.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MyProfileFragment : Fragment() {
+
     private val groupAdapter = GroupAdapter<ViewHolder>()
-    private val profileViewModel by lazy { ViewModelProvider(this).get(ProfileViewModel::class.java) }
+    private val profileViewModel: ProfileViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,6 +55,8 @@ class MyProfileFragment : Fragment() {
 
         fillName()
 
+        profileViewModel.getProfile(SharedPreferenceManager.getUser()?.data?.userId ?: -1)
+
         Glide.with(requireContext())
             .load(SharedPreferenceManager.getProfileImage())
             .placeholder(R.drawable.profile_placeholder)
@@ -50,38 +64,84 @@ class MyProfileFragment : Fragment() {
             .into(profileImage);
 
         if (SharedPreferenceManager.getUserProfile()?.data?.bmi != null)
-            bmiScore.text = SharedPreferenceManager.getUserProfile()?.data?.bmi
+            bmiScore.text = SharedPreferenceManager.getUserProfile()?.data?.bmi.toString()
         else
             bmiScoreLayout.visibility = View.GONE
 
         editName.setOnEditorActionListener { v, actionId, event ->
             if (event != null && event.keyCode === KeyEvent.KEYCODE_ENTER || actionId == EditorInfo.IME_ACTION_DONE) {
                 if (!editName.text.isNullOrEmpty()) {
-                    SharedPreferenceManager.setName(editName.text.toString())
-                    fillName()
+                    profileViewModel.updateName(SharedPreferenceManager.getUserProfile()?.data?.id
+                        ?: 0,
+                        JsonObject().apply { addProperty("name", editName.text.toString()) }
+                    )
+                    //fillName()
                 }
             }
             false
         }
 
-        bmiScoreLayout.setOnClickListener { startActivity(Intent(context,BmiActivity::class.java)) }
+        profileViewModel.getProfileLiveData().observe(viewLifecycleOwner, Observer { model ->
+            fillName()
+        })
 
-        profileViewModel.getProfile(SharedPreferenceManager.getUser()?.data?.userId ?: -1)
+        bmiScoreLayout.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putDouble(
+                "BMI",
+                SharedPreferenceManager.getUserProfile()?.data?.bmi ?: 0.0
+            )
+            bundle.putString("RESULT", SharedPreferenceManager.getUserProfile()?.data?.result ?: "")
+            activity?.supportFragmentManager?.beginTransaction()?.replace(
+                R.id.mainContainer,
+                BmiFullReportFragment().apply { arguments = bundle }
+            )?.addToBackStack(null)?.commit()
+            /*startActivity(
+                Intent(
+                    context,
+                    BmiActivity::class.java
+                )
+            )*/
+        }
+
+        rewardsTextView.setOnClickListener {
+            activity?.bottomNavigationView?.selectedItemId = R.id.rewards
+        }
+
+        logoutTextView.setOnClickListener {
+            SharedPreferenceManager.clear()
+            Misobo.authRelay.onNext(AuthState.FAILED)
+        }
+
+        editProfileTextView.setOnClickListener {
+            activity?.supportFragmentManager?.beginTransaction()
+                ?.add(EditProfileBottomSheet(), null)?.commit()
+        }
+
 
         profileViewModel.profileLiveData.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is ProfileResponseAction.Success -> {
                     SharedPreferenceManager.setUserProfile(state.response)
                     karmaCoinsText.text = state.response.data?.karmaPoints ?: "0"
-                    if (state.response.data?.bmi != null)
-                        bmiScore.text = state.response.data.bmi
-                    else
+                    if (state.response.data?.bmi != null) {
+                        bmiScore.text = state.response.data.bmi.toString()
+                        if (state.response.data.bmiCheckedDate != null) {
+                            val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+                            val parsedDate: Date =
+                                dateFormat.parse(state.response.data.bmiCheckedDate)
+                            val date = DateFormat.format("dd", parsedDate)
+                            val month = DateFormat.format("MMM", parsedDate)
+                            val year = DateFormat.format("yy", parsedDate)
+                            calculationDateTextView.text = "Calculated on ${date} ${month}'${year}"
+                        }
+                    } else
                         bmiScoreLayout.visibility = View.GONE
                     groupAdapter.clear()
                     val section = Section()
                     section.add(
                         DailyCheckinItem(
-                            state.response.data?.loginStreak?.one ?:"",
+                            state.response.data?.loginStreak?.one ?: "",
                             "S"
                         )
                     )
@@ -123,16 +183,15 @@ class MyProfileFragment : Fragment() {
                     )
 
                     groupAdapter.add(section)
-                    Toast.makeText(
-                        context,
-                        state.response.data?.loginStreak?.two.toString(),
-                        Toast.LENGTH_SHORT
-                    ).show()
                 }
                 is ProfileResponseAction.Loading -> {
 
                 }
                 is ProfileResponseAction.Error -> {
+                   /* if (!NetworkUtils.isConnected(requireContext())) {
+                        activity?.supportFragmentManager?.beginTransaction()
+                            ?.add(R.id.zeroStateContainer, ZeroStatesFragment())?.commit()
+                    }*/
                     Toast.makeText(context, state.error, Toast.LENGTH_SHORT).show()
                 }
             }
@@ -164,9 +223,9 @@ class MyProfileFragment : Fragment() {
     }
 
     private fun fillName() {
-        if (SharedPreferenceManager.getName() != null) {
+        if (SharedPreferenceManager.getUserProfile()?.data?.name != null) {
             editNameGroup.visibility = View.INVISIBLE
-            nameTextView.text = SharedPreferenceManager.getName()
+            nameTextView.text = SharedPreferenceManager.getUserProfile()?.data?.name
             nameTextView.visibility = View.VISIBLE
         } else {
             nameTextView.visibility = View.INVISIBLE

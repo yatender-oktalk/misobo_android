@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import com.bumptech.glide.Glide
 import com.example.misobo.R
 import com.example.misobo.arcseekbar.ProgressListener
 import com.example.misobo.mind.models.ProgressPayload
@@ -24,7 +25,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.custom_exo_player_controls.view.*
+import kotlinx.android.synthetic.main.custom_exo_player_controls.view.progressBar
 import kotlinx.android.synthetic.main.fragment_music_player.*
+import kotlinx.android.synthetic.main.music_recycler_item.view.*
 import java.util.concurrent.TimeUnit
 
 class MusicPlayerFragment : Fragment() {
@@ -32,7 +35,7 @@ class MusicPlayerFragment : Fragment() {
     private val mindViewModel: MindViewModel by activityViewModels()
     private val compositeDisposable = CompositeDisposable()
     lateinit var simpleExoPlayer: SimpleExoPlayer
-    var musicId: Int?= 0
+    var musicId: Int? = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,8 +49,15 @@ class MusicPlayerFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         activity?.bottomNavigationView?.visibility = View.GONE
+        activity?.arcSeparator?.visibility = View.GONE
+        activity?.arc?.visibility = View.GONE
+
         mindViewModel.playMusicLiveData.observe(viewLifecycleOwner, Observer { musicModel ->
-            mindViewModel.selectedMusicId = musicModel.id?:0
+
+            Glide.with(requireContext()).load(musicModel.image)
+                .placeholder(R.drawable.music_gradient).into(backgroundImage)
+
+            mindViewModel.selectedMusicId = musicModel.id ?: 0
             musicModel.title?.let {
                 songTitle.text = it
             }
@@ -148,16 +158,24 @@ class MusicPlayerFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         activity?.bottomNavigationView?.visibility = View.VISIBLE
+        activity?.arcSeparator?.visibility = View.VISIBLE
+        activity?.arc?.visibility = View.VISIBLE
     }
 
     private fun updateProgress() {
         val progressToMilli = simpleExoPlayer.currentPosition
+        val progressInSec = TimeUnit.MILLISECONDS.toSeconds(progressToMilli)
+        val durationInSec = TimeUnit.MILLISECONDS.toSeconds(simpleExoPlayer.duration)
+        val progress =
+            progressInSec.toFloat().div(durationInSec.toFloat()).times(100)
         mindViewModel.updateProgress(
             mindViewModel.selectedMusicId,
             ProgressPayload(
                 userId = SharedPreferenceManager.getUser()?.data?.userId,
                 progress = TimeUnit.MILLISECONDS.toSeconds(progressToMilli)
-            )
+            ),mindViewModel.playMusicLiveData.value?.karma
         )
+        //if (progress > 95)
+            //mindViewModel.congratsListenerLiveData.postValue(mindViewModel.playMusicLiveData.value?.karma)
     }
 }

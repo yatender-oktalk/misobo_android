@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/articles_gradient"
+    android:paddingBottom="21dp"
+    android:layout_marginStart="16sp"
+    android:layout_marginEnd="16sp"
+    android:layout_marginTop="16sp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:id="@+id/soul"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/manrope_extrabold"
+        android:textStyle="normal"
+        android:textSize="12sp"
+        android:textColor="#4d426d"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/earnTextView"
+        android:lineSpacingExtra="26sp"
+        app:layout_constraintBottom_toBottomOf="@id/earnTextView"
+        android:layout_marginStart="20dp"
+        android:text="MIND"
+        />
+
+    <TextView
+        android:id="@+id/earnTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/manrope_regular"
+        android:textStyle="normal"
+        android:textSize="14sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/coins"
+        android:layout_marginTop="20dp"
+        android:drawableEnd="@drawable/ic_karma_coin"
+        android:drawablePadding="8dp"
+        android:gravity="center"
+        android:layout_marginEnd="6dp"
+        android:textColor="#4d426d"
+        android:lineSpacingExtra="7sp"
+        android:text="Earn"
+        />
+
+    <TextView
+        android:id="@+id/coins"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/manrope_extrabold"
+        android:textStyle="bold"
+        android:textSize="14sp"
+        android:textColor="#4d426d"
+        android:lineSpacingExtra="18sp"
+        android:layout_marginEnd="19dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/earnTextView"
+        app:layout_constraintBottom_toBottomOf="@id/earnTextView"
+        android:text="501"
+        />
+
+    <TextView
+        android:id="@+id/articleTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/manrope_extrabold"
+        android:textStyle="normal"
+        android:textSize="18sp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="35dp"
+        android:textColor="#4d426d"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="91dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:lineSpacingExtra="2sp"
+        tools:text="7 Habits for a Healthy Mind in a Healthy Body"
+        />
+
+    <TextView
+        android:id="@+id/articlesDetailsTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/manrope_regular"
+        android:textStyle="normal"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/articleTitle"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:textColor="#744d426d"
+        android:lineSpacingExtra="4sp"
+        tools:text="The secrets to well-being can be
+found in our evolutionary biology."
+        />
+
+    <View
+        android:id="@+id/arcSeparator"
+        android:layout_width="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/articlesDetailsTextView"
+        android:layout_marginTop="18.5dp"
+        android:background="#000000"
+        android:alpha=".1"
+        android:layout_height="1dp"/>
+
+    <TextView
+        android:id="@+id/readingTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/manrope_regular"
+        android:textStyle="normal"
+        android:textSize="14sp"
+        android:textColor="#4d426d"
+        android:lineSpacingExtra="7sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/arcSeparator"
+        android:layout_marginTop="16.5dp"
+        android:layout_marginLeft="16dp"
+        tools:text="3 min read"
+        />
+
+    <ImageView
+        android:id="@+id/arrow"
+        android:layout_width="wrap_content"
+        android:src="@drawable/ic_round_arrow_forward_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="18dp"
+        app:layout_constraintTop_toBottomOf="@id/arcSeparator"
+        android:layout_marginTop="16.5dp"
+        android:layout_height="wrap_content"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,12 +9,10 @@ import com.example.misobo.talkToExperts.models.CaptureOrderPayload
 import com.example.misobo.talkToExperts.viewModels.TalkToExpertsViewModel
 import com.razorpay.PaymentResultListener
 
-class TalkToExpertActivity : AppCompatActivity(),PaymentResultListener {
+class TalkToExpertActivity : AppCompatActivity(), PaymentResultListener {
 
     val viewModel: TalkToExpertsViewModel by lazy {
-        ViewModelProvider(this).get(
-            TalkToExpertsViewModel::class.java
-        )
+        ViewModelProvider(this).get(TalkToExpertsViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,7 +20,8 @@ class TalkToExpertActivity : AppCompatActivity(),PaymentResultListener {
         setContentView(R.layout.activity_talk_to_expert)
 
         supportFragmentManager.beginTransaction()
-            .replace(R.id.expertsFrameContainer,
+            .replace(
+                R.id.expertsFrameContainer,
                 TalktoExpertsHomeFragment()
             )
             .commit()
@@ -30,7 +29,6 @@ class TalkToExpertActivity : AppCompatActivity(),PaymentResultListener {
 
     override fun onPaymentError(p0: Int, p1: String?) {
         Log.i("fail", p0.toString() + " " + p1)
-
     }
 
     override fun onPaymentSuccess(p0: String?) {

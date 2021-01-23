@@ -9,9 +9,11 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/mainLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:background="@drawable/rounded_rectangle_white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,7 +52,7 @@
             android:alpha=".7"
             android:fontFamily="@font/manrope_medium"
             android:lineSpacingExtra="14sp"
-            android:text="to chat with experts"
+            android:text="to start your misobo journey"
             android:textColor="#4d426d"
             android:textSize="16sp"
             android:textStyle="normal"
@@ -125,7 +127,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/codeText" />
 
-        <View
+        <!--<View
             android:id="@+id/leftSeparator"
             android:layout_width="0dp"
             android:layout_height="1dp"
@@ -136,8 +138,8 @@
             app:layout_constraintEnd_toStartOf="@id/orText"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/orText" />
-
-        <TextView
+-->
+        <!--<TextView
             android:id="@+id/orText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -151,8 +153,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/sendOtpButton"
             android:text="OR" />
-
-        <View
+-->
+        <!--<View
             android:id="@+id/rightSeparator"
             android:layout_width="0dp"
             android:layout_height="1dp"
@@ -163,43 +165,43 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/orText"
             app:layout_constraintTop_toTopOf="@id/orText" />
+-->
+        <!-- <androidx.constraintlayout.widget.ConstraintLayout
+             android:id="@+id/googleLayout"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_marginStart="27dp"
+             android:layout_marginTop="18dp"
+             android:layout_marginEnd="27dp"
+             android:background="@drawable/rounded_button"
+             android:backgroundTint="#f7f7f7"
+             app:layout_constraintEnd_toEndOf="parent"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintTop_toBottomOf="@id/orText">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/googleLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="27dp"
-            android:layout_marginTop="18dp"
-            android:layout_marginEnd="27dp"
-            android:background="@drawable/rounded_button"
-            android:backgroundTint="#f7f7f7"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/orText">
+             <TextView
+                 android:id="@+id/googleLogin"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:drawableStart="@drawable/ic_google_icon"
+                 android:drawablePadding="16dp"
+                 android:enabled="false"
+                 android:fontFamily="@font/manrope_regular"
+                 android:gravity="center"
+                 android:lineSpacingExtra="6sp"
+                 android:paddingTop="15dp"
+                 android:paddingBottom="15dp"
+                 android:text="Login with google"
+                 android:textAllCaps="false"
+                 android:textColor="#4d426d"
+                 android:textSize="16sp"
+                 android:textStyle="bold"
+                 app:layout_constraintBottom_toBottomOf="parent"
+                 app:layout_constraintEnd_toEndOf="parent"
+                 app:layout_constraintStart_toStartOf="parent" />
 
-            <TextView
-                android:id="@+id/googleLogin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_google_icon"
-                android:drawablePadding="16dp"
-                android:enabled="false"
-                android:fontFamily="@font/manrope_regular"
-                android:gravity="center"
-                android:lineSpacingExtra="6sp"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
-                android:text="Login with google"
-                android:textAllCaps="false"
-                android:textColor="#4d426d"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
+         </androidx.constraintlayout.widget.ConstraintLayout>
+ -->
         <TextView
             android:id="@+id/terms"
             android:layout_width="wrap_content"
@@ -210,18 +212,17 @@
             android:layout_marginBottom="32dp"
             android:fontFamily="@font/manrope_regular"
             android:gravity="center_horizontal"
-            android:lineSpacingExtra="6sp"
+            android:lineSpacingExtra="4sp"
             android:text="By clicking here you agree to our terms of use\n
 and privacy policy"
             android:textColor="#4d426d"
+            android:alpha=".6"
             android:textSize="12sp"
             android:textStyle="normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/googleLayout" />
-
-
+            app:layout_constraintTop_toBottomOf="@id/sendOtpButton" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

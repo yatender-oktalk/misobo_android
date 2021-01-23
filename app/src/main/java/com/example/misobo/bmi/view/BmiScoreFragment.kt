@@ -10,11 +10,12 @@ import androidx.lifecycle.Observer
 import com.example.misobo.R
 import com.example.misobo.bmi.viewModels.BmiViewModel
 import com.example.misobo.utils.SharedPreferenceManager
+import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.fragment_bmi_score.*
 
 class BmiScoreFragment : Fragment() {
 
-    val bmiViewModel: BmiViewModel by activityViewModels()
+    private val bmiViewModel: BmiViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,7 +28,12 @@ class BmiScoreFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        SharedPreferenceManager.setBodyUnlock(true)
+        val jsonObject = JsonObject()
+        jsonObject.addProperty("is_body_pack_unlocked", true)
+        bmiViewModel.updatePackUnlock(
+            SharedPreferenceManager.getUser()?.data?.userId ?: 0, jsonObject
+        )
+        //SharedPreferenceManager.setBodyUnlock(true)
 
         bmiViewModel.bmiDetails.observe(viewLifecycleOwner, Observer { responseBody ->
             bmiValue.text = responseBody.data?.bmi.toString()
@@ -35,8 +41,12 @@ class BmiScoreFragment : Fragment() {
         })
 
         fullReportButton.setOnClickListener {
-            activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.bmiFrameContainer,
-                BmiFullReportFragment()
+            val bundle = Bundle()
+            bundle.putDouble("BMI", bmiViewModel.bmiDetails.value?.data?.bmi ?: 0.0)
+            bundle.putString("RESULT", bmiViewModel.bmiDetails.value?.data?.result ?: "")
+            activity?.supportFragmentManager?.beginTransaction()?.replace(
+                R.id.bmiFrameContainer,
+                BmiFullReportFragment().apply { arguments = bundle }
             )?.addToBackStack(null)?.commit()
         }
 

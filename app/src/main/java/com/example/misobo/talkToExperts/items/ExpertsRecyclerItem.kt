@@ -1,5 +1,6 @@
 package com.example.misobo.talkToExperts.items
 
+import com.bumptech.glide.Glide
 import com.example.misobo.R
 import com.example.misobo.talkToExperts.models.ExpertModel
 import com.example.misobo.talkToExperts.models.UserBookings
@@ -12,14 +13,18 @@ class ExpertsRecyclerItem(val it: ExpertModel.Expert, val callClicked: () -> Uni
         viewHolder.itemView.expertName.text = it.name
         viewHolder.itemView.coinsNeeded.text = "${it.karmaCoinsNeeded ?: 0}/Min"
 
-        viewHolder.itemView.expertCategory.text = "Vedic Astrologer"
+        viewHolder.itemView.expertCategory.text = it.qualification ?: ""
+        if (it.qualification?.length?:0 > 24) {
+            viewHolder.itemView.expertCategory.text =it.qualification?.substring(0, 24) + "...";
+        }
         viewHolder.itemView.expertLanguage.text = it.language
         viewHolder.itemView.expertStar.text = it.rating ?: "4.5"
         viewHolder.itemView.customers.text = "${it.consultations ?: 432}"
-        viewHolder.itemView.experienceTextView.text = "Exp ${it.experience?:12} year"
+        viewHolder.itemView.experienceTextView.text = "Exp ${it.experience ?: 12} year"
         viewHolder.itemView.callButton.setOnClickListener {
             callClicked.invoke()
         }
+        Glide.with(viewHolder.itemView.context).load(it.image).into(viewHolder.itemView.expertImage)
     }
 
     override fun getLayout(): Int = R.layout.experts_recycler_item

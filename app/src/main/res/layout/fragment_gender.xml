@@ -56,6 +56,24 @@
         android:layout_marginTop="137dp"
         />
 
+    <TextView
+        android:id="@+id/maleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/manrope_extrabold"
+        android:textStyle="normal"
+        android:textSize="14sp"
+        android:textColor="#4d426d"
+        android:lineSpacingExtra="6sp"
+        android:gravity="center_horizontal"
+        android:text="Male"
+        app:layout_constraintStart_toStartOf="@id/maleIcon"
+        app:layout_constraintEnd_toEndOf="@id/maleIcon"
+        app:layout_constraintTop_toBottomOf="@id/maleIcon"
+        android:layout_marginTop="11.5dp"
+        />
+
+
     <ImageView
         android:id="@+id/femaleIcon"
         android:layout_width="wrap_content"
@@ -65,6 +83,23 @@
         android:src="@drawable/ic_female"
         app:layout_constraintStart_toEndOf="@id/maleIcon"
         android:layout_marginTop="137dp"
+        />
+
+    <TextView
+        android:id="@+id/femaleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/manrope_extrabold"
+        android:textStyle="normal"
+        android:textSize="14sp"
+        android:textColor="#4d426d"
+        android:lineSpacingExtra="6sp"
+        android:gravity="center_horizontal"
+        android:text="Female"
+        app:layout_constraintStart_toStartOf="@id/femaleIcon"
+        app:layout_constraintEnd_toEndOf="@id/femaleIcon"
+        app:layout_constraintTop_toBottomOf="@id/femaleIcon"
+        android:layout_marginTop="11.5dp"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

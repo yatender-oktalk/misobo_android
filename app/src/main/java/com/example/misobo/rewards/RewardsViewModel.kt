@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.misobo.myProfile.FetchState
 import com.example.misobo.talkToExperts.viewModels.BookSlotState
+import com.example.misobo.utils.ErrorHandler
 import com.example.misobo.utils.SingleLiveEvent
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -14,8 +15,9 @@ class RewardsViewModel : ViewModel() {
     val rewardsLiveData: MutableLiveData<RewardsFetchState> = MutableLiveData()
     private val compositeDisposable = CompositeDisposable()
     val selectedRewardLiveData: MutableLiveData<RewardsModel.Reward> = MutableLiveData()
-    val redeemRewardsLiveData: SingleLiveEvent<RedeemFetchState> = SingleLiveEvent()
-    val claimedRewardsLiveData: MutableLiveData<ClaimedRewardsFetchState> = MutableLiveData()
+    val redeemRewardsLiveData: SingleLiveEvent<Pair<RedeemFetchState, Int>> = SingleLiveEvent()
+    val snackBarLiveData: SingleLiveEvent<Unit> = SingleLiveEvent()
+    val claimedRewardsLiveData: SingleLiveEvent<ClaimedRewardsFetchState> = SingleLiveEvent()
     val claimedRewardsList: MutableLiveData<List<ClaimedRewardsModel.ClaimedReward>> =
         MutableLiveData()
 
@@ -24,7 +26,9 @@ class RewardsViewModel : ViewModel() {
             .subscribeOn(Schedulers.io())
             .map { RewardsFetchState.Success(it) as RewardsFetchState }
             .startWith(RewardsFetchState.Loading)
-            .onErrorReturn { RewardsFetchState.Error(it) }
+            .onErrorReturn {
+                RewardsFetchState.Error(it)
+            }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { rewardsLiveData.postValue(it) })
     }
@@ -32,7 +36,9 @@ class RewardsViewModel : ViewModel() {
     fun redeemRewards(id: Int) {
         compositeDisposable.add(RewardsService.Creator.service.redeemReward(id)
             .subscribeOn(Schedulers.io())
-            .map { RedeemFetchState.Success as RedeemFetchState }
+            .map {
+                snackBarLiveData.postValue(Unit)
+                RedeemFetchState.Success as RedeemFetchState }
             .startWith(RedeemFetchState.Loading)
             .onErrorReturn {
                 val exception = it as com.jakewharton.retrofit2.adapter.rxjava2.HttpException
@@ -42,7 +48,9 @@ class RewardsViewModel : ViewModel() {
                     RedeemFetchState.Error
             }
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { redeemRewardsLiveData.postValue(it) })
+            .subscribe {
+                redeemRewardsLiveData.postValue(Pair(first = it, second = id))
+            })
     }
 
     fun claimedRewards(userId: Int) {

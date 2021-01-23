@@ -4,7 +4,11 @@ import com.google.gson.annotations.SerializedName
 
 data class MusicResponseModel(
     @SerializedName("entries")
-    val entries: List<MusicModel>?
+    val entries: List<MusicModel>?,
+    @SerializedName("page_number")
+    val pageNumber: Int?,
+    @SerializedName("total_pages")
+    val totalPages: Int?
 ) {
     data class MusicModel(
         @SerializedName("id")
@@ -23,7 +27,11 @@ data class MusicResponseModel(
         val productionName: String?,
         @SerializedName("title")
         val title: String?,
+        @SerializedName("image")
+        val image: String?,
         @SerializedName("url")
-        val url: String?
+        val url: String?,
+        @SerializedName("tag")
+        val tag: String?
     )
 }

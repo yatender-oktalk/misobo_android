@@ -34,7 +34,7 @@ interface BmiService {
                                 it.proceed(
                                     it.request().newBuilder()
                                         .addHeader("token",
-                                            token
+                                            SharedPreferenceManager.getUser()?.data?.token ?: ""
                                         )
                                         .build()
                                 )

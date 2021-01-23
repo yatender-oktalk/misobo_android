@@ -10,10 +10,13 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.misobo.R
 import com.example.misobo.myProfile.FetchState
+import com.example.misobo.myProfile.ProfileViewModel
 import com.example.misobo.talkToExperts.view.CoinsBottomSheet
+import com.example.misobo.utils.SharedPreferenceManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -22,6 +25,7 @@ import kotlinx.android.synthetic.main.rewards_bottom_sheet.*
 class RewardsDetailsBottomSheet : BottomSheetDialogFragment() {
 
     private val rewardsViewModel: RewardsViewModel by activityViewModels()
+    val profileViewModel: ProfileViewModel by lazy { ViewModelProvider(this).get(ProfileViewModel::class.java) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,6 +63,10 @@ class RewardsDetailsBottomSheet : BottomSheetDialogFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        val hideButton = arguments?.getBoolean("hideButton", false)
+
+        redeemButtonGroup.visibility = if (hideButton == true) View.GONE else View.VISIBLE
+
         crossIcon.setOnClickListener { this.dismiss() }
 
         rewardsViewModel.selectedRewardLiveData.observe(viewLifecycleOwner, Observer { rewards ->
@@ -70,18 +78,33 @@ class RewardsDetailsBottomSheet : BottomSheetDialogFragment() {
             getRewardButton.setOnClickListener { rewardsViewModel.redeemRewards(rewards.id ?: -1) }
         })
 
-        rewardsViewModel.redeemRewardsLiveData.observe(viewLifecycleOwner, Observer { state ->
-            when (state) {
+        rewardsViewModel.redeemRewardsLiveData.observe(viewLifecycleOwner, Observer { pair ->
+            when (pair.first) {
                 is RedeemFetchState.Success -> {
+                    profileViewModel.getProfile(
+                        SharedPreferenceManager.getUserProfile()?.data?.id ?: 0
+                    )
                     redeemButtonGroup.visibility = View.GONE
+                    activity?.supportFragmentManager?.fragments
+                        .takeIf { it?.isNotEmpty() ?: false }
+                        ?.map { (it as? BottomSheetDialogFragment)?.dismiss() }
                 }
                 is RedeemFetchState.Error -> {
                 }
                 is RedeemFetchState.Loading -> {
                 }
                 is RedeemFetchState.NotSufficientKarma -> {
+                    val bundle = Bundle()
+                    bundle.putString("TYPE", "REWARDS")
+                    bundle.putInt("REWARD_ID", pair.second)
+                    val coinsBottomSheet = CoinsBottomSheet()
+                    coinsBottomSheet.arguments = bundle
+
                     activity?.supportFragmentManager?.beginTransaction()
-                        ?.add(CoinsBottomSheet(), null)?.commit()
+                        ?.add(
+                            coinsBottomSheet,
+                            null
+                        )?.commit()
                 }
             }
         })

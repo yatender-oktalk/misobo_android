@@ -59,22 +59,8 @@ object SharedPreferenceManager {
 
     fun getUserProfile(): ProfileResponseModel? = Gson().fromJson(
         sharedPreferences?.getString(
-            PROFILE, "no"
+            PROFILE, null
         ), ProfileResponseModel::class.java
-    )
-
-    fun setName(name: String): Completable {
-        sharedPreferences?.edit()?.apply {
-            if (name != null) {
-                putString(NAME, name)
-            }
-            apply()
-        }
-        return Completable.complete()
-    }
-
-    fun getName(): String? = sharedPreferences?.getString(
-        NAME, null
     )
 
     fun setProfileImage(uri: String): Completable {

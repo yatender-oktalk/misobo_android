@@ -1,14 +1,23 @@
 package com.example.misobo.mind.viewModels
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import com.example.misobo.mind.api.MindService
 import com.example.misobo.mind.models.MusicResponseModel
-import com.example.misobo.mind.models.OrderPayload
 import com.example.misobo.mind.models.OrderResponse
 import com.example.misobo.mind.models.ProgressPayload
+import com.example.misobo.mind.pagination.MusicDataSourceFactory
 import com.example.misobo.myProfile.FetchState
+import com.example.misobo.myProfile.ProfileService
+import com.example.misobo.talkToExperts.models.UserBookings
+import com.example.misobo.talkToExperts.pagination.BookingsDataSourceFactory
+import com.example.misobo.utils.LiveSharedPreference
+import com.example.misobo.utils.SharedPreferenceManager
 import com.example.misobo.utils.SingleLiveEvent
+import com.google.gson.JsonObject
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -18,31 +27,52 @@ class MindViewModel : ViewModel() {
     private val compositeDisposable = CompositeDisposable()
     private var mindService = MindService.Creator.service
     val musicLiveData: SingleLiveEvent<MusicFetchState> = SingleLiveEvent()
-    val progressLiveData: MutableLiveData<FetchState> = MutableLiveData()
     val playMusicLiveData: MutableLiveData<MusicResponseModel.MusicModel> = MutableLiveData()
-    var mutableMusicList: MutableList<MusicResponseModel.MusicModel> = mutableListOf()
-    val musicList: MutableLiveData<List<MusicResponseModel.MusicModel>> = MutableLiveData()
+    val coinsAcquiredLiveData: SingleLiveEvent<Pair<Boolean, Int>> = SingleLiveEvent()
     var selectedMusicId: Int = 0
+    private val liveSharedPreference =
+        LiveSharedPreference(SharedPreferenceManager.sharedPreferences!!)
+    lateinit var musicPagedList: LiveData<PagedList<MusicResponseModel.MusicModel>>
 
-    fun fetchAllMusic() {
-        compositeDisposable.add(mindService.fetchAllMusic(1)
-            .subscribeOn(Schedulers.io())
-            .map {
-                MusicFetchState.Success(
-                    it
-                ) as MusicFetchState
-            }
-            .startWith(MusicFetchState.Loading)
-            .onErrorReturn {
-                MusicFetchState.Error(it.localizedMessage)
-            }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                musicLiveData.postValue(it)
-            })
+    init {
+        fetchAllMusic()
     }
 
-    fun updateProgress(musicId: Int, progressPayload: ProgressPayload) {
+    fun getCoinsLiveData() = liveSharedPreference
+
+    private fun fetchAllMusic() {
+
+        val musicDataSourceFactory = MusicDataSourceFactory(
+            compositeDisposable = compositeDisposable,
+            networkService = mindService,
+            userId = SharedPreferenceManager.getUserProfile()?.data?.id.toString()
+        )
+
+        val config = PagedList.Config.Builder()
+            .setPageSize(20)
+            .setInitialLoadSizeHint(5)
+            .setEnablePlaceholders(false)
+            .build()
+
+        musicPagedList = LivePagedListBuilder(musicDataSourceFactory, config).build()
+    }
+
+    fun updatePackUnlock(userId: Int, jsonObject: JsonObject) {
+        compositeDisposable.add(
+            ProfileService.Creator.service.updatePack(userId, jsonObject)
+                .switchMap { ProfileService.Creator.service.getProfile(userId) }
+                .map { profileResponse -> SharedPreferenceManager.setUserProfile(profileResponse) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe()
+        )
+    }
+
+    fun updateProgress(
+        musicId: Int,
+        progressPayload: ProgressPayload,
+        karma: Int?
+    ) {
         compositeDisposable.add(mindService.updateProgress(
             musicId,
             progressPayload = progressPayload
@@ -50,12 +80,13 @@ class MindViewModel : ViewModel() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { response ->
-                /*musicList.value?.find { it.id == (response.data.id) }?.progress =
-                    response.data.progress?.toInt()*/
-                musicList.postValue(mutableMusicList.apply {
-                    find { it.id == (response.data.id) }?.progress =
-                        response.data.progress?.toInt()
-                })
+                musicPagedList.value?.dataSource?.invalidate()
+                coinsAcquiredLiveData.postValue(
+                    Pair(
+                        response.pointsAcquired ?: false,
+                        karma ?: 100
+                    )
+                )
             })
     }
 
@@ -64,7 +95,6 @@ class MindViewModel : ViewModel() {
         compositeDisposable.dispose()
     }
 }
-
 
 sealed class MusicFetchState {
     data class Success(val musicEntries: List<MusicResponseModel.MusicModel>) : MusicFetchState()

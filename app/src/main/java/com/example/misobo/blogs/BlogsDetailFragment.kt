@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.misobo.R
 import kotlinx.android.synthetic.main.activity_main.*
@@ -17,7 +16,6 @@ private const val ARG_PARAM1 = "param1"
 
 class BlogsDetailFragment : Fragment() {
     private var blogId: Int? = null
-
     private val blogsViewModel: BlogsViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,6 +48,8 @@ class BlogsDetailFragment : Fragment() {
 
         //blogsViewModel.getDetailedBlog(blogId ?: 0)
         activity?.bottomNavigationView?.visibility = View.GONE
+        activity?.arcSeparator?.visibility = View.GONE
+        activity?.arc?.visibility = View.GONE
 
         backIcon.setOnClickListener { activity?.onBackPressed() }
 
@@ -75,5 +75,7 @@ class BlogsDetailFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         activity?.bottomNavigationView?.visibility = View.VISIBLE
+        activity?.arcSeparator?.visibility = View.VISIBLE
+        activity?.arc?.visibility = View.VISIBLE
     }
 }

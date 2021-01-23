@@ -13,6 +13,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.misobo.Misobo
 import com.example.misobo.R
 import com.example.misobo.mind.models.OrderPayload
 import com.example.misobo.mind.viewModels.OrderFetchState
@@ -33,6 +34,7 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.coins_bottom_sheet.*
+import kotlinx.android.synthetic.main.rewards_bottom_sheet.*
 import org.json.JSONObject
 import java.util.concurrent.TimeUnit
 
@@ -42,6 +44,8 @@ class CoinsBottomSheet : BottomSheetDialogFragment(), PaymentResultListener {
     val profileViewModel: ProfileViewModel by lazy { ViewModelProvider(this).get(ProfileViewModel::class.java) }
     val compositeDisposable = CompositeDisposable()
     private val groupAdapter = GroupAdapter<ViewHolder>()
+    private val type by lazy { requireArguments().getString("TYPE", "CALL") }
+    private val rewardId: Int? by lazy { arguments?.getInt("REWARD_ID") }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,9 +63,20 @@ class CoinsBottomSheet : BottomSheetDialogFragment(), PaymentResultListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        Checkout.preload(Misobo.instance.applicationContext)
+
+        when (type) {
+            "CALL" -> {
+                needMoreCoins.text = "You need more coins to\n book this call"
+            }
+            "REWARDS" -> {
+                needMoreCoins.text = "You have less coins to\n unlock this reward"
+            }
+        }
+
         Checkout.preload(requireContext())
 
-        crossButton.setOnClickListener{
+        crossButton.setOnClickListener {
             this.dismiss()
         }
         viewModel.getPacks()
@@ -76,7 +91,7 @@ class CoinsBottomSheet : BottomSheetDialogFragment(), PaymentResultListener {
                     state.packsList.forEach { pack ->
                         section.add(PacksItem(pack) {
                             viewModel.paymentAmount = pack.amount?.toDouble() ?: 1.00
-                            viewModel.pack=pack.karmaCoins?:0
+                            viewModel.pack = pack.karmaCoins ?: 0
                             viewModel.createOrder(
                                 OrderPayload(
                                     pack.amount?.toDouble() ?: 1.00,
@@ -108,9 +123,14 @@ class CoinsBottomSheet : BottomSheetDialogFragment(), PaymentResultListener {
         viewModel.captureOrderLiveData.observe(this, Observer { state ->
             when (state) {
                 is CaptureOrderState.Success -> {
-
+                    val bundle = Bundle()
+                    bundle.putString("TYPE", type)
+                    if (rewardId != null)
+                        bundle.putInt("REWARD_ID", rewardId ?: -1)
+                    val coinsAdditionSuccess = CoinsAdditionSuccess()
+                    coinsAdditionSuccess.arguments = bundle
                     activity?.supportFragmentManager?.beginTransaction()
-                        ?.add(CoinsAdditionSuccess(), null)?.commit()
+                        ?.add(coinsAdditionSuccess, null)?.commit()
 
                     profileViewModel.getProfile(
                         SharedPreferenceManager.getUser()?.data?.userId ?: 0
@@ -134,7 +154,6 @@ class CoinsBottomSheet : BottomSheetDialogFragment(), PaymentResultListener {
         val activity: Activity = requireActivity()
         val co = Checkout()
         co.setImage(R.drawable.misobo_icon);
-        co.setKeyID("rzp_live_2N116OfoXntg9j");
         try {
             val options = JSONObject()
             options.put("name", "Misobo Pvt Ltd")
@@ -144,11 +163,14 @@ class CoinsBottomSheet : BottomSheetDialogFragment(), PaymentResultListener {
             options.put("theme.color", "#f1ab87");
             options.put("currency", "INR");
             options.put("order_id", paymentGatewayOrderId);
-            options.put("amount", viewModel.paymentAmount.toString())//pass amount in currency subunits
+            options.put(
+                "amount",
+                viewModel.paymentAmount.toString()
+            )//pass amount in currency subunits
 
             val prefill = JSONObject()
-            prefill.put("email", "akshay@gmail.com")
-            prefill.put("contact", "9876543210")
+            //prefill.put("email", "akshay@gmail.com")
+            //prefill.put("contact", "9876543210")
             options.put("prefill", prefill)
             co.open(activity, options)
         } catch (e: Exception) {

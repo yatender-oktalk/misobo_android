@@ -1,17 +1,20 @@
 package com.example.misobo.talkToExperts.viewModels
 
-import android.app.Application
-import android.content.SharedPreferences
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.preference.Preference
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import com.example.misobo.mind.models.OrderPayload
 import com.example.misobo.mind.models.OrderResponse
 import com.example.misobo.mind.viewModels.OrderFetchState
-import com.example.misobo.talkToExperts.models.VerificationResponse
+import com.example.misobo.myProfile.FetchState
+import com.example.misobo.myProfile.ProfileResponseModel
 import com.example.misobo.talkToExperts.api.ExpertsService
 import com.example.misobo.talkToExperts.models.*
+import com.example.misobo.talkToExperts.pagination.BookingsDataSourceFactory
+import com.example.misobo.talkToExperts.pagination.ExpertsDataSourceFactory
+import com.example.misobo.utils.ErrorHandler
 import com.example.misobo.utils.LiveSharedPreference
 import com.example.misobo.utils.SharedPreferenceManager
 import com.example.misobo.utils.SingleLiveEvent
@@ -28,19 +31,23 @@ class TalkToExpertsViewModel : ViewModel() {
     val slotListLiveData: MutableLiveData<SlotFetchState> = MutableLiveData()
     val slotSelectedLiveData: MutableLiveData<Long> = MutableLiveData()
     val bookSlotLiveData: SingleLiveEvent<BookSlotState> = SingleLiveEvent()
-    val mobileRegistration: SingleLiveEvent<MobileRegistration> = SingleLiveEvent()
-    val otpVerification: MutableLiveData<MobileRegistration> = MutableLiveData()
-    val mobileNumber: MutableLiveData<String> = MutableLiveData()
-    val orderLiveData: MutableLiveData<OrderFetchState> = MutableLiveData()
+
+    val orderLiveData: SingleLiveEvent<OrderFetchState> = SingleLiveEvent()
     val currentOrder: MutableLiveData<OrderResponse> = MutableLiveData()
     val captureOrderLiveData: MutableLiveData<CaptureOrderState> = MutableLiveData()
     val packsLiveData: MutableLiveData<PacksFetchState> = MutableLiveData()
-    val userBookingsLiveData: MutableLiveData<UserBookingsFetchState> = MutableLiveData()
+    lateinit var userBookingsLiveData: LiveData<PagedList<UserBookings.Entry?>>
+    lateinit var expertsPagedListLiveData: LiveData<PagedList<ExpertModel.Expert?>>
+
+    val submitRatingLiveData: MutableLiveData<FetchState> = MutableLiveData()
 
     var expertsService = ExpertsService.Creator.service
     var paymentAmount = 1.00
     var pack = 1000
-    private val liveSharedPreference = LiveSharedPreference(SharedPreferenceManager.sharedPreferences!!)
+
+
+    private val liveSharedPreference =
+        LiveSharedPreference(SharedPreferenceManager.sharedPreferences!!)
 
     fun getCoinsLiveData() = liveSharedPreference
 
@@ -61,7 +68,7 @@ class TalkToExpertsViewModel : ViewModel() {
     }
 
     fun getCategoryExpertsList(id: Int) {
-        compositeDisposable.add(expertsService.getCategoryExpertsList(id)
+       /* compositeDisposable.add(expertsService.getCategoryExpertsList(id)
             .subscribeOn(Schedulers.io())
             .map {
                 ExpertListState.Success(
@@ -70,7 +77,7 @@ class TalkToExpertsViewModel : ViewModel() {
             }
             .startWith(ExpertListState.Loading)
             .onErrorReturn { ExpertListState.Fail }
-            .subscribe { expertListLiveData.postValue(it) })
+            .subscribe { expertListLiveData.postValue(it) })*/
     }
 
     fun getAllExpertsList() {
@@ -99,36 +106,11 @@ class TalkToExpertsViewModel : ViewModel() {
             .subscribe { slotListLiveData.postValue(it) })
     }
 
-    fun mobileRegistration(otpModel: OtpPayload) {
-        compositeDisposable.add(expertsService.mobileRegistration(otpModel)
-            .subscribeOn(Schedulers.io())
-            .map {
-                MobileRegistration.Success(
-                    it
-                ) as MobileRegistration
-            }
-            .startWith(MobileRegistration.Loading)
-            .onErrorReturn { MobileRegistration.Fail }
-            .subscribe { mobileRegistration.postValue(it) })
-    }
-
-    fun verifyOtp(id: Int, otpModel: OtpPayload) {
-        compositeDisposable.add(expertsService.sendOtp(id, otpModel)
-            .subscribeOn(Schedulers.io())
-            .map {
-                MobileRegistration.Success(
-                    it
-                ) as MobileRegistration
-            }
-            .startWith(MobileRegistration.Loading)
-            .onErrorReturn { MobileRegistration.Fail }
-            .subscribe { otpVerification.postValue(it) })
-    }
-
     fun bookSlot(expertId: Int, payload: BookSlotPayload) {
         compositeDisposable.add(expertsService.bookSlot(expertId, payload)
             .subscribeOn(Schedulers.io())
             .map {
+                //getUserBookings(SharedPreferenceManager.getUser()?.data?.userId.toString())
                 BookSlotState.Success(
                     it
                 ) as BookSlotState
@@ -202,19 +184,52 @@ class TalkToExpertsViewModel : ViewModel() {
     }
 
     fun getUserBookings(userId: String) {
-        compositeDisposable.add(expertsService.fetchBookings(userId)
+        val bookingsDataSourceFactory = BookingsDataSourceFactory(
+            compositeDisposable = compositeDisposable,
+            networkService = expertsService,
+            userId = userId
+        )
+
+        val config = PagedList.Config.Builder()
+            .setInitialLoadSizeHint(5)
+            .setEnablePlaceholders(false)
+            .setPageSize(20)
+            .build()
+
+        userBookingsLiveData = LivePagedListBuilder(bookingsDataSourceFactory, config).build()
+
+    }
+
+    fun getCategoryExpertsList(categoriesModel: ExpertCategoriesModel) {
+        val expertsDataSourceFactory = ExpertsDataSourceFactory(
+            compositeDisposable = compositeDisposable,
+            expertsService = expertsService,
+            categoryModel = categoriesModel
+        )
+
+        val config = PagedList.Config.Builder()
+            .setInitialLoadSizeHint(5)
+            .setEnablePlaceholders(false)
+            .setPageSize(20)
+            .build()
+
+        expertsPagedListLiveData = LivePagedListBuilder(expertsDataSourceFactory, config).build()
+    }
+
+    fun submitRating(ratingPayload: RatingPayload) {
+        compositeDisposable.add(expertsService.submitRating(ratingPayload)
             .subscribeOn(Schedulers.io())
             .map {
-                UserBookingsFetchState.Success(it)
-                        as UserBookingsFetchState
+                FetchState.Success
+                        as FetchState
             }
-            .startWith(UserBookingsFetchState.Loading)
+            .startWith(FetchState.Loading)
             .onErrorReturn {
-                UserBookingsFetchState.Fail
+                FetchState.Error(ErrorHandler.handleError(it))
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                userBookingsLiveData.postValue(it)
+                submitRatingLiveData.postValue(it)
             })
     }
 }
@@ -246,7 +261,7 @@ sealed class BookSlotState() {
 }
 
 sealed class MobileRegistration() {
-    data class Success(val verificationResponse: VerificationResponse) : MobileRegistration()
+    data class Success(val profileResponseModel: ProfileResponseModel) : MobileRegistration()
     object Fail : MobileRegistration()
     object Loading : MobileRegistration()
 }

@@ -2,6 +2,8 @@ package com.example.misobo.talkToExperts.api
 
 import com.example.misobo.mind.models.OrderPayload
 import com.example.misobo.mind.models.OrderResponse
+import com.example.misobo.myProfile.ProfileResponseModel
+import com.example.misobo.onBoarding.models.User
 import com.example.misobo.talkToExperts.models.OtpPayload
 import com.example.misobo.talkToExperts.models.VerificationResponse
 import com.example.misobo.talkToExperts.models.*
@@ -22,7 +24,7 @@ interface ExpertsService {
 
     @Headers("Accept: application/json", "Content-Type: application/json")
     @GET("api/category_experts/{category_id}")
-    fun getCategoryExpertsList(@Path(value = "category_id") catgId: Int?): Observable<ExpertModel>
+    fun getCategoryExpertsList(@Path(value = "category_id") catgId: Int?,@Query("page") pageNo: Int): Observable<ExpertModel>
 
     @Headers("Accept: application/json", "Content-Type: application/json")
     @GET("api/experts")
@@ -53,7 +55,7 @@ interface ExpertsService {
     fun sendOtp(
         @Path("id") id: Int,
         @Body payload: OtpPayload
-    ): Observable<VerificationResponse>
+    ): Observable<ProfileResponseModel>
 
     @Headers("Accept: application/json", "Content-Type: application/json")
     @POST("api/order")
@@ -73,10 +75,17 @@ interface ExpertsService {
     ): Observable<List<Packs>>
 
     @Headers("Accept: application/json", "Content-Type: application/json")
-    @GET("api/user/{userId}/expert_bookings?page=1")
+    @GET("api/user/{userId}/expert_bookings")
     fun fetchBookings(
-        @Path(value = "userId") userId:String
+        @Path(value = "userId") userId: String,
+        @Query(value = "page") pageNumber:Int
     ): Observable<UserBookings>
+
+    @Headers("Accept: application/json", "Content-Type: application/json")
+    @POST("api/rating")
+    fun submitRating(
+        @Body payload: RatingPayload
+    ): Observable<RatingResponse>
 
     object Creator {
         private const val url: String = "http://143.110.176.70:4000/"
@@ -93,7 +102,7 @@ interface ExpertsService {
                                     it.request().newBuilder()
                                         .addHeader(
                                             "token",
-                                            token
+                                            SharedPreferenceManager.getUser()?.data?.token ?: ""
                                         )
                                         .build()
                                 )

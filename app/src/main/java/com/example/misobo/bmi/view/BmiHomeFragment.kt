@@ -23,12 +23,18 @@ class BmiHomeFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         activity?.bottomNavigationView?.visibility = View.GONE
+        activity?.arcSeparator?.visibility = View.GONE
+        activity?.arc?.visibility = View.GONE
+
         startedButton.setOnClickListener {
             activity?.supportFragmentManager?.beginTransaction()
-                ?.replace(R.id.bmiFrameContainer,
+                ?.replace(
+                    R.id.bmiFrameContainer,
                     GenderFragment()
                 )
                 ?.addToBackStack(null)?.commit()
         }
+
+        bmiBackButton.setOnClickListener { activity?.onBackPressed() }
     }
 }

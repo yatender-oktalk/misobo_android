@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
         android:id="@+id/rewardsHeader"
@@ -45,7 +46,7 @@ Psychologists or therapist"
         android:fontFamily="@font/manrope_regular"
         android:gravity="center"
         android:lineSpacingExtra="16sp"
-        android:text="100"
+        tools:text="100"
         android:textColor="#4d426d"
         android:textSize="16sp"
         android:textStyle="bold"

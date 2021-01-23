@@ -9,7 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.fragment.app.activityViewModels
+import com.bumptech.glide.Glide
+import com.example.misobo.Misobo
 import com.example.misobo.R
+import com.example.misobo.onBoarding.LoginDialog
 import com.example.misobo.talkToExperts.items.DateRecyclerItem
 import com.example.misobo.talkToExperts.items.SlotsRecyclerItem
 import com.example.misobo.talkToExperts.models.BookSlotPayload
@@ -18,6 +21,8 @@ import com.example.misobo.talkToExperts.models.ExpertSlotsResponse
 import com.example.misobo.talkToExperts.viewModels.BookSlotState
 import com.example.misobo.talkToExperts.viewModels.SlotFetchState
 import com.example.misobo.talkToExperts.viewModels.TalkToExpertsViewModel
+import com.example.misobo.utils.AuthState
+import com.example.misobo.utils.SharedPreferenceManager
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -100,7 +105,9 @@ class BookASlotDialog : BottomSheetDialogFragment() {
             androidx.lifecycle.Observer { expert ->
                 expertNameTexView.text = expert.name
                 expertLanguage.text = expert.language
-                expertCategoryTextView.text = "Vedic Astrologer"
+                expertCategoryTextView.text = expert.qualification ?: ""
+                Glide.with(requireContext()).load(expert.image).placeholder(R.color.colorAccent)
+                    .into(expertImage)
             })
 
         viewModel.slotListLiveData.observe(
@@ -108,6 +115,7 @@ class BookASlotDialog : BottomSheetDialogFragment() {
             androidx.lifecycle.Observer { state ->
                 when (state) {
                     is SlotFetchState.Success -> {
+                        viewModel.slotSelectedLiveData.postValue(null)
                         inflateSlotsRecycler(state.slotList, -1)
                     }
                     is SlotFetchState.Loading -> {
@@ -129,16 +137,16 @@ class BookASlotDialog : BottomSheetDialogFragment() {
                     }
                     is BookSlotState.NotAuthorised -> {
                         this.dismiss()
-                        val loginDialog =
-                            LoginDialog()
-                        activity?.supportFragmentManager?.beginTransaction()
-                            ?.add(loginDialog, null)?.commit()
+                        SharedPreferenceManager.clear()
+                        Misobo.authRelay.onNext(AuthState.FAILED)
                     }
-                    is BookSlotState.NotSufficientKarma->{
-                        val loginDialog =
-                            LoginDialog()
+                    is BookSlotState.NotSufficientKarma -> {
+                        val bundle = Bundle()
+                        bundle.putString("TYPE", "CALL")
+                        val coinsBottomSheet = CoinsBottomSheet()
+                        coinsBottomSheet.arguments = bundle
                         activity?.supportFragmentManager?.beginTransaction()
-                            ?.add(CoinsBottomSheet(), null)?.commit()
+                            ?.add(coinsBottomSheet, null)?.commit()
                     }
                     is BookSlotState.Loading -> {
 
@@ -161,8 +169,14 @@ class BookASlotDialog : BottomSheetDialogFragment() {
         }
 
         viewModel.slotSelectedLiveData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            okayButton.isEnabled = true
-            okayButton.alpha = 1f
+            if (it!=null) {
+                okayButton.isEnabled = true
+                okayButton.alpha = 1f
+            }else
+            {
+                okayButton.isEnabled = false
+                okayButton.alpha = 0.7f
+            }
         })
     }
 

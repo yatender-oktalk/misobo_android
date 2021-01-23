@@ -11,6 +11,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.example.misobo.R
 import com.example.misobo.myProfile.ProfileViewModel
+import com.example.misobo.onBoarding.LoginDialog
+import com.example.misobo.rewards.RewardsViewModel
 import com.example.misobo.talkToExperts.models.BookSlotPayload
 import com.example.misobo.talkToExperts.viewModels.BookSlotState
 import com.example.misobo.talkToExperts.viewModels.TalkToExpertsViewModel
@@ -26,6 +28,9 @@ class CoinsAdditionSuccess : BottomSheetDialogFragment() {
     val profileViewModel: ProfileViewModel by lazy { ViewModelProvider(this).get(ProfileViewModel::class.java) }
     val compositeDisposable = CompositeDisposable()
     private val groupAdapter = GroupAdapter<ViewHolder>()
+    private val type by lazy { requireArguments().getString("TYPE", "CALL") }
+    private val rewardId: Int? by lazy { arguments?.getInt("REWARD_ID") }
+    private val rewardsViewModel: RewardsViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,22 +48,37 @@ class CoinsAdditionSuccess : BottomSheetDialogFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        karmaCoinsText.text =viewModel.pack.toString()
+        karmaCoinsText.text = viewModel.pack.toString()
 
-        viewModel.selectedExpertLiveDate.value?.id?.let { it1 ->
-            viewModel.bookSlot(
-                it1,
-                BookSlotPayload(
-                    viewModel.slotSelectedLiveData.value
-                )
-            )
+        crossButton.setOnClickListener {
+            this.dismiss()
         }
+
+        when (type) {
+            "CALL" -> {
+                confirmingBooking.text = "Confirming your booking..."
+                viewModel.selectedExpertLiveDate.value?.id?.let { it1 ->
+                    viewModel.bookSlot(
+                        it1,
+                        BookSlotPayload(
+                            viewModel.slotSelectedLiveData.value
+                        )
+                    )
+                }
+            }
+            "REWARDS" -> {
+                confirmingBooking.text = "Claiming your reward..."
+                rewardsViewModel.redeemRewards(rewardId ?: -1)
+            }
+        }
+
 
         viewModel.bookSlotLiveData.observe(
             viewLifecycleOwner,
             androidx.lifecycle.Observer { state ->
                 when (state) {
                     is BookSlotState.Success -> {
+                        this.dismiss()
                         activity?.supportFragmentManager?.beginTransaction()
                             ?.add(BookSuccessDialog(), null)?.commit()
                     }
@@ -69,11 +89,11 @@ class CoinsAdditionSuccess : BottomSheetDialogFragment() {
                         activity?.supportFragmentManager?.beginTransaction()
                             ?.add(loginDialog, null)?.commit()
                     }
-                    is BookSlotState.NotSufficientKarma->{
-                        val loginDialog =
+                    is BookSlotState.NotSufficientKarma -> {
+                        /*val loginDialog =
                             LoginDialog()
                         activity?.supportFragmentManager?.beginTransaction()
-                            ?.add(CoinsBottomSheet(), null)?.commit()
+                            ?.add(CoinsBottomSheet(), null)?.commit()*/
                     }
                     is BookSlotState.Loading -> {
 

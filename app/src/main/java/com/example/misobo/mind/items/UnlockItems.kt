@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.unlock_pack_home_banner.view.*
 
 class UnlockItems(val navigateToBody: (Boolean) -> Unit) : Item() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
-        when (SharedPreferenceManager.isMindUnlocked()) {
+        when (SharedPreferenceManager.getUserProfile()?.data?.isMindPackUnlocked) {
             true -> {
                 viewHolder.itemView.packTitle.text = "Body pack"
                 viewHolder.itemView.detailsText.text = "Daily Wellness Reminders"

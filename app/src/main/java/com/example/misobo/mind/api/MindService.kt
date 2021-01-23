@@ -16,7 +16,7 @@ interface MindService {
     @GET("api/music")
     fun fetchAllMusic(
         @Query(value = "page") page: Int
-    ): Observable<List<MusicResponseModel.MusicModel>>
+    ): Observable<MusicResponseModel>
 
     @Headers("Accept: application/json", "Content-Type: application/json")
     @PATCH("api/music/{musicId}/progress")
@@ -24,8 +24,6 @@ interface MindService {
         @Path(value = "musicId") musicId: Int,
         @Body progressPayload: ProgressPayload
     ): Observable<ProgressResponse>
-
-
 
     object Creator {
         private const val url: String = "http://143.110.176.70:4000/"
@@ -42,7 +40,7 @@ interface MindService {
                                     it.request().newBuilder()
                                         .addHeader(
                                             "token",
-                                            token
+                                            SharedPreferenceManager.getUser()?.data?.token ?: ""
                                         )
                                         .build()
                                 )

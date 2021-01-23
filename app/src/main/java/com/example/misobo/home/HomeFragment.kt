@@ -8,14 +8,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.misobo.R
 import com.example.misobo.bmi.view.BmiActivity
 import com.example.misobo.mind.view.MindFragment
+import com.example.misobo.mind.viewModels.MindViewModel
+import com.example.misobo.myProfile.ProfileViewModel
+import com.example.misobo.onBoarding.KarmaCoinsLayoutFragment
 import com.example.misobo.utils.SharedPreferenceManager
+import com.google.gson.JsonElement
+import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import org.json.JSONObject
 
 class HomeFragment : Fragment() {
+
+    private val mindViewModel: MindViewModel by activityViewModels()
+    private val profileViewModel by lazy { ViewModelProvider(this).get(ProfileViewModel::class.java) }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,43 +40,71 @@ class HomeFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
         fillName()
-
         editName.setOnEditorActionListener { v, actionId, event ->
             if (event != null && event.keyCode === KeyEvent.KEYCODE_ENTER || actionId == EditorInfo.IME_ACTION_DONE) {
                 if (!editName.text.isNullOrEmpty()) {
-                    SharedPreferenceManager.setName(editName.text.toString())
-                    fillName()
+                    profileViewModel.updateName(
+                        SharedPreferenceManager.getUserProfile()?.data?.id ?: 0,
+                        JsonObject().apply { addProperty("name", editName.text.toString()) }
+                    )
                 }
             }
             false
         }
 
-        fillName()
+        mindViewModel.getCoinsLiveData().observe(viewLifecycleOwner, Observer { profile ->
+            fillName()
+        })
 
         activity?.bottomNavigationView?.visibility = View.VISIBLE
+        activity?.arcSeparator?.visibility = View.VISIBLE
+        activity?.arc?.visibility = View.VISIBLE
+
         unlockButtonBody.setOnClickListener {
-            startActivity(Intent(context, BmiActivity::class.java))
+
+            val bundle = Bundle()
+            bundle.putInt("TO", 1)
+            val karmaCoinsFragment = KarmaCoinsLayoutFragment()
+            karmaCoinsFragment.arguments = bundle
+            activity?.supportFragmentManager
+                ?.beginTransaction()
+                ?.replace(R.id.mainContainer, karmaCoinsFragment)
+                ?.commit()
+            //startActivity(Intent(context, BmiActivity::class.java))
         }
 
         unlockButtonMind.setOnClickListener {
-            SharedPreferenceManager.setMindUnlock(true)
+            val jsonObject = JsonObject()
+            jsonObject.addProperty("is_mind_pack_unlocked", true)
+            mindViewModel.updatePackUnlock(
+                SharedPreferenceManager.getUser()?.data?.userId ?: 0,
+                jsonObject
+            )
+            val bundle = Bundle()
+            bundle.putInt("TO", 2)
+            val karmaCoinsFragment = KarmaCoinsLayoutFragment()
+            karmaCoinsFragment.arguments = bundle
             activity?.supportFragmentManager
+                ?.beginTransaction()
+                ?.replace(R.id.mainContainer, karmaCoinsFragment)
+                ?.commit()
+            //SharedPreferenceManager.setMindUnlock(true)
+            /*activity?.supportFragmentManager
                 ?.beginTransaction()
                 ?.replace(
                     R.id.mainContainer,
                     MindFragment()
                 )
-                ?.commit()
+                ?.commit()*/
             //startActivity(Intent(context, MindActivity::class.java))
         }
     }
 
     private fun fillName() {
-        if (SharedPreferenceManager.getName() != null) {
+        if (SharedPreferenceManager.getUserProfile()?.data?.name != null) {
             editNameGroup.visibility = View.INVISIBLE
-            nameTextView.text = SharedPreferenceManager.getName()
+            nameTextView.text = SharedPreferenceManager.getUserProfile()?.data?.name
             nameTextView.visibility = View.VISIBLE
         } else {
             nameTextView.visibility = View.INVISIBLE

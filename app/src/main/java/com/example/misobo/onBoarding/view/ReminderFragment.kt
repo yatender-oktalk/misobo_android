@@ -1,5 +1,6 @@
 package com.example.misobo.onBoarding.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,15 +9,19 @@ import android.widget.NumberPicker
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
+import com.example.misobo.MainActivity
 import com.example.misobo.R
 import com.example.misobo.utils.Util
 import com.example.misobo.onBoarding.viewModels.OnBoardingViewModel
 import com.example.misobo.onBoarding.viewModels.ReminderTime
+import com.example.misobo.utils.SharedPreferenceManager
+import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.fragment_reminder.*
 
 class ReminderFragment : Fragment() {
 
-    val onBoardingViewModel: OnBoardingViewModel by activityViewModels()
+    private val onBoardingViewModel: OnBoardingViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,11 +48,27 @@ class ReminderFragment : Fragment() {
                     amPmPicker.value
                 ) as ReminderTime
             )
+            val timeInMinutes =
+                ((hourPicker.value + if (amPmPicker.value == 0) 0 else 12) * 60) + minutesPicker.value
+            onBoardingViewModel.sendDailyReminder(
+                SharedPreferenceManager.getUserProfile()?.data?.id ?: 0,
+                JsonObject().apply { addProperty("daily_reminder", timeInMinutes) }
+            )
+        }
+
+        onBoardingViewModel.startMainActivityTrigger.observe(viewLifecycleOwner, Observer { it ->
             activity?.supportFragmentManager?.beginTransaction()
-                ?.replace(R.id.onBoardingFrameContainer,
+                ?.replace(
+                    R.id.onBoardingFrameContainer,
                     ReminderSuccessFragment()
                 )
                 ?.addToBackStack(null)?.commitAllowingStateLoss()
+        })
+
+        laterTextView.setOnClickListener {
+            SharedPreferenceManager.setOnBoarded(true)
+            startActivity(Intent(context, MainActivity::class.java))
+            activity?.finish()
         }
     }
 

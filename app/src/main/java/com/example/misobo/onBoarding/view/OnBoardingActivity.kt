@@ -3,7 +3,6 @@ package com.example.misobo.onBoarding.view
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.misobo.MainActivity
 import com.example.misobo.R
@@ -19,19 +18,16 @@ class OnBoardingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_onboarding)
-        if (SharedPreferenceManager.getUser() != null && SharedPreferenceManager.isOnBoarded()) {
+        if (SharedPreferenceManager.getUserProfile() != null) {
             startMainActivity()
         } else {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.onBoardingFrameContainer, OnBoardingFragment())
                 .commit()
         }
-        onBoardingViewModel.startMainActivityTrigger.observe(this, Observer {
-            startMainActivity()
-        })
     }
 
-    private fun startMainActivity(){
+    private fun startMainActivity() {
         startActivity(Intent(this, MainActivity::class.java))
         finish()
     }

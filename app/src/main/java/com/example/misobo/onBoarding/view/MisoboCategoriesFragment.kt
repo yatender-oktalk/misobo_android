@@ -21,16 +21,6 @@ import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.fragment_misobo_categories.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [MisoboCategoriesFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class MisoboCategoriesFragment : Fragment() {
 
     val groupAdapter = GroupAdapter<ViewHolder>()
@@ -47,18 +37,6 @@ class MisoboCategoriesFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_misobo_categories, container, false)
     }
 
-
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            MisoboCategoriesFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
@@ -73,13 +51,13 @@ class MisoboCategoriesFragment : Fragment() {
                 onBoardingViewModel.saveCategories(
                     CategoriesRequestModel(
                         listOf(
-                            onBoardingViewModel.categorySelectedPosition.value
+                            onBoardingViewModel.categorySelectedPosition.value?.plus(1)
                         )
                     ),
                     SharedPreferenceManager.getUser()?.data?.registrationId ?: -1
                 )
             } else {
-                Toast.makeText(context,"Please select a category" ,Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Please select a category", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -98,7 +76,7 @@ class MisoboCategoriesFragment : Fragment() {
                 is ResponseAction.Loading -> categoriesContinueButton.isEnabled = false
                 is ResponseAction.Failure -> {
                     categoriesContinueButton.isEnabled = true
-                    Toast.makeText(context,"Please try again" ,Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Please try again", Toast.LENGTH_SHORT).show()
                 }
             }
         })

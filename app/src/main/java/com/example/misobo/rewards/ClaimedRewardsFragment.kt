@@ -11,6 +11,7 @@ import com.example.misobo.R
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_claimed_rewards.*
 
 class ClaimedRewardsFragment : Fragment() {
@@ -30,14 +31,33 @@ class ClaimedRewardsFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        activity?.bottomNavigationView?.visibility = View.GONE
+        activity?.arcSeparator?.visibility = View.GONE
+        activity?.arc?.visibility = View.GONE
+
         recyclerView.adapter = groupedAdapter
         rewardsViewModel.claimedRewardsList.observe(viewLifecycleOwner, Observer { rewardsList ->
             rewardsList.forEach {
                 section.add(RewardsItem(it.reward!!, it.code.toString()) {
+                    rewardsViewModel.selectedRewardLiveData.postValue(it.reward)
+                    val bundle = Bundle()
+                    bundle.putBoolean("hideButton", true)
+                    val rewardsBottomSheet = RewardsDetailsBottomSheet()
+                    rewardsBottomSheet.arguments = bundle
+                    rewardsBottomSheet.show(activity?.supportFragmentManager!!,null)
+                    /*activity?.supportFragmentManager?.beginTransaction()
+                        ?.add(rewardsBottomSheet, null)?.commitAllowingStateLoss()*/
                 })
             }
         })
         backIcon.setOnClickListener { activity?.onBackPressed() }
         groupedAdapter.add(section)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        activity?.bottomNavigationView?.visibility = View.VISIBLE
+        activity?.arcSeparator?.visibility = View.VISIBLE
+        activity?.arc?.visibility = View.VISIBLE
     }
 }

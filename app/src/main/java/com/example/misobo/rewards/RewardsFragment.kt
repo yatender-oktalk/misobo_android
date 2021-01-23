@@ -5,10 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.misobo.R
+import com.example.misobo.myProfile.ProfileViewModel
 import com.example.misobo.utils.SharedPreferenceManager
+import com.google.android.material.snackbar.Snackbar
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
@@ -17,8 +21,7 @@ import kotlinx.android.synthetic.main.fragment_rewards.*
 class RewardsFragment : Fragment() {
 
     private val rewardsViewModel: RewardsViewModel by activityViewModels()
-
-
+    val profileViewModel: ProfileViewModel by lazy { ViewModelProvider(this).get(ProfileViewModel::class.java) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,11 +42,13 @@ class RewardsFragment : Fragment() {
         if (rewardsViewModel.rewardsLiveData.value == null)
             rewardsViewModel.getRewards()
 
-        if (rewardsViewModel.claimedRewardsLiveData.value == null)
-            rewardsViewModel.claimedRewards(SharedPreferenceManager.getUser()?.data?.userId ?: -1)
+        rewardsViewModel.claimedRewards(SharedPreferenceManager.getUser()?.data?.userId ?: -1)
 
+        profileViewModel.getProfileLiveData().observe(viewLifecycleOwner, Observer { profile ->
+            rewardsHeaderSection.setHeader(RewardsHeaderItem())
+        })
         rewardsReyclerView.adapter = adapter
-        rewardsHeaderSection.add(RewardsHeaderItem())
+
         rewardsViewModel.rewardsLiveData.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is RewardsFetchState.Success -> {
@@ -56,6 +61,11 @@ class RewardsFragment : Fragment() {
                     }
                 }
             }
+        })
+
+        rewardsViewModel.snackBarLiveData.observe(viewLifecycleOwner, Observer {
+            rewardsViewModel.claimedRewards(SharedPreferenceManager.getUser()?.data?.userId ?: -1)
+            showSnackBar()
         })
 
         rewardsViewModel.claimedRewardsLiveData.observe(viewLifecycleOwner, Observer { state ->
@@ -77,5 +87,17 @@ class RewardsFragment : Fragment() {
         adapter.add(rewardsHeaderSection)
         adapter.add(claimedRewardsSection)
         adapter.add(rewardsSection)
+    }
+
+    fun showSnackBar() {
+        val snackBar: Snackbar =
+            Snackbar.make(topLevelView, "Reward claimed successfully", Snackbar.LENGTH_SHORT)
+        val snackBarLayout = snackBar.view
+        val textView =
+            snackBarLayout.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
+        textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_outlined_tick, 0, 0, 0)
+        textView.compoundDrawablePadding =
+            resources.getDimensionPixelOffset(R.dimen.snackbar_icon_padding)
+        snackBar.show()
     }
 }
