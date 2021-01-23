@@ -13,6 +13,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.misobo.Misobo
 import com.example.misobo.R
 import com.example.misobo.mind.models.OrderPayload
 import com.example.misobo.mind.viewModels.OrderFetchState
@@ -61,6 +62,8 @@ class CoinsBottomSheet : BottomSheetDialogFragment(), PaymentResultListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        Checkout.preload(Misobo.instance.applicationContext)
 
         when (type) {
             "CALL" -> {
@@ -151,7 +154,7 @@ class CoinsBottomSheet : BottomSheetDialogFragment(), PaymentResultListener {
         val activity: Activity = requireActivity()
         val co = Checkout()
         co.setImage(R.drawable.misobo_icon);
-        co.setKeyID("rzp_live_2N116OfoXntg9j");
+        //co.setKeyID("rzp_live_2N116OfoXntg9j");
         try {
             val options = JSONObject()
             options.put("name", "Misobo Pvt Ltd")

@@ -13,6 +13,7 @@ import com.example.misobo.myProfile.ProfileResponseModel
 import com.example.misobo.talkToExperts.api.ExpertsService
 import com.example.misobo.talkToExperts.models.*
 import com.example.misobo.talkToExperts.pagination.BookingsDataSourceFactory
+import com.example.misobo.talkToExperts.pagination.ExpertsDataSourceFactory
 import com.example.misobo.utils.ErrorHandler
 import com.example.misobo.utils.LiveSharedPreference
 import com.example.misobo.utils.SharedPreferenceManager
@@ -36,6 +37,7 @@ class TalkToExpertsViewModel : ViewModel() {
     val captureOrderLiveData: MutableLiveData<CaptureOrderState> = MutableLiveData()
     val packsLiveData: MutableLiveData<PacksFetchState> = MutableLiveData()
     lateinit var userBookingsLiveData: LiveData<PagedList<UserBookings.Entry?>>
+    lateinit var expertsPagedListLiveData: LiveData<PagedList<ExpertModel.Expert?>>
 
     val submitRatingLiveData: MutableLiveData<FetchState> = MutableLiveData()
 
@@ -193,8 +195,23 @@ class TalkToExpertsViewModel : ViewModel() {
             .setEnablePlaceholders(false)
             .build()
 
-        userBookingsLiveData = LivePagedListBuilder(bookingsDataSourceFactory,config).build()
+        userBookingsLiveData = LivePagedListBuilder(bookingsDataSourceFactory, config).build()
 
+    }
+
+    fun getCategoryExpertsList(categoriesModel: ExpertCategoriesModel) {
+        val expertsDataSourceFactory = ExpertsDataSourceFactory(
+            compositeDisposable = compositeDisposable,
+            expertsService = expertsService,
+            categoryModel = categoriesModel
+        )
+
+        val config = PagedList.Config.Builder()
+            .setInitialLoadSizeHint(5)
+            .setEnablePlaceholders(false)
+            .build()
+
+        expertsPagedListLiveData = LivePagedListBuilder(expertsDataSourceFactory, config).build()
     }
 
     fun submitRating(ratingPayload: RatingPayload) {

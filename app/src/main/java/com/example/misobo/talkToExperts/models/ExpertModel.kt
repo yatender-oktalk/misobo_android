@@ -5,7 +5,12 @@ import com.google.gson.annotations.SerializedName
 
 data class ExpertModel(
     @SerializedName("entries")
-    val entries: List<Expert>?
+    val entries: List<Expert>?,
+    @SerializedName("page_number")
+    val pageNumber:Int?,
+    @SerializedName("total_pages")
+    val totalPages:Int?
+
 ) {
     data class Expert(
         @SerializedName("id")
