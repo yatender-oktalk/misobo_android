@@ -24,7 +24,7 @@ interface ExpertsService {
 
     @Headers("Accept: application/json", "Content-Type: application/json")
     @GET("api/category_experts/{category_id}")
-    fun getCategoryExpertsList(@Path(value = "category_id") catgId: Int?): Observable<ExpertModel>
+    fun getCategoryExpertsList(@Path(value = "category_id") catgId: Int?,@Query("page") pageNo: Int): Observable<ExpertModel>
 
     @Headers("Accept: application/json", "Content-Type: application/json")
     @GET("api/experts")

@@ -68,7 +68,7 @@ class TalkToExpertsViewModel : ViewModel() {
     }
 
     fun getCategoryExpertsList(id: Int) {
-        compositeDisposable.add(expertsService.getCategoryExpertsList(id)
+       /* compositeDisposable.add(expertsService.getCategoryExpertsList(id)
             .subscribeOn(Schedulers.io())
             .map {
                 ExpertListState.Success(
@@ -77,7 +77,7 @@ class TalkToExpertsViewModel : ViewModel() {
             }
             .startWith(ExpertListState.Loading)
             .onErrorReturn { ExpertListState.Fail }
-            .subscribe { expertListLiveData.postValue(it) })
+            .subscribe { expertListLiveData.postValue(it) })*/
     }
 
     fun getAllExpertsList() {
@@ -193,6 +193,7 @@ class TalkToExpertsViewModel : ViewModel() {
         val config = PagedList.Config.Builder()
             .setInitialLoadSizeHint(5)
             .setEnablePlaceholders(false)
+            .setPageSize(20)
             .build()
 
         userBookingsLiveData = LivePagedListBuilder(bookingsDataSourceFactory, config).build()
@@ -209,6 +210,7 @@ class TalkToExpertsViewModel : ViewModel() {
         val config = PagedList.Config.Builder()
             .setInitialLoadSizeHint(5)
             .setEnablePlaceholders(false)
+            .setPageSize(20)
             .build()
 
         expertsPagedListLiveData = LivePagedListBuilder(expertsDataSourceFactory, config).build()

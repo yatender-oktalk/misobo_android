@@ -31,7 +31,7 @@ class PageKeyedExpertsDataSource(
             )
         } else {
             compositeDisposable.add(
-                networkService.getCategoryExpertsList(categoryModel.id ?: 0)
+                networkService.getCategoryExpertsList(categoryModel.id ?: 0, 1)
                     .subscribe({ expertsList ->
                         callback.onResult(
                             expertsList.entries?.toMutableList()!!,
@@ -56,7 +56,10 @@ class PageKeyedExpertsDataSource(
                     )
                 })
         } else {
-            compositeDisposable.add(networkService.getCategoryExpertsList(categoryModel.id ?: 0)
+            compositeDisposable.add(networkService.getCategoryExpertsList(
+                categoryModel.id ?: 0,
+                params.key
+            )
                 .subscribe { expertsList ->
                     callback.onResult(
                         expertsList.entries?.toMutableList()!!,

@@ -46,11 +46,8 @@ class ExpertsListAdapter(private val callClicked: (ExpertModel.Expert?) -> Unit)
         )
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        inflateView(holder, position)
-    }
-
-    private fun inflateView(viewHolder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
+        //inflateView(holder, position)
         viewHolder.itemView.expertName.text = getItem(position)?.name
         viewHolder.itemView.coinsNeeded.text = "${getItem(position)?.karmaCoinsNeeded ?: 0}/Min"
 
@@ -66,6 +63,10 @@ class ExpertsListAdapter(private val callClicked: (ExpertModel.Expert?) -> Unit)
         }
         Glide.with(viewHolder.itemView.context).load(getItem(position)?.image)
             .into(viewHolder.itemView.expertImage)
+    }
+
+    private fun inflateView(viewHolder: RecyclerView.ViewHolder, position: Int) {
+
     }
 
     inner class ExpertsViewHolder(view: View) : RecyclerView.ViewHolder(view)
