@@ -4,9 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layoutAnimation="@anim/layout_animation_fade_enter"
-    android:background="@drawable/music_player_gradient"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".mind.view.MusicPlayerFragment">
+
+    <ImageView
+        android:id="@+id/backgroundImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/music_player_gradient"/>
 
     <ImageView
         android:id="@+id/crossIcon"
@@ -62,6 +68,7 @@
         android:layout_marginTop="89dp"
         android:textStyle="normal"
         android:textSize="26sp"
+        android:visibility="invisible"
         android:textColor="#4d426d"
         android:lineSpacingExtra="4sp"
         android:gravity="center_horizontal"
@@ -75,6 +82,7 @@
         android:fontFamily="@font/manrope_medium"
         android:textStyle="normal"
         android:textSize="12sp"
+        android:visibility="invisible"
         android:textColor="#744d426d"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

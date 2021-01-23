@@ -154,7 +154,6 @@ class CoinsBottomSheet : BottomSheetDialogFragment(), PaymentResultListener {
         val activity: Activity = requireActivity()
         val co = Checkout()
         co.setImage(R.drawable.misobo_icon);
-        //co.setKeyID("rzp_live_2N116OfoXntg9j");
         try {
             val options = JSONObject()
             options.put("name", "Misobo Pvt Ltd")

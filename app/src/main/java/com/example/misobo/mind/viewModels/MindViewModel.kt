@@ -37,9 +37,10 @@ class MindViewModel : ViewModel() {
     init {
         fetchAllMusic()
     }
+
     fun getCoinsLiveData() = liveSharedPreference
 
-    fun fetchAllMusic() {
+    private fun fetchAllMusic() {
 
         val musicDataSourceFactory = MusicDataSourceFactory(
             compositeDisposable = compositeDisposable,
@@ -54,22 +55,6 @@ class MindViewModel : ViewModel() {
             .build()
 
         musicPagedList = LivePagedListBuilder(musicDataSourceFactory, config).build()
-
-        /*compositeDisposable.add(mindService.fetchAllMusic(1)
-            .subscribeOn(Schedulers.io())
-            .map {
-                MusicFetchState.Success(
-                    it
-                ) as MusicFetchState
-            }
-            .startWith(MusicFetchState.Loading)
-            .onErrorReturn {
-                MusicFetchState.Error(it.localizedMessage)
-            }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                musicLiveData.postValue(it)
-            })*/
     }
 
     fun updatePackUnlock(userId: Int, jsonObject: JsonObject) {

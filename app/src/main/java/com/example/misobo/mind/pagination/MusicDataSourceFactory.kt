@@ -15,6 +15,7 @@ class MusicDataSourceFactory(
         return PageKeyedMusicDataSource(
             compositeDisposable = compositeDisposable,
             networkService = networkService,
-            userId = userId)
+            userId = userId
+        )
     }
 }

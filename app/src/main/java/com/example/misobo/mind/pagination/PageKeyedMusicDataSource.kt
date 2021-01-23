@@ -20,9 +20,9 @@ class PageKeyedMusicDataSource(
             networkService.fetchAllMusic(page = 1)
                 .subscribe({ music ->
                     callback.onResult(
-                        music,
+                        music.entries?.toMutableList()!!,
                         null,
-                        2
+                        if (music.pageNumber!! < music.totalPages!!) 2 else null
                     )
                     //userBookingsLiveData.postValue(it)
                 }, {})
@@ -33,17 +33,14 @@ class PageKeyedMusicDataSource(
         params: PageKeyedDataSource.LoadParams<Int>,
         callback: PageKeyedDataSource.LoadCallback<Int, MusicResponseModel.MusicModel>
     ) {
-        /*compositeDisposable.add(networkService.fetchBookings(
-            pageNumber = params.key,
-            userId = userId
-        )
-            .subscribe { bookings ->
+        compositeDisposable.add(networkService.fetchAllMusic(page = params.key)
+            .subscribe { music ->
                 callback.onResult(
-                    bookings.data?.entries!!,
-                    if (bookings.data.pageNumber!! < bookings.data.totalPages!!) params.key + 1 else null
+                    music.entries?.toMutableList()!!,
+                    if (music.pageNumber!! < music.totalPages!!) params.key + 1 else null
                 )
                 //userBookingsLiveData.postValue(it)
-            })*/
+            })
     }
 
     override fun loadBefore(

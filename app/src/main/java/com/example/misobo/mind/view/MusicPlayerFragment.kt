@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import com.bumptech.glide.Glide
 import com.example.misobo.R
 import com.example.misobo.arcseekbar.ProgressListener
 import com.example.misobo.mind.models.ProgressPayload
@@ -24,7 +25,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.custom_exo_player_controls.view.*
+import kotlinx.android.synthetic.main.custom_exo_player_controls.view.progressBar
 import kotlinx.android.synthetic.main.fragment_music_player.*
+import kotlinx.android.synthetic.main.music_recycler_item.view.*
 import java.util.concurrent.TimeUnit
 
 class MusicPlayerFragment : Fragment() {
@@ -50,6 +53,10 @@ class MusicPlayerFragment : Fragment() {
         activity?.arc?.visibility = View.GONE
 
         mindViewModel.playMusicLiveData.observe(viewLifecycleOwner, Observer { musicModel ->
+
+            Glide.with(requireContext()).load(musicModel.image)
+                .placeholder(R.drawable.music_gradient).into(backgroundImage)
+
             mindViewModel.selectedMusicId = musicModel.id ?: 0
             musicModel.title?.let {
                 songTitle.text = it

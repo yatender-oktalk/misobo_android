@@ -115,6 +115,7 @@ class BookASlotDialog : BottomSheetDialogFragment() {
             androidx.lifecycle.Observer { state ->
                 when (state) {
                     is SlotFetchState.Success -> {
+                        viewModel.slotSelectedLiveData.postValue(null)
                         inflateSlotsRecycler(state.slotList, -1)
                     }
                     is SlotFetchState.Loading -> {
@@ -168,8 +169,14 @@ class BookASlotDialog : BottomSheetDialogFragment() {
         }
 
         viewModel.slotSelectedLiveData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            okayButton.isEnabled = true
-            okayButton.alpha = 1f
+            if (it!=null) {
+                okayButton.isEnabled = true
+                okayButton.alpha = 1f
+            }else
+            {
+                okayButton.isEnabled = false
+                okayButton.alpha = 0.7f
+            }
         })
     }
 

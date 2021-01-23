@@ -16,7 +16,7 @@ interface MindService {
     @GET("api/music")
     fun fetchAllMusic(
         @Query(value = "page") page: Int
-    ): Observable<List<MusicResponseModel.MusicModel>>
+    ): Observable<MusicResponseModel>
 
     @Headers("Accept: application/json", "Content-Type: application/json")
     @PATCH("api/music/{musicId}/progress")
