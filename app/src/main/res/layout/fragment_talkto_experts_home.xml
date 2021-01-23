@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".talkToExperts.TalktoExpertsHomeFragment">
+    tools:context=".talkToExperts.view.TalktoExpertsHomeFragment">
 
     <ImageView
         android:id="@+id/backIcon"
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="27dp"
-        android:fontFamily="@font/manrope_extra_bold"
+        android:fontFamily="@font/manrope_extrabold"
         android:lineSpacingExtra="12sp"
         android:text="Talk to an expert"
         android:textColor="#4d426d"

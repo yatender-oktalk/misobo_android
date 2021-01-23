@@ -26,4 +26,14 @@
         <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
 
+    <style name="CustomExoMediaButton.Play" parent="ExoMediaButton.Play">
+        <item name="android:src">@drawable/ic_play_button</item>
+        <item name="android:contentDescription">@string/exo_controls_play_description</item>
+    </style>
+
+    <style name="CustomExoMediaButton.Pause" parent="ExoMediaButton.Pause">
+        <item name="android:src">@drawable/ic_baseline_pause_circle_filled_24</item>
+        <item name="android:contentDescription">@string/exo_controls_pause_description</item>
+    </style>
+
 </resources>

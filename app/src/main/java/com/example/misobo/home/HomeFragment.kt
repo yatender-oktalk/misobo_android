@@ -7,11 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.misobo.R
-import com.example.misobo.bmi.BmiActivity
-import com.example.misobo.bmi.BmiHomeFragment
-import com.example.misobo.talkToExperts.TalkToExpertActivity
+import com.example.misobo.bmi.view.BmiActivity
+import com.example.misobo.mind.view.MindActivity
+import com.example.misobo.mind.view.MindFragment
+import com.example.misobo.utils.SharedPreferenceManager
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_bmi_home.*
 import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : Fragment() {
@@ -28,13 +28,21 @@ class HomeFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         activity?.bottomNavigationView?.visibility = View.VISIBLE
-        textView.setOnClickListener {
+        unlockButtonBody.setOnClickListener {
             startActivity(Intent(context, BmiActivity::class.java))
         }
 
-        talkToExperts.setOnClickListener {
-            startActivity(Intent(context, TalkToExpertActivity::class.java))
+        unlockButtonMind.setOnClickListener {
+            SharedPreferenceManager.setMindUnlock(true)
+            activity?.supportFragmentManager
+                ?.beginTransaction()
+                ?.replace(
+                    R.id.mainContainer,
+                    MindFragment()
+                )
+                ?.commit()
+
+            //startActivity(Intent(context, MindActivity::class.java))
         }
-        //bmiBackButton.setOnClickListener { activity?.onBackPressed() }
     }
 }

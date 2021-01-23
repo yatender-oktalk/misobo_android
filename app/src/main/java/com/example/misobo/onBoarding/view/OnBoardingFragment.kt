@@ -50,7 +50,7 @@ class OnBoardingFragment : Fragment() {
             },{}))
 
         onBoardingViewModel.userLiveData.observe(viewLifecycleOwner, Observer { user ->
-            SharedPreferenceManager.setUser(context, user)
+            SharedPreferenceManager.setUser(user)
         })
 
         try {
@@ -61,11 +61,11 @@ class OnBoardingFragment : Fragment() {
                         Settings.Secure.ANDROID_ID
                     )
                 )
-            if (SharedPreferenceManager.getUser() == null) {
+           /* if (SharedPreferenceManager.getUser() == null) {
                 onBoardingViewModel.registerUser(
                     registrationModel
                 )
-            }
+            }*/
         } catch (e: Exception) {
             Toast.makeText(context, e.localizedMessage, Toast.LENGTH_SHORT).show()
         }

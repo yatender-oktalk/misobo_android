@@ -5,11 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
-    tools:context=".bmi.BmiFullReportFragment">
+    tools:context=".bmi.view.BmiFullReportFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/background"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bmi_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/bmiReportBackIcon"
@@ -26,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
-            android:fontFamily="@font/manrope_extra_bold"
+            android:fontFamily="@font/manrope_extrabold"
             android:gravity="center_horizontal"
             android:lineSpacingExtra="18sp"
             android:text="Your BMI Score is"
@@ -42,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:fontFamily="@font/manrope_extra_bold"
+            android:fontFamily="@font/manrope_extrabold"
             android:gravity="center_horizontal"
             android:lineSpacingExtra="38sp"
             android:textColor="#4d426d"
@@ -141,15 +150,15 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="32.5dp"
             android:layout_marginEnd="16dp"
-            android:fontFamily="@font/manrope_extra_bold"
+            android:fontFamily="@font/manrope_extrabold"
             android:lineSpacingExtra="22sp"
+            android:text="What is the body mass index (BMI)?"
             android:textColor="#4d426d"
             android:textSize="16sp"
             android:textStyle="normal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/view"
-            android:text="What is the body mass index (BMI)?" />
+            app:layout_constraintTop_toBottomOf="@id/view" />
 
         <TextView
             android:id="@+id/whatIsBmiTextDetails"
@@ -177,15 +186,15 @@ The BMI calculation divides an adult’s weight in kilograms by their height in 
             android:layout_marginStart="16dp"
             android:layout_marginTop="32.5dp"
             android:layout_marginEnd="16dp"
-            android:fontFamily="@font/manrope_extra_bold"
+            android:fontFamily="@font/manrope_extrabold"
             android:lineSpacingExtra="22sp"
+            android:text="BMI ranges"
             android:textColor="#4d426d"
             android:textSize="16sp"
             android:textStyle="normal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/whatIsBmiTextDetails"
-            android:text="BMI ranges" />
+            app:layout_constraintTop_toBottomOf="@id/whatIsBmiTextDetails" />
 
         <TextView
             android:id="@+id/mostAdultsTextView"
@@ -197,88 +206,85 @@ The BMI calculation divides an adult’s weight in kilograms by their height in 
             android:alpha=".7"
             android:fontFamily="@font/manrope_regular"
             android:lineSpacingExtra="9sp"
+            android:text="For most adults, an ideal BMI is in the 18.5 to 24.9 range."
             android:textColor="#4d426d"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/bmiRangesTextView"
-            android:text="For most adults, an ideal BMI is in the 18.5 to 24.9 range." />
+            app:layout_constraintTop_toBottomOf="@id/bmiRangesTextView" />
 
         <TextView
             android:id="@+id/mostAdultsDetails"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="15dp"
             android:layout_marginEnd="16dp"
+            android:alpha=".7"
             android:fontFamily="@font/manrope_regular"
             android:lineSpacingExtra="7sp"
-            android:textColor="#4d426d"
-            android:textSize="14sp"
-            android:layout_marginTop="15dp"
-            android:textStyle="normal"
-            android:alpha=".7"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/mostAdultsTextView"
             android:text="For children and young people aged 2 to 18, the BMI calculation takes into account age and gender as well as height and weight.\n
 If your BMI is:\n
 below 18.5 – you’re in the underweight range\n
 18.5 - 24.9 – you’re in the healthy weight range\n
 25 - 29.9 – you’re in the overweight range\n
-30 - 39.9 – you’re in the obese range\n" />
+30 - 39.9 – you’re in the obese range\n"
+            android:textColor="#4d426d"
+            android:textSize="14sp"
+            android:textStyle="normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/mostAdultsTextView" />
 
         <TextView
             android:id="@+id/accuracyOfBmi"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/manrope_extra_bold"
-            android:textStyle="normal"
-            android:textSize="16sp"
-            android:textColor="#4d426d"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            app:layout_constraintTop_toBottomOf="@id/mostAdultsDetails"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:fontFamily="@font/manrope_extrabold"
             android:lineSpacingExtra="22sp"
             android:text="Accuracy of BMI"
-            />
+            android:textColor="#4d426d"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/mostAdultsDetails" />
 
         <TextView
             android:id="@+id/accuracyBMIDetails"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/manrope_medium"
-            android:textStyle="normal"
-            android:textSize="14sp"
-            android:alpha="0.7"
-            android:layout_marginTop="10dp"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="16dp"
-            android:textColor="#4d426d"
+            android:alpha="0.7"
+            android:fontFamily="@font/manrope_medium"
             android:lineSpacingExtra="8sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/accuracyOfBmi"
             android:text="BMI takes into account natural variations in body shape, giving a healthy weight range for a particular height.\n\n
 As well as measuring your BMI, healthcare professionals may take other factors into account when assessing if you’re a healthy weight.\n\n
 Muscle is much denser than fat, so very muscular people, such as heavyweight boxers, weight trainers and athletes, may be a healthy weight even though their BMI is classed as obese.\n\n
 Your ethnic group can also affect your risk of some health conditions. For example, adults of Asian origin may have a higher risk of health problems at BMI levels below 25.\n\n
 You should not use BMI as a measure if you’re pregnant. Get advice from your midwife or GP if you’re concerned about your weight.\n"
-            />
+            android:textColor="#4d426d"
+            android:textSize="14sp"
+            android:textStyle="normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/accuracyOfBmi" />
 
         <ImageView
             android:id="@+id/misobo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layoutAnimation="@anim/layout_animation_down_to_up"
-            app:layout_constraintTop_toBottomOf="@id/accuracyBMIDetails"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:src="@drawable/ic_misobo_mbs"
             android:layout_marginTop="20dp"
-            />
+            android:layoutAnimation="@anim/layout_animation_down_to_up"
+            android:src="@drawable/ic_misobo_mbs"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/accuracyBMIDetails" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

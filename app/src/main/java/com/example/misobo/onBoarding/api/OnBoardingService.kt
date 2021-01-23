@@ -50,7 +50,7 @@ interface OnBoardingService {
                             .addInterceptor {
                                 it.proceed(
                                     it.request().newBuilder()
-                                        .addHeader("token", token)
+                                        .addHeader("token", SharedPreferenceManager.getUser()?.data?.token ?: "")
                                         .build()
                                 )
                             }

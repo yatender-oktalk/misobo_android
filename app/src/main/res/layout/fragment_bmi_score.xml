@@ -7,7 +7,18 @@
     android:background="@color/colorPrimary"
     android:clickable="true"
     android:layoutAnimation="@anim/layout_animation_fade_enter"
-    tools:context=".bmi.BmiScoreFragment">
+    tools:context=".bmi.view.BmiScoreFragment">
+
+    <ImageView
+        android:id="@+id/backIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/ic_arrow_back_24px"
+        />
 
     <ImageView
         android:id="@+id/waveView"
@@ -24,7 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="220dp"
-        android:fontFamily="@font/manrope_extra_bold"
+        android:fontFamily="@font/manrope_extrabold"
         android:gravity="center_horizontal"
         android:lineSpacingExtra="18sp"
         android:text="Your BMI Score is"
@@ -40,7 +51,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:fontFamily="@font/manrope_extra_bold"
+        android:fontFamily="@font/manrope_extrabold"
         android:gravity="center_horizontal"
         android:lineSpacingExtra="38sp"
         android:textColor="#4d426d"
@@ -53,7 +64,7 @@
         android:id="@+id/bmiStatus"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/manrope_extra_bold"
+        android:fontFamily="@font/manrope_extrabold"
         android:gravity="center_horizontal"
         android:lineSpacingExtra="8sp"
         android:textColor="#4d426d"

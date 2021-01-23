@@ -10,6 +10,8 @@ data class User(
         @SerializedName("id")
         val registrationId: Int?,
         @SerializedName("token")
-        val token: String?
+        val token: String?,
+        @SerializedName("user_id")
+        val userId:Int?
     )
 }

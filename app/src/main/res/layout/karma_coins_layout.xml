@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/karma_coins_background">
+
+    <ImageView
+        android:id="@+id/karmaCoinsIcon"
+        android:layout_width="121dp"
+        android:layout_height="121dp"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="26dp"
+        android:src="@drawable/ic_karma_coin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/karmaCoinsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="42dp"
+        android:fontFamily="@font/manrope_extrabold"
+        android:gravity="center_horizontal"
+        android:lineSpacingExtra="13sp"
+        android:text="Karma Coins"
+        android:textColor="#4d426d"
+        android:textSize="26sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/karmaCoinsIcon" />
+
+    <TextView
+        android:id="@+id/improveMentalWellness"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="13dp"
+        android:fontFamily="@font/manrope_medium"
+        android:lineSpacingExtra="5sp"
+        android:text="Improving your mental wellness\nis now rewarding"
+        android:textColor="#4d426d"
+        android:textSize="16sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/karmaCoinsText" />
+
+    <ImageView
+        android:id="@+id/dotImageView"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="11dp"
+        android:src="@drawable/circle_dot"
+        app:layout_constraintEnd_toStartOf="@id/completeTask"
+        app:layout_constraintTop_toTopOf="@id/completeTask"
+        app:tint="@color/colorAccent" />
+
+    <ImageView
+        android:id="@+id/dottedLine"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="@id/dotImageView"
+        app:layout_constraintBottom_toBottomOf="@id/dotImageView2"
+        app:layout_constraintStart_toStartOf="@id/dotImageView"
+        app:layout_constraintEnd_toEndOf="@id/dotImageView"
+        android:src="@drawable/dotted_dash_vertical"
+        />
+
+    <TextView
+        android:id="@+id/completeTask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="47dp"
+        android:layout_marginTop="66dp"
+        android:fontFamily="@font/manrope_medium"
+        android:lineSpacingExtra="4dp"
+        android:text="Complete tasks and earn\nkarma coins."
+        android:textColor="#4d426d"
+        android:textSize="18sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/improveMentalWellness" />
+
+    <ImageView
+        android:id="@+id/dotImageView1"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="11dp"
+        android:src="@drawable/circle_dot"
+        app:layout_constraintEnd_toStartOf="@id/useKarmaCoins"
+        app:layout_constraintTop_toTopOf="@id/useKarmaCoins"
+        app:tint="@color/colorAccent" />
+
+    <TextView
+        android:id="@+id/useKarmaCoins"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="47dp"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/manrope_medium"
+        android:lineSpacingExtra="4dp"
+        android:text="Use karma coins to talk to\nexperts"
+        android:textColor="#4d426d"
+        android:textSize="18sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/completeTask" />
+
+    <ImageView
+        android:id="@+id/dotImageView2"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="11dp"
+        android:src="@drawable/circle_dot"
+        app:layout_constraintEnd_toStartOf="@id/redeemCoins"
+        app:layout_constraintTop_toTopOf="@id/redeemCoins"
+        app:tint="@color/colorAccent" />
+
+    <TextView
+        android:id="@+id/redeemCoins"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="47dp"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/manrope_medium"
+        android:lineSpacingExtra="4dp"
+        android:text="Redeem them to unlock\nexciting rewards"
+        android:textColor="#4d426d"
+        android:textSize="18sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/useKarmaCoins" />
+
+    <TextView
+        android:id="@+id/getStartedText"
+        android:text="Okay"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="@color/colorAccent"
+        android:layout_width="match_parent"
+        android:layout_marginStart="27dp"
+        android:layout_marginEnd="27dp"
+        android:gravity="center"
+        android:textColor="#ffffff"
+        android:textSize="16sp"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:layout_height="wrap_content" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

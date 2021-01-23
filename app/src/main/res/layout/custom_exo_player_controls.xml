@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_gravity="bottom"
+    android:background="@android:color/transparent"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/exoPosition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:textColor="@color/colorAccent"
+            android:textSize="12sp"
+            android:rotation="-13"
+            tools:text="03:45"
+            android:textStyle="bold"
+            android:fontFamily="@font/manrope_extrabold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/arcSeekBar" />
+
+        <TextView
+            android:id="@id/exo_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="18dp"
+            android:textColor="@color/colorAccent"
+            android:textSize="12sp"
+            android:rotation="13"
+            tools:text="03:51"
+            android:textStyle="bold"
+            android:fontFamily="@font/manrope_extrabold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/arcSeekBar"
+            />
+
+        <com.example.misobo.arcseekbar.ArcSeekBar
+            android:id="@+id/arcSeekBar"
+            android:layout_width="match_parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:maxProgress="100"
+            app:progress="0"
+            tools:progress = "100"
+            app:progressWidth="4dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:roundEdges="true"
+            app:thumb="@drawable/thumb"
+            app:progressBackgroundWidth="4dp"
+            app:progressColor="@color/colorAccent"
+            app:progressBackgroundColor="@android:color/white"
+            app:layout_constraintBottom_toTopOf="@id/exo_play"
+            android:layout_marginBottom="8dp"
+            android:layout_height="40dp"/>
+
+       <!-- <com.google.android.exoplayer2.ui.DefaultTimeBar
+            android:id="@id/exo_progress"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="14.5dp"
+            android:layout_weight="1"
+            app:layout_constraintTop_toBottomOf="@id/exo_duration"
+            app:played_color="@color/colorAccent"
+            app:scrubber_color="@color/colorAccent"
+            app:unplayed_color="#ffffff" />-->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageButton
+        android:id="@id/exo_play"
+        style="@style/CustomExoMediaButton.Play"
+        android:layout_width="97dp"
+        android:layout_height="97dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="41.5dp"
+        android:layout_marginTop="14.5dp"
+        android:background="@drawable/ic_play_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@id/exo_pause"
+        style="@style/CustomExoMediaButton.Pause"
+        android:layout_width="97dp"
+        android:layout_height="97dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="14.5dp"
+        android:layout_marginBottom="41.5dp"
+        android:scaleType="fitCenter"
+        android:background="@drawable/ic_round_pause"
+        android:tint="@color/colorAccent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</LinearLayout>

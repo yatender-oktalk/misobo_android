@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     android:layoutAnimation="@anim/layout_animation_fade_enter"
-    tools:context=".bmi.BmiHomeFragment">
+    tools:context=".bmi.view.BmiHomeFragment">
 
     <ImageView
         android:id="@+id/bmiBackButton"
@@ -45,7 +45,7 @@
         android:layout_marginStart="66dp"
         android:layout_marginTop="108dp"
         android:layout_marginEnd="66dp"
-        android:fontFamily="@font/manrope_extra_bold"
+        android:fontFamily="@font/manrope_extrabold"
         android:gravity="center_horizontal"
         android:text="We would need some
 more details to analyse

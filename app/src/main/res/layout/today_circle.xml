@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:text="Today"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/today_circle"
+    android:gravity="center"
+    android:fontFamily="@font/manrope_extrabold"
+    android:lineSpacingExtra="15sp"
+    android:textColor="#4d426d"
+    android:textSize="7sp"
+    android:textStyle="normal" />
+

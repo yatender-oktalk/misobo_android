@@ -45,7 +45,7 @@
         android:layout_marginStart="74dp"
         android:layout_marginTop="83dp"
         android:layout_marginEnd="74dp"
-        android:fontFamily="@font/manrope_extra_bold"
+        android:fontFamily="@font/manrope_extrabold"
         android:gravity="center"
         android:text="Reminder set for"
         android:textColor="#4d426d"
@@ -58,7 +58,7 @@
         android:id="@+id/timeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/manrope_extra_bold"
+        android:fontFamily="@font/manrope_extrabold"
         android:textColor="@color/colorAccent"
         android:textSize="49sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -83,7 +83,7 @@
         app:layout_constraintTop_toBottomOf="@id/timeTextView" />
 
     <ProgressBar
-        android:id="@+id/progress"
+        android:id="@+id/arcSeekBar"
         android:layout_width="match_parent"
         style="?android:attr/progressBarStyleHorizontal"
         app:layout_constraintBottom_toBottomOf="parent"

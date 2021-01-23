@@ -43,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:fontFamily="@font/manrope_extra_bold"
+            android:fontFamily="@font/manrope_extrabold"
             android:lineSpacingExtra="10sp"
             android:text="Enter OTP"
             android:textColor="#4d426d"
