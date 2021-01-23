@@ -2,7 +2,7 @@ package com.example.misobo.onBoarding.viewModels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.misobo.SingleLiveEvent
+import com.example.misobo.utils.SingleLiveEvent
 import com.example.misobo.onBoarding.api.OnBoardingService
 import com.example.misobo.onBoarding.models.CategoriesModel
 import com.example.misobo.onBoarding.models.CategoriesRequestModel
@@ -21,15 +21,18 @@ class OnBoardingViewModel : ViewModel() {
     val categories: MutableLiveData<CategoriesModel> = MutableLiveData()
     val reminderTime: MutableLiveData<ReminderTime> = MutableLiveData()
     val userLiveData: MutableLiveData<User> = MutableLiveData()
-    val categoryResponseAction: SingleLiveEvent<ResponseAction> = SingleLiveEvent()
-    val subCategoryResponseAction: SingleLiveEvent<ResponseAction> = SingleLiveEvent()
+    val startMainActivityTrigger:MutableLiveData<Boolean> = MutableLiveData()
+    val categoryResponseAction: SingleLiveEvent<ResponseAction> =
+        SingleLiveEvent()
+    val subCategoryResponseAction: SingleLiveEvent<ResponseAction> =
+        SingleLiveEvent()
     var onBoardingService =
         OnBoardingService.Creator.service
 
-    fun getOnBoardingCategories(token: String) {
+    fun getOnBoardingCategories() {
         compositeDisposable.add(
-            onBoardingService
-                .getCategories(token)
+            OnBoardingService.Creator.service
+                .getCategories()
                 .subscribeOn(Schedulers.io())
                 .map {
                     categories.postValue(it)
@@ -64,14 +67,12 @@ class OnBoardingViewModel : ViewModel() {
     }
 
     fun saveCategories(
-        token: String?,
         categoryModel: CategoriesRequestModel,
         regId: Int
     ) {
         compositeDisposable.add(
             onBoardingService
                 .saveCategories(
-                    token = token ?: "",
                     categoriesRequestModel = categoryModel,
                     registrationId = regId
                 )
@@ -84,11 +85,10 @@ class OnBoardingViewModel : ViewModel() {
         )
     }
 
-    fun saveSubCategories(token: String?, categoryModel: CategoriesRequestModel, regId: Int) {
+    fun saveSubCategories(categoryModel: CategoriesRequestModel, regId: Int) {
         compositeDisposable.add(
             onBoardingService
                 .saveSubCategories(
-                    token = token ?: "",
                     categoriesRequestModel = categoryModel,
                     registrationId = regId
                 )

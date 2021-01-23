@@ -56,6 +56,7 @@ dependencies {
     def room_version = "2.2.5"
     def mockito_version = "2.2.0"
     def arch_testing = "2.1.0"
+    def material = "1.2.1"
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -130,7 +131,7 @@ dependencies {
 
     testImplementation "androidx.arch.core:core-testing:$arch_testing"
 
-
+    implementation "com.google.android.material:material:$material"
 
 
 }

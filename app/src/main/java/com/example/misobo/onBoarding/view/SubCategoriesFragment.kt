@@ -9,7 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.misobo.R
-import com.example.misobo.SharedPreferenceManager
+import com.example.misobo.utils.SharedPreferenceManager
 import com.example.misobo.onBoarding.models.CategoriesModel
 import com.example.misobo.onBoarding.models.CategoriesRequestModel
 import com.example.misobo.onBoarding.viewModels.OnBoardingViewModel
@@ -18,8 +18,6 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.fragment_sub_categories.*
-
-// TODO: Rename parameter arguments, choose names that match
 
 class SubCategoriesFragment : Fragment() {
 
@@ -65,11 +63,10 @@ class SubCategoriesFragment : Fragment() {
         subCategoriesContinueButton.setOnClickListener {
             if (onBoardingViewModel.subCategorySelectedPosition.value != -1) {
                 onBoardingViewModel.saveSubCategories(
-                    SharedPreferenceManager.getUser(context)?.data?.token,
                     CategoriesRequestModel(
                         subCategories = listOf(onBoardingViewModel.subCategorySelectedPosition.value)
                     ),
-                    SharedPreferenceManager.getUser(context)?.data?.id ?: -1
+                    SharedPreferenceManager.getUser()?.data?.id ?: -1
                 )
             } else {
                 Toast.makeText(context, "Please select a category", Toast.LENGTH_SHORT).show()
@@ -81,7 +78,8 @@ class SubCategoriesFragment : Fragment() {
                 is ResponseAction.Success -> {
                     subCategoriesContinueButton.isEnabled = true
                     activity?.supportFragmentManager?.beginTransaction()
-                        ?.replace(R.id.onBoardingFrameContainer,
+                        ?.replace(
+                            R.id.onBoardingFrameContainer,
                             ReminderFragment()
                         )
                         ?.addToBackStack(null)

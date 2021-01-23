@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.animation.doOnEnd
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.misobo.R
 import com.example.misobo.onBoarding.viewModels.OnBoardingViewModel
 import com.example.misobo.onBoarding.viewModels.ReminderTime
+import com.example.misobo.utils.SharedPreferenceManager
 import kotlinx.android.synthetic.main.fragment_reminder_success.*
 
 class ReminderSuccessFragment : Fragment() {
@@ -35,8 +37,14 @@ class ReminderSuccessFragment : Fragment() {
 
         progress.max = 1000
         val currentProgress = 1000
-        ObjectAnimator.ofInt(progress, "progress", currentProgress)
-            .setDuration(3000)
-            .start()
+        val anim = ObjectAnimator.ofInt(progress, "progress", currentProgress)
+        anim.setDuration(3000)
+        anim.doOnEnd {
+            SharedPreferenceManager.setOnBoarded(true)
+            onBoardingViewModel.startMainActivityTrigger.postValue(true)
+        }
+        anim.start()
+
+
     }
 }

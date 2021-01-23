@@ -87,11 +87,11 @@ class OnBoardingViewModelTest {
             CategoriesModel(
                 listOf(categoryList)
             )
-        Mockito.`when`(onBoardingService.getCategories(token))
+        Mockito.`when`(onBoardingService.getCategories())
             .thenReturn(Observable.just(categoriesModel))
 
         //Act
-        onBoardingViewModel.getOnBoardingCategories(token)
+        onBoardingViewModel.getOnBoardingCategories()
 
         //Assert
         verify(categoriesObserver, times(1)).onChanged(CategoriesAction.Loading)
@@ -104,11 +104,11 @@ class OnBoardingViewModelTest {
         val errorString = "Random Exception"
         onBoardingViewModel.categoriesLiveData.observeForever(categoriesObserver)
         val token = "ABCD1234testing"
-        Mockito.`when`(onBoardingService.getCategories(token))
+        Mockito.`when`(onBoardingService.getCategories())
             .thenReturn(Observable.error(Throwable(errorString)))
 
         //Act
-        onBoardingViewModel.getOnBoardingCategories(token)
+        onBoardingViewModel.getOnBoardingCategories()
 
         //Assert
         verify(categoriesObserver, times(1)).onChanged(CategoriesAction.Loading)
@@ -122,7 +122,6 @@ class OnBoardingViewModelTest {
         val token = "ABCD1234testing"
         Mockito.`when`(
             onBoardingService.saveCategories(
-                token,
                 CategoriesRequestModel(
                     listOf(1)
                 ),
@@ -132,8 +131,9 @@ class OnBoardingViewModelTest {
             .thenReturn(Observable.just(Unit))
 
         //Act
-        onBoardingViewModel.saveCategories(token,
-            CategoriesRequestModel(listOf(1)), 1)
+        onBoardingViewModel.saveCategories(
+            CategoriesRequestModel(listOf(1)), 1
+        )
 
         //Assert
         verify(categoryResponseAction, times(1)).onChanged(ResponseAction.Loading)
@@ -147,7 +147,6 @@ class OnBoardingViewModelTest {
         val token = "ABCD1234testing"
         Mockito.`when`(
             onBoardingService.saveCategories(
-                token,
                 CategoriesRequestModel(
                     listOf(1)
                 ),
@@ -157,8 +156,9 @@ class OnBoardingViewModelTest {
             .thenReturn(Observable.error(Throwable("Random Exception")))
 
         //Act
-        onBoardingViewModel.saveCategories(token,
-            CategoriesRequestModel(listOf(1)), 1)
+        onBoardingViewModel.saveCategories(
+            CategoriesRequestModel(listOf(1)), 1
+        )
 
         //Assert
         verify(categoryResponseAction, times(1)).onChanged(ResponseAction.Loading)
@@ -172,7 +172,6 @@ class OnBoardingViewModelTest {
         val token = "ABCD1234testing"
         Mockito.`when`(
             onBoardingService.saveSubCategories(
-                token,
                 CategoriesRequestModel(
                     listOf(1)
                 ),
@@ -182,8 +181,9 @@ class OnBoardingViewModelTest {
             .thenReturn(Observable.just(Unit))
 
         //Act
-        onBoardingViewModel.saveSubCategories(token,
-            CategoriesRequestModel(listOf(1)), 1)
+        onBoardingViewModel.saveSubCategories(
+            CategoriesRequestModel(listOf(1)), 1
+        )
 
         //Assert
         verify(subCategoryResponseAction, times(1)).onChanged(ResponseAction.Loading)
@@ -197,7 +197,6 @@ class OnBoardingViewModelTest {
         val token = "ABCD1234testing"
         Mockito.`when`(
             onBoardingService.saveSubCategories(
-                token,
                 CategoriesRequestModel(
                     listOf(1)
                 ),
@@ -207,8 +206,9 @@ class OnBoardingViewModelTest {
             .thenReturn(Observable.error(Throwable("Random Exception")))
 
         //Act
-        onBoardingViewModel.saveSubCategories(token,
-            CategoriesRequestModel(listOf(1)), 1)
+        onBoardingViewModel.saveSubCategories(
+            CategoriesRequestModel(listOf(1)), 1
+        )
 
         //Assert
         verify(subCategoryResponseAction, times(1)).onChanged(ResponseAction.Loading)

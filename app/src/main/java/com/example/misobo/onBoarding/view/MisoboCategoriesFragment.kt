@@ -15,6 +15,7 @@ import com.example.misobo.onBoarding.models.CategoriesRequestModel
 import com.example.misobo.onBoarding.viewModels.CategoriesAction
 import com.example.misobo.onBoarding.viewModels.OnBoardingViewModel
 import com.example.misobo.onBoarding.viewModels.ResponseAction
+import com.example.misobo.utils.SharedPreferenceManager
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
@@ -70,13 +71,12 @@ class MisoboCategoriesFragment : Fragment() {
         categoriesContinueButton.setOnClickListener {
             if (onBoardingViewModel.categorySelectedPosition.value != -1) {
                 onBoardingViewModel.saveCategories(
-                    SharedPreferenceManager.getUser(context)?.data?.token,
                     CategoriesRequestModel(
                         listOf(
                             onBoardingViewModel.categorySelectedPosition.value
                         )
                     ),
-                    SharedPreferenceManager.getUser(context)?.data?.id ?: -1
+                    SharedPreferenceManager.getUser()?.data?.id ?: -1
                 )
             } else {
                 Toast.makeText(context,"Please select a category" ,Toast.LENGTH_SHORT).show()
@@ -103,9 +103,7 @@ class MisoboCategoriesFragment : Fragment() {
             }
         })
 
-        onBoardingViewModel.getOnBoardingCategories(
-            SharedPreferenceManager.getUser(context)?.data?.token ?: ""
-        )
+        onBoardingViewModel.getOnBoardingCategories()
         onBoardingViewModel.categoriesLiveData.observe(viewLifecycleOwner, Observer { it ->
             when (it) {
                 is CategoriesAction.Success -> {

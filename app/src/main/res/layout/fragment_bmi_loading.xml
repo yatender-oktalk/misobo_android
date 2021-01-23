@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorPrimary"
+    android:clickable="true"
+    android:layout_height="match_parent"
+    tools:context=".bmi.BmiLoadingFragment">
+
+    <ImageView
+        android:id="@+id/analysingImageView"
+        android:layout_width="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/ic_misobo_analysing"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="200dp"
+        android:layout_height="wrap_content"
+        />
+
+    <TextView
+        android:id="@+id/analyzeTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:fontFamily="@font/manrope_extra_bold"
+        android:textStyle="normal"
+        android:textSize="21sp"
+        android:textColor="#4d426d"
+        android:lineSpacingExtra="9sp"
+        android:gravity="center"
+        android:text="Analysing your data.."
+        app:layout_constraintTop_toBottomOf="@id/analysingImageView"
+        android:layout_marginTop="100dp"
+        />
+
+    <ImageView
+        android:id="@+id/waveView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_wave"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

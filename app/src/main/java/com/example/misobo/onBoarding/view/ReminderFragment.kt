@@ -9,7 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.misobo.R
-import com.example.misobo.Util
+import com.example.misobo.utils.Util
 import com.example.misobo.onBoarding.viewModels.OnBoardingViewModel
 import com.example.misobo.onBoarding.viewModels.ReminderTime
 import kotlinx.android.synthetic.main.fragment_reminder.*
