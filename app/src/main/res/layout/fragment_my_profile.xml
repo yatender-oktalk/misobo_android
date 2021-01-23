@@ -10,9 +10,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:paddingBottom="50dp"
-        android:layoutAnimation="@anim/layout_animation_down_to_up"
-
+        android:layoutAnimation="@anim/layout_animation_fade_enter"
         android:layout_height="match_parent">
+        <!--
+-->
 
         <ImageView
             android:id="@+id/semiCircleImage"
@@ -39,32 +40,103 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
+        <TextView
+            android:id="@+id/karmaCoinsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:drawableStart="@drawable/ic_karma_coin"
+            android:drawablePadding="5dp"
+            android:fontFamily="@font/manrope_regular"
+            android:gravity="center"
+            android:lineSpacingExtra="16sp"
+            android:text="100"
+            android:textColor="#4d426d"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/profileHeader"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/profileHeader" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profileImage"
             android:layout_width="147dp"
             android:layout_height="147dp"
-            android:layoutAnimation="@anim/layout_animation_down_to_up"
-            android:background="@color/colorPrimary"
-            android:src="@drawable/ic_launcher_background"
+            android:background="@android:color/transparent"
             app:layout_constraintBottom_toBottomOf="@id/semiCircleImage"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/semiCircleImage" />
+            app:layout_constraintTop_toBottomOf="@id/semiCircleImage"
+            />
 
         <TextView
             android:id="@+id/nameTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="15dp"
             android:fontFamily="@font/manrope_extrabold"
-            android:lineSpacingExtra="12sp"
-            android:text="Ankit Kumar"
+            android:singleLine="true"
+            android:visibility="visible"
             android:textColor="#4d426d"
+            android:textColorHint="#d3d3d3"
             android:textSize="26sp"
             android:textStyle="normal"
+            android:gravity="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/profileImage" />
+            app:layout_constraintTop_toBottomOf="@id/profileImage"
+            tools:text="Akshay" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/editNameGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            app:constraint_referenced_ids="editName,edit,dottedLine" />
+
+        <EditText
+            android:id="@+id/editName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/manrope_extrabold"
+            android:hint="Your Name"
+            android:imeOptions="actionDone"
+            android:inputType="textPersonName"
+            android:lineSpacingExtra="12sp"
+            android:singleLine="true"
+            android:gravity="center"
+            android:layout_marginTop="8dp"
+            android:background="@android:color/transparent"
+            android:text=""
+            app:layout_constraintTop_toBottomOf="@id/profileImage"
+            android:textColor="#4d426d"
+            android:textColorHint="#d3d3d3"
+            android:textSize="26sp"
+            app:layout_constraintStart_toStartOf="@id/nameTextView"
+            app:layout_constraintEnd_toEndOf="@id/nameTextView"
+            android:textStyle="normal"
+            />
+
+        <ImageView
+            android:id="@+id/dottedLine"
+            android:layout_width="0dp"
+            android:layout_height="3dp"
+            android:src="@drawable/dotted_dash"
+            app:layout_constraintEnd_toEndOf="@id/editName"
+            app:layout_constraintStart_toStartOf="@id/editName"
+            app:layout_constraintTop_toBottomOf="@id/editName" />
+
+        <ImageView
+            android:id="@+id/edit"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="4dp"
+            android:src="@drawable/ic_edit"
+            app:layout_constraintBottom_toBottomOf="@id/editName"
+            app:layout_constraintStart_toEndOf="@id/editName"
+            app:layout_constraintTop_toTopOf="@id/editName" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/bmiScoreLayout"
@@ -73,10 +145,10 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="18dp"
             android:layout_marginEnd="16dp"
-            android:layoutAnimation="@anim/layout_animation_down_to_up"
             android:background="@drawable/rounded_background_radius_10"
             android:backgroundTint="#eaf7ff"
             android:padding="20dp"
+            android:visibility="visible"
             app:layout_constraintTop_toBottomOf="@id/nameTextView">
 
             <TextView
@@ -106,13 +178,14 @@
                 app:layout_constraintTop_toBottomOf="@id/bmiScoreHeader" />
 
             <TextView
+                android:id="@+id/bmiScore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/ic_keyboard_arrow_right_24px"
                 android:drawablePadding="13dp"
                 android:fontFamily="@font/manrope_semi_bold"
                 android:lineSpacingExtra="17sp"
-                android:text="23.5"
+                tools:text="23.5"
                 android:textColor="#4d426d"
                 android:textSize="34sp"
                 android:textStyle="bold"
@@ -132,7 +205,6 @@
             android:background="@drawable/rounded_background_radius_10"
             android:backgroundTint="#f7f7f7"
             android:padding="16dp"
-            android:layoutAnimation="@anim/layout_animation_down_to_up"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/bmiScoreLayout">
@@ -194,7 +266,6 @@ earn karma points"
             android:textColor="#4d426d"
             android:textSize="14sp"
             android:textStyle="normal"
-            android:layoutAnimation="@anim/layout_animation_down_to_up"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="38dp"
             android:layout_marginStart="16dp"
@@ -210,7 +281,6 @@ earn karma points"
             android:textColor="#4d426d"
             android:textSize="14sp"
             android:textStyle="normal"
-            android:layoutAnimation="@anim/layout_animation_down_to_up"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="26dp"
             android:layout_marginStart="16dp"
@@ -226,8 +296,6 @@ earn karma points"
             android:textColor="#4d426d"
             android:textSize="14sp"
             android:textStyle="normal"
-            android:layoutAnimation="@anim/layout_animation_down_to_up"
-
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="26dp"
             android:layout_marginStart="16dp"
@@ -259,7 +327,6 @@ earn karma points"
             android:textColor="#4d426d"
             android:textSize="14sp"
             android:textStyle="normal"
-            android:layoutAnimation="@anim/layout_animation_down_to_up"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="26dp"
             android:layout_marginStart="16dp"
@@ -270,7 +337,6 @@ earn karma points"
             android:id="@+id/misobo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layoutAnimation="@anim/layout_animation_down_to_up"
             app:layout_constraintTop_toBottomOf="@id/notificationTextView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

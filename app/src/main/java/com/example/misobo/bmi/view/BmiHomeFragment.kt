@@ -26,7 +26,7 @@ class BmiHomeFragment : Fragment() {
         startedButton.setOnClickListener {
             activity?.supportFragmentManager?.beginTransaction()
                 ?.replace(R.id.bmiFrameContainer,
-                    HeightFragment()
+                    GenderFragment()
                 )
                 ?.addToBackStack(null)?.commit()
         }

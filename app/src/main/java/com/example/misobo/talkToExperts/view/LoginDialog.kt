@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.login_bottom_sheet.*
 
 class LoginDialog : BottomSheetDialogFragment() {
 
-    val viewModel: TalkToExpertsViewModel by activityViewModels()
+    private val viewModel: TalkToExpertsViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,11 +30,16 @@ class LoginDialog : BottomSheetDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogStyle)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        crossButton.setOnClickListener {
+            this.dismiss()
+        }
 
         RxTextView.textChanges(otpText)
             .subscribe {
@@ -50,6 +55,7 @@ class LoginDialog : BottomSheetDialogFragment() {
         viewModel.mobileRegistration.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is MobileRegistration.Success -> {
+                    this.dismiss()
                     viewModel.mobileNumber.postValue(state.verificationResponse.data.phone)
                     val otpDialog =
                         OtpDialog()
@@ -57,10 +63,8 @@ class LoginDialog : BottomSheetDialogFragment() {
                         ?.add(otpDialog, null)?.commit()
                 }
                 is MobileRegistration.Fail -> {
-
                 }
                 is MobileRegistration.Loading -> {
-
                 }
             }
         })
@@ -70,7 +74,6 @@ class LoginDialog : BottomSheetDialogFragment() {
                 OtpPayload(otpText.text.toString())
             viewModel.mobileRegistration(OtpPayload)
         }
-
     }
 
     override fun setupDialog(dialog: Dialog, style: Int) {

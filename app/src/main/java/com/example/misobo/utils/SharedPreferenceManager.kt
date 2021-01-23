@@ -3,6 +3,7 @@ package com.example.misobo.utils
 import android.content.Context
 import android.content.SharedPreferences
 import com.example.misobo.R
+import com.example.misobo.myProfile.ProfileResponseModel
 import com.example.misobo.onBoarding.models.User
 import com.google.gson.Gson
 import io.reactivex.Completable
@@ -13,8 +14,12 @@ private const val IS_BODY_UNLOCKED = "is_body_unlocked"
 
 object SharedPreferenceManager {
 
-    private const val USER = "user"
-    private var sharedPreferences: SharedPreferences? = null
+    const val USER = "user"
+    const val PROFILE = "profile"
+    const val NAME = "name"
+    const val PROFILE_IMAGE = "profileImage"
+
+    var sharedPreferences: SharedPreferences? = null
 
     fun init(context: Context) {
         sharedPreferences = context.getSharedPreferences(
@@ -41,6 +46,50 @@ object SharedPreferenceManager {
         }
         return Completable.complete()
     }
+
+    fun setUserProfile(profile: ProfileResponseModel): Completable {
+        sharedPreferences?.edit()?.apply {
+            if (profile != null) {
+                putString(PROFILE, Gson().toJson(profile))
+            }
+            apply()
+        }
+        return Completable.complete()
+    }
+
+    fun getUserProfile(): ProfileResponseModel? = Gson().fromJson(
+        sharedPreferences?.getString(
+            PROFILE, "no"
+        ), ProfileResponseModel::class.java
+    )
+
+    fun setName(name: String): Completable {
+        sharedPreferences?.edit()?.apply {
+            if (name != null) {
+                putString(NAME, name)
+            }
+            apply()
+        }
+        return Completable.complete()
+    }
+
+    fun getName(): String? = sharedPreferences?.getString(
+        NAME, null
+    )
+
+    fun setProfileImage(uri: String): Completable {
+        sharedPreferences?.edit()?.apply {
+            if (uri != null) {
+                putString(PROFILE_IMAGE, uri)
+            }
+            apply()
+        }
+        return Completable.complete()
+    }
+
+    fun getProfileImage(): String? = sharedPreferences?.getString(
+        PROFILE_IMAGE, null
+    )
 
     fun isOnBoarded(): Boolean =
         sharedPreferences != null && sharedPreferences?.getBoolean(

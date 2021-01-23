@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
@@ -31,7 +31,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/talktoTherapist"
         app:layout_constraintBottom_toBottomOf="@id/talktoTherapist"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="16sp"
         android:background="@drawable/rounded_background_radius_15"
         android:gravity="center_horizontal"
         android:paddingStart="11dp"

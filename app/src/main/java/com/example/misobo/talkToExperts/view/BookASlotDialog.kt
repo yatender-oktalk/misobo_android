@@ -1,10 +1,13 @@
 package com.example.misobo.talkToExperts.view
 
 import android.app.Dialog
+import android.content.DialogInterface
+import android.content.res.Resources
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.fragment.app.activityViewModels
 import com.example.misobo.R
 import com.example.misobo.talkToExperts.items.DateRecyclerItem
@@ -18,6 +21,8 @@ import com.example.misobo.talkToExperts.viewModels.TalkToExpertsViewModel
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
@@ -27,6 +32,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class BookASlotDialog : BottomSheetDialogFragment() {
+
     private val dateAdapter = GroupAdapter<ViewHolder>()
     private val slotAdapter = GroupAdapter<ViewHolder>()
     private val viewModel: TalkToExpertsViewModel by activityViewModels()
@@ -47,6 +53,22 @@ class BookASlotDialog : BottomSheetDialogFragment() {
         (contentView.parent as View).setBackgroundColor(
             resources.getColor(android.R.color.transparent)
         )
+    }
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val bottomSheetDialog =
+            super.onCreateDialog(savedInstanceState) as BottomSheetDialog
+        bottomSheetDialog.setOnShowListener { dialog: DialogInterface ->
+            val dialogc = dialog as BottomSheetDialog
+            // When using AndroidX the resource can be found at com.google.android.material.R.id.design_bottom_sheet
+            val bottomSheet =
+                dialogc.findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
+            val bottomSheetBehavior: BottomSheetBehavior<*> =
+                BottomSheetBehavior.from<FrameLayout?>(bottomSheet!!)
+            bottomSheetBehavior.peekHeight = Resources.getSystem().displayMetrics.heightPixels
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED)
+        }
+        return bottomSheetDialog
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -78,6 +100,7 @@ class BookASlotDialog : BottomSheetDialogFragment() {
             androidx.lifecycle.Observer { expert ->
                 expertNameTexView.text = expert.name
                 expertLanguage.text = expert.language
+                expertCategoryTextView.text = "Vedic Astrologer"
             })
 
         viewModel.slotListLiveData.observe(
@@ -101,7 +124,8 @@ class BookASlotDialog : BottomSheetDialogFragment() {
             androidx.lifecycle.Observer { state ->
                 when (state) {
                     is BookSlotState.Success -> {
-
+                        activity?.supportFragmentManager?.beginTransaction()
+                            ?.add(BookSuccessDialog(), null)?.commit()
                     }
                     is BookSlotState.NotAuthorised -> {
                         this.dismiss()
@@ -109,6 +133,12 @@ class BookASlotDialog : BottomSheetDialogFragment() {
                             LoginDialog()
                         activity?.supportFragmentManager?.beginTransaction()
                             ?.add(loginDialog, null)?.commit()
+                    }
+                    is BookSlotState.NotSufficientKarma->{
+                        val loginDialog =
+                            LoginDialog()
+                        activity?.supportFragmentManager?.beginTransaction()
+                            ?.add(CoinsBottomSheet(), null)?.commit()
                     }
                     is BookSlotState.Loading -> {
 

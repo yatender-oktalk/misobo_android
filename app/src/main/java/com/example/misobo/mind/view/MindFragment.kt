@@ -2,20 +2,28 @@ package com.example.misobo.mind.view
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.misobo.LoadingFragment
 import com.example.misobo.R
-import com.example.misobo.mind.items.HelloItem
-import com.example.misobo.mind.items.TalkToTherapistItem
-import com.example.misobo.mind.items.TasksForTheDayItems
-import com.example.misobo.mind.items.UnlockItems
+import com.example.misobo.blogs.BlogDetailedFetchState
+import com.example.misobo.blogs.BlogsDetailFragment
+import com.example.misobo.blogs.BlogsFetchState
+import com.example.misobo.blogs.BlogsViewModel
+import com.example.misobo.bmi.view.BmiActivity
+import com.example.misobo.mind.items.*
 import com.example.misobo.mind.viewModels.MindViewModel
 import com.example.misobo.mind.viewModels.MusicFetchState
+import com.example.misobo.myProfile.FetchState
+import com.example.misobo.myProfile.ProfileViewModel
+import com.example.misobo.talkToExperts.view.BookASlotDialog
+import com.example.misobo.talkToExperts.view.PaymentActivity
 import com.example.misobo.talkToExperts.view.TalkToExpertActivity
 import com.example.misobo.talkToExperts.viewModels.ExpertListState
 import com.example.misobo.talkToExperts.viewModels.TalkToExpertsViewModel
@@ -28,7 +36,11 @@ import kotlinx.android.synthetic.main.fragment_mind.*
 class MindFragment : Fragment() {
 
     private val mindViewModel: MindViewModel by activityViewModels()
-    private val talkToExpertsViewModel by lazy { ViewModelProvider(this).get(TalkToExpertsViewModel::class.java) }
+    private val blogsViewModel: BlogsViewModel by activityViewModels()
+    private val talkToExpertsViewModel: TalkToExpertsViewModel by activityViewModels()
+    private val profileViewModel by lazy { ViewModelProvider(this).get(ProfileViewModel::class.java) }
+    private val loadingFragment = LoadingFragment()
+    lateinit var taskForTheDayItem: TasksForTheDayItems
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,18 +58,63 @@ class MindFragment : Fragment() {
         val unlockSection = Section()
         val taskForTheDaySection = Section()
         val talkToExpertsSection = Section()
+        val blogsSection = Section()
+
         mindHomeRecyclerView.adapter = adapter
-        helloSection.add(HelloItem())
-        unlockSection.add(UnlockItems())
+
+        fillName(helloSection)
+
+        unlockSection.add(UnlockItems() {
+            if (it)
+                startActivity(Intent(context, BmiActivity::class.java))
+            else
+                SharedPreferenceManager.setMindUnlock(true)
+            adapter.remove(unlockSection)
+        })
+
+        profileViewModel.nameLiveData.observe(requireActivity(), Observer { state ->
+            when (state) {
+                is FetchState.Success -> {
+                    activity?.supportFragmentManager?.popBackStack()
+
+                    /* val fragment: Fragment? =
+                         activity?.supportFragmentManager?.findFragmentByTag("LOADING")
+                     if (fragment != null) activity?.supportFragmentManager?.beginTransaction()
+                         ?.remove(fragment)?.commit()*/
+                }
+                is FetchState.Loading -> {
+                    activity?.supportFragmentManager?.beginTransaction()
+                        ?.replace(R.id.mainContainer, loadingFragment, "LOADING")
+                        ?.addToBackStack(null)?.commit()
+                }
+                is FetchState.Error -> {
+                    activity?.supportFragmentManager?.popBackStack()
+
+                    /*val fragment: Fragment? =
+                        activity?.supportFragmentManager?.findFragmentByTag("LOADING")
+                    if (fragment != null) activity?.supportFragmentManager?.beginTransaction()
+                        ?.remove(fragment)?.commit()*/
+                }
+            }
+        })
 
         if (talkToExpertsViewModel.expertListLiveData.value == null)
             talkToExpertsViewModel.getAllExpertsList()
         talkToExpertsViewModel.expertListLiveData.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is ExpertListState.Success -> {
-                    talkToExpertsSection.add(TalkToTherapistItem(state.expertList) {
+                    talkToExpertsSection.add(TalkToTherapistItem(state.expertList, {
                         startActivity(Intent(requireContext(), TalkToExpertActivity::class.java))
-                    })
+                    }, {
+                        talkToExpertsViewModel.selectedExpertLiveDate.postValue(it)
+                        val slotDialog =
+                            BookASlotDialog()
+                        val bundle = Bundle()
+                        it.id?.let { it1 -> bundle.putInt("ID", it1) }
+                        slotDialog.arguments = bundle
+                        activity?.supportFragmentManager?.beginTransaction()
+                            ?.add(slotDialog, null)?.commit()
+                    }))
                 }
                 is ExpertListState.Fail -> {
 
@@ -67,20 +124,21 @@ class MindFragment : Fragment() {
             }
         })
 
-
         if (mindViewModel.musicLiveData.value == null)
             mindViewModel.fetchAllMusic()
         mindViewModel.musicLiveData.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is MusicFetchState.Success -> {
-                    taskForTheDaySection.add(TasksForTheDayItems(state.musicEntries) { position ->
+                    mindViewModel.mutableMusicList = (state.musicEntries).toMutableList()
+                    taskForTheDayItem = TasksForTheDayItems(mindViewModel.mutableMusicList) { position ->
                         mindViewModel.playMusicLiveData.postValue(
-                            state.musicEntries[position]
+                            mindViewModel.mutableMusicList.get(position)
                         )
                         activity?.supportFragmentManager?.beginTransaction()
                             ?.replace(R.id.mainContainer, MusicPlayerFragment())
                             ?.addToBackStack(null)?.commit()
-                    })
+                    }
+                    taskForTheDaySection.add(taskForTheDayItem)
                 }
                 is MusicFetchState.Loading -> {
 
@@ -90,6 +148,37 @@ class MindFragment : Fragment() {
                 }
             }
         })
+
+        mindViewModel.musicList.observe(viewLifecycleOwner, Observer {
+            Log.i("music", it.toString())
+            taskForTheDaySection.add(taskForTheDayItem)
+            taskForTheDayItem.notifyChanged(it)
+        })
+
+        if (blogsViewModel.blogLiveData.value == null)
+            blogsViewModel.fetchBlogs()
+        blogsViewModel.blogLiveData.observe(viewLifecycleOwner, Observer { state ->
+            when (state) {
+                is BlogsFetchState.Success -> {
+                    blogsSection.add(CuratedArticlesItem(state.blogsModel) {
+                        blogsViewModel.detailedBlogLiveData.postValue(
+                            BlogDetailedFetchState.Success(
+                                state.blogsModel.data?.get(it)!!
+                            )
+                        )
+                        activity?.supportFragmentManager?.beginTransaction()
+                            ?.replace(R.id.mainContainer, BlogsDetailFragment.newInstance(it))
+                            ?.addToBackStack(null)?.commit()
+                    })
+                }
+                is BlogsFetchState.Loading -> {
+                }
+                is BlogsFetchState.Error -> {
+
+                }
+            }
+        })
+
         adapter.apply {
             add(helloSection)
             if (!SharedPreferenceManager.isMindUnlocked() || !SharedPreferenceManager.isBodyUnlocked())
@@ -97,7 +186,20 @@ class MindFragment : Fragment() {
 
             add(taskForTheDaySection)
             add(talkToExpertsSection)
+            add(blogsSection)
         }
+    }
+
+    fun fillName(helloSection: Section) {
+        helloSection.removeHeader()
+        helloSection.setHeader(HelloItem(SharedPreferenceManager.getName()) {
+            SharedPreferenceManager.setName(it)
+            fillName(helloSection)
+            /*profileViewModel.updateName(
+                SharedPreferenceManager.getUser()?.data?.userId ?: -1,
+                namePayload = NamePayload(NamePayload.Data(it))
+            )*/
+        })
     }
 
 }

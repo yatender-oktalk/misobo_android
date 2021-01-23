@@ -2,11 +2,14 @@ package com.example.misobo.talkToExperts.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.ViewModelProvider
 import com.example.misobo.R
+import com.example.misobo.talkToExperts.models.CaptureOrderPayload
 import com.example.misobo.talkToExperts.viewModels.TalkToExpertsViewModel
+import com.razorpay.PaymentResultListener
 
-class TalkToExpertActivity : AppCompatActivity() {
+class TalkToExpertActivity : AppCompatActivity(),PaymentResultListener {
 
     val viewModel: TalkToExpertsViewModel by lazy {
         ViewModelProvider(this).get(
@@ -23,5 +26,23 @@ class TalkToExpertActivity : AppCompatActivity() {
                 TalktoExpertsHomeFragment()
             )
             .commit()
+    }
+
+    override fun onPaymentError(p0: Int, p1: String?) {
+        Log.i("fail", p0.toString() + " " + p1)
+
+    }
+
+    override fun onPaymentSuccess(p0: String?) {
+        Log.i("success", p0.toString())
+        viewModel.captureOrder(
+            CaptureOrderPayload(
+                p0.toString(),
+                "signature",
+                viewModel.currentOrder.value?.data?.orderId ?: 0,
+                viewModel.currentOrder.value?.data?.transactionId ?: 0,
+                viewModel.paymentAmount
+            )
+        )
     }
 }

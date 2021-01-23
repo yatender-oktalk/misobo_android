@@ -2,6 +2,7 @@ package com.example.misobo.myProfile
 
 import com.example.misobo.mind.api.MindService
 import com.example.misobo.mind.models.MusicResponseModel
+import com.example.misobo.mind.models.SuccessResponse
 import com.example.misobo.utils.SharedPreferenceManager
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -9,10 +10,7 @@ import io.reactivex.Observable
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Headers
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface ProfileService {
 
@@ -21,6 +19,13 @@ interface ProfileService {
     fun getProfile(
         @Path(value = "userId") userId: Int
     ): Observable<ProfileResponseModel>
+
+    @Headers("Accept: application/json", "Content-Type: application/json")
+    @PUT("api/user/{userId}")
+    fun updateName(
+        @Path(value = "userId") userId: Int,
+        @Body namePayload: NamePayload
+    ): Observable<SuccessResponse>
 
     object Creator {
         private const val url: String = "http://143.110.176.70:4000/"

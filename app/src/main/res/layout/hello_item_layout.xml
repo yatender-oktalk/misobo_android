@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingBottom="26dp">
@@ -20,6 +21,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/nameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/manrope_extrabold"
+        android:singleLine="true"
+        android:visibility="visible"
+        android:textColor="#4d426d"
+        android:textColorHint="#d3d3d3"
+        android:textSize="26sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/hello"
+        tools:text="Akshay" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/editNameGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:constraint_referenced_ids="editName,edit,dottedLine" />
+
     <EditText
         android:id="@+id/editName"
         android:layout_width="wrap_content"
@@ -27,7 +52,11 @@
         android:layout_marginStart="14dp"
         android:fontFamily="@font/manrope_extrabold"
         android:hint="Your Name"
+        android:imeOptions="actionDone"
+        android:inputType="textPersonName"
         android:lineSpacingExtra="12sp"
+        android:singleLine="true"
+        android:background="@android:color/transparent"
         android:text=""
         android:textColor="#4d426d"
         android:textColorHint="#d3d3d3"
@@ -35,6 +64,15 @@
         android:textStyle="normal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/hello" />
+
+    <ImageView
+        android:id="@+id/dottedLine"
+        android:layout_width="0dp"
+        android:layout_height="3dp"
+        android:src="@drawable/dotted_dash"
+        app:layout_constraintEnd_toEndOf="@id/editName"
+        app:layout_constraintStart_toStartOf="@id/editName"
+        app:layout_constraintTop_toBottomOf="@id/editName" />
 
     <ImageView
         android:id="@+id/edit"

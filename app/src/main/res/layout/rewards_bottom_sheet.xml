@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent">
+
+    <ScrollView
+        android:id="@+id/mainLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/rounded_rectangle_white"
+        android:clipToPadding="false"
+        android:paddingBottom="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constrainLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_rectangle_white"
+            android:clipToPadding="false"
+            android:paddingBottom="80dp">
+
+            <View
+                android:id="@+id/topSeparator"
+                android:layout_width="93dp"
+                android:layout_height="5dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/rounded_background_radius_10"
+                android:backgroundTint="@android:color/white"
+                app:layout_constraintBottom_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="-3dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="6dp" />
+
+            </androidx.cardview.widget.CardView>
+
+
+            <TextView
+                android:id="@+id/offerDetailsPlaceholder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/manrope_extrabold"
+                android:lineSpacingExtra="22sp"
+                android:text="Offer details"
+                android:textColor="#4d426d"
+                android:textSize="16sp"
+                android:textStyle="normal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardView" />
+
+            <TextView
+                android:id="@+id/offerDetailsText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="24dp"
+                android:alpha=".7"
+                android:fontFamily="@font/manrope_medium"
+                android:lineSpacingExtra="4dp"
+                android:textColor="#4d426d"
+                android:textSize="14sp"
+                android:textStyle="normal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/offerDetailsPlaceholder"
+                tools:text="Sep 16, 2020 - If you’re musically or artistically inclined, Scorpio, today you might have visions or melodies in your head that simply cry out to be written down." />
+
+            <TextView
+                android:id="@+id/howToRedeemPlaceholder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="21dp"
+                android:fontFamily="@font/manrope_extrabold"
+                android:lineSpacingExtra="22sp"
+                android:text="How to Redeem"
+                android:textColor="#4d426d"
+                android:textSize="16sp"
+                android:textStyle="normal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/offerDetailsText" />
+
+            <TextView
+                android:id="@+id/howToRedeemDetails"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="24dp"
+                android:alpha=".7"
+                android:fontFamily="@font/manrope_medium"
+                android:lineSpacingExtra="4dp"
+                android:textColor="#4d426d"
+                android:textSize="14sp"
+                android:textStyle="normal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/howToRedeemPlaceholder"
+                tools:text="Sep 16, 2020 - If you’re musically or artistically inclined, Scorpio, today you might have visions or melodies in your head that simply cry out to be written down." />
+
+            <TextView
+                android:id="@+id/termsAndConditionsPlaceholder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="23dp"
+                android:layout_marginTop="21dp"
+                android:fontFamily="@font/manrope_extrabold"
+                android:lineSpacingExtra="22sp"
+                android:text="Terms and conditions"
+                android:textColor="#4d426d"
+                android:textSize="16sp"
+                android:textStyle="normal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/howToRedeemDetails" />
+
+            <TextView
+                android:id="@+id/termsAndConditions"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="24dp"
+                android:alpha=".7"
+
+                android:fontFamily="@font/manrope_medium"
+                android:lineSpacingExtra="4dp"
+                android:textColor="#4d426d"
+                android:textSize="14sp"
+                android:textStyle="normal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/termsAndConditionsPlaceholder"
+                tools:text="Sep 16, 2020 - If you’re musically or artistically inclined, Scorpio, today you might have visions or melodies in your head that simply cry out to be written down." />
+
+            <ImageView
+                android:id="@+id/crossIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:src="@drawable/ic_round_close_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/colorAccent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <View
+        android:id="@+id/gradient"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/white_gradient"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <TextView
+        android:id="@+id/getRewardButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="27dp"
+        android:layout_marginEnd="27dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="@color/colorAccent"
+        android:fontFamily="@font/manrope_extrabold"
+        android:gravity="left"
+        android:paddingStart="27dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:text="Get this reward"
+        android:textColor="#ffffff"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/coinsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:drawableStart="@drawable/ic_karma_coin"
+        android:drawablePadding="8dp"
+        android:drawableTint="#ffffff"
+        android:fontFamily="@font/manrope_regular"
+        android:gravity="center"
+        android:lineSpacingExtra="16sp"
+        android:textColor="#ffffff"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/getRewardButton"
+        app:layout_constraintEnd_toEndOf="@id/getRewardButton"
+        app:layout_constraintTop_toTopOf="@id/getRewardButton"
+        tools:text="400" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/redeemButtonGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="coinsText,getRewardButton,gradient" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

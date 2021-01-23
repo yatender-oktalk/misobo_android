@@ -1,6 +1,6 @@
 package com.example.misobo.mind.api
 
-import com.example.misobo.mind.models.MusicResponseModel
+import com.example.misobo.mind.models.*
 import com.example.misobo.utils.SharedPreferenceManager
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -17,6 +17,15 @@ interface MindService {
     fun fetchAllMusic(
         @Query(value = "page") page: Int
     ): Observable<List<MusicResponseModel.MusicModel>>
+
+    @Headers("Accept: application/json", "Content-Type: application/json")
+    @PATCH("api/music/{musicId}/progress")
+    fun updateProgress(
+        @Path(value = "musicId") musicId: Int,
+        @Body progressPayload: ProgressPayload
+    ): Observable<ProgressResponse>
+
+
 
     object Creator {
         private const val url: String = "http://143.110.176.70:4000/"

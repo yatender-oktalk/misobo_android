@@ -9,7 +9,7 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.talk_to_therapist_item.view.*
 
-class TalkToTherapistItem(val expertList: ExpertModel, val exploreAllClick: () -> Unit) : Item() {
+class TalkToTherapistItem(val expertList: ExpertModel, val exploreAllClick: () -> Unit,val callClicked:(ExpertModel.Expert)->Unit) : Item() {
     val adapter = GroupAdapter<ViewHolder>()
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
@@ -18,6 +18,8 @@ class TalkToTherapistItem(val expertList: ExpertModel, val exploreAllClick: () -
         val expertsSection = Section()
         expertList.entries?.take(3)?.forEach { model ->
             expertsSection.add(ExpertsRecyclerItem(model) {
+                callClicked.invoke(model)
+
             })
         }
         viewHolder.itemView.exploreMore.setOnClickListener { exploreAllClick.invoke() }

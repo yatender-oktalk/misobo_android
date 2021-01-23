@@ -32,7 +32,8 @@ class WeightFragment : Fragment() {
 
             val bmiRequestBody =
                 BmiRequestBody(
-                    bmiViewModel.height.value ?: 0.0, weightEditText.text.toString().toInt()
+                    bmiViewModel.height.value ?: 0.0, weightEditText.text.toString().toInt(),
+                    bmiViewModel.gender.value?:"F"
                 )
 
             bmiViewModel.saveBmi(

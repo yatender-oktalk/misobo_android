@@ -21,6 +21,8 @@ data class ExpertModel(
         @SerializedName("rating")
         val rating: String?,
         @SerializedName("total_consultations")
-        val consultations: Long?
+        val consultations: Int?,
+        @SerializedName("consult_karma")
+        val karmaCoinsNeeded:Int?
     )
 }

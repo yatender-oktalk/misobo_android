@@ -106,11 +106,11 @@
 
         <ImageView
             android:id="@+id/circleDotImageView"
-            android:layout_width="3dp"
-            android:layout_height="3dp"
+            android:layout_width="4dp"
+            android:layout_height="4dp"
             android:layout_marginStart="3dp"
             android:src="@drawable/circle_dot"
-            android:tint="@color/colorAccent"
+            app:tint="@color/colorAccent"
             app:layout_constraintBottom_toBottomOf="@id/expertCategoryTextView"
             app:layout_constraintStart_toEndOf="@id/expertCategoryTextView"
             app:layout_constraintTop_toTopOf="@+id/expertCategoryTextView" />

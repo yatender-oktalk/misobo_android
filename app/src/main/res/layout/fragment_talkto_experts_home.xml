@@ -18,18 +18,38 @@
 
     <TextView
         android:id="@+id/talkToAnExpert"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="27dp"
+        android:layout_marginEnd="16sp"
         android:fontFamily="@font/manrope_extrabold"
         android:lineSpacingExtra="12sp"
         android:text="Talk to an expert"
         android:textColor="#4d426d"
         android:textSize="26sp"
         android:textStyle="normal"
+        app:layout_constraintEnd_toStartOf="@id/karmaCoinsText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/backIcon" />
+
+    <TextView
+        android:id="@+id/karmaCoinsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:drawableStart="@drawable/ic_karma_coin"
+        android:drawablePadding="5dp"
+        android:fontFamily="@font/manrope_regular"
+        android:gravity="center"
+        android:lineSpacingExtra="16sp"
+        android:text="100"
+        android:textColor="#4d426d"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/talkToAnExpert"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/talkToAnExpert" />
 
     <TextView
         android:id="@+id/solveYourMiseriesTextView"
@@ -47,6 +67,64 @@ Psychologists or therapist"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/talkToAnExpert" />
 
+    <View
+        android:id="@+id/separatorView"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="26dp"
+        android:alpha=".7"
+        android:background="#e7e7e7"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/solveYourMiseriesTextView" />
+
+    <TextView
+        android:id="@+id/CurrentBookingsHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/manrope_extrabold"
+        android:lineSpacingExtra="18sp"
+        android:text="Current Bookings"
+        android:textColor="#4d426d"
+        android:textSize="20sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/separatorView" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/bookingsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:clipToPadding="false"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="7dp"
+        android:paddingBottom="20dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/CurrentBookingsHeader" />
+
+    <View
+        android:id="@+id/bottomSeparator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:alpha=".7"
+        android:background="#e7e7e7"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bookingsRecyclerView" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/currentBookingsGroup"
+        android:layout_width="wrap_content"
+        android:visibility="gone"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="bottomSeparator,bookingsRecyclerView,CurrentBookingsHeader,separatorView" />
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
@@ -56,14 +134,14 @@ Psychologists or therapist"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/solveYourMiseriesTextView"
+        app:layout_constraintTop_toBottomOf="@id/bottomSeparator"
         app:tabBackground="@drawable/tab_layout_selector"
         app:tabIndicatorHeight="0dp"
-        app:tabTextAppearance="@style/CustomTextAppearanceTab"
         app:tabMode="scrollable"
         app:tabPaddingEnd="16dp"
         app:tabPaddingStart="16dp"
         app:tabSelectedTextColor="@color/colorAccent"
+        app:tabTextAppearance="@style/CustomTextAppearanceTab"
         app:tabTextColor="#c9c9c9" />
 
     <androidx.viewpager.widget.ViewPager

@@ -6,14 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".home.HomeFragment">
 
-<!--
-    android:layoutAnimation="@anim/layout_animation_fade_enter"
--->
+    <!--
+        android:layoutAnimation="@anim/layout_animation_fade_enter"
+    -->
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:paddingBottom="32dp"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingBottom="32dp">
 
         <TextView
             android:id="@+id/hello"
@@ -30,16 +30,43 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/nameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/manrope_extrabold"
+            android:singleLine="true"
+            android:textColor="#4d426d"
+            android:textColorHint="#d3d3d3"
+            android:textSize="26sp"
+            android:textStyle="normal"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/hello"
+            tools:text="Akshay" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/editNameGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            app:constraint_referenced_ids="editName,edit,dottedLine" />
+
         <EditText
             android:id="@+id/editName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="14dp"
+            android:background="@android:color/transparent"
             android:fontFamily="@font/manrope_extrabold"
             android:hint="Your Name"
+            android:imeOptions="actionDone"
+            android:inputType="textPersonName"
             android:lineSpacingExtra="12sp"
+            android:singleLine="true"
             android:text=""
-            android:background="@android:color/transparent"
             android:textColor="#4d426d"
             android:textColorHint="#d3d3d3"
             android:textSize="26sp"
@@ -49,12 +76,12 @@
 
         <ImageView
             android:id="@+id/dottedLine"
-            app:layout_constraintStart_toStartOf="@id/editName"
-            app:layout_constraintEnd_toEndOf="@id/editName"
-            app:layout_constraintTop_toBottomOf="@id/editName"
             android:layout_width="0dp"
+            android:layout_height="3dp"
             android:src="@drawable/dotted_dash"
-            android:layout_height="3dp"/>
+            app:layout_constraintEnd_toEndOf="@id/editName"
+            app:layout_constraintStart_toStartOf="@id/editName"
+            app:layout_constraintTop_toBottomOf="@id/editName" />
 
         <ImageView
             android:id="@+id/edit"
