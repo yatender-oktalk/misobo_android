@@ -66,7 +66,7 @@ class SubCategoriesFragment : Fragment() {
                     CategoriesRequestModel(
                         subCategories = listOf(onBoardingViewModel.subCategorySelectedPosition.value)
                     ),
-                    SharedPreferenceManager.getUser()?.data?.id ?: -1
+                    SharedPreferenceManager.getUser()?.data?.registrationId ?: -1
                 )
             } else {
                 Toast.makeText(context, "Please select a category", Toast.LENGTH_SHORT).show()

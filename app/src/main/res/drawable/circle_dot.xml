@@ -1,0 +1,12 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Large red circle -->
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="#FF0000" />
+            <size
+                android:width="1dp"
+                android:height="1dp" />
+        </shape>
+    </item>
+</layer-list>
+

@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mainLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/rounded_rectangle_white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/crossButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="11dp"
+            android:src="@drawable/ic_round_close_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/loginText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:fontFamily="@font/manrope_extra_bold"
+            android:lineSpacingExtra="10sp"
+            android:text="Login"
+            android:textColor="#4d426d"
+            android:textSize="20sp"
+            android:textStyle="normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/chatWithExperts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:alpha=".7"
+            android:fontFamily="@font/manrope_medium"
+            android:lineSpacingExtra="14sp"
+            android:text="to chat with experts"
+            android:textColor="#4d426d"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/loginText" />
+
+        <TextView
+            android:id="@+id/codeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="36dp"
+            android:background="@drawable/rounded_border_grey"
+            android:fontFamily="@font/manrope_regular"
+            android:gravity="center_horizontal"
+            android:lineSpacingExtra="34sp"
+            android:paddingStart="20dp"
+            android:paddingTop="14dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="14dp"
+            android:text="+91"
+            android:textColor="#212222"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/chatWithExperts" />
+
+        <EditText
+            android:id="@+id/otpText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="23dp"
+            android:background="@drawable/rounded_border_grey"
+            android:fontFamily="@font/manrope_regular"
+            android:gravity="center_horizontal"
+            android:hint="989 789 7989"
+            android:inputType="number"
+            android:letterSpacing="0.03"
+            android:lineSpacingExtra="34sp"
+            android:maxLength="10"
+            android:paddingStart="20dp"
+            android:paddingTop="14dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="14dp"
+            android:textColor="#212222"
+            android:textColorHint="#d3d3d3"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/codeText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/codeText"
+            app:layout_constraintTop_toTopOf="@id/codeText" />
+
+        <Button
+            android:id="@+id/sendOtpButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="27dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="27dp"
+            android:layout_marginBottom="22dp"
+            android:alpha=".7"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="@color/colorAccent"
+            android:enabled="false"
+            android:text="Send OTP"
+            android:textAllCaps="false"
+            android:textColor="#ffffff"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/codeText" />
+
+        <View
+            android:id="@+id/leftSeparator"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="27dp"
+            android:layout_marginEnd="4.5dp"
+            android:background="#f4f4f4"
+            app:layout_constraintBottom_toBottomOf="@id/orText"
+            app:layout_constraintEnd_toStartOf="@id/orText"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/orText" />
+
+        <TextView
+            android:id="@+id/orText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/manrope_regular"
+            android:lineSpacingExtra="5sp"
+            android:textColor="#000000"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sendOtpButton"
+            tools:text="OR" />
+
+        <View
+            android:id="@+id/rightSeparator"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="4.5dp"
+            android:layout_marginEnd="27dp"
+            android:background="#f4f4f4"
+            app:layout_constraintBottom_toBottomOf="@id/orText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/orText"
+            app:layout_constraintTop_toTopOf="@id/orText" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/googleLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="27dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginEnd="27dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="#f7f7f7"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/orText">
+
+            <TextView
+                android:id="@+id/googleLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_google_icon"
+                android:drawablePadding="16dp"
+                android:enabled="false"
+                android:fontFamily="@font/manrope_regular"
+                android:gravity="center"
+                android:lineSpacingExtra="6sp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:text="Login with google"
+                android:textAllCaps="false"
+                android:textColor="#4d426d"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/terms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="47dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="27dp"
+            android:layout_marginBottom="32dp"
+            android:fontFamily="@font/manrope_regular"
+            android:gravity="center_horizontal"
+            android:lineSpacingExtra="6sp"
+            android:text="By clicking here you agree to our terms of use\n
+and privacy policy"
+            android:textColor="#4d426d"
+            android:textSize="12sp"
+            android:textStyle="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/googleLayout" />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

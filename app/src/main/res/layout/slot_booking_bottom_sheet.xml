@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mainLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/rounded_rectangle_white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <View
+            android:id="@+id/topSeparator"
+            android:layout_width="93dp"
+            android:layout_height="5dp"
+            android:background="@drawable/rounded_background_radius_10"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:backgroundTint="@android:color/white"
+            app:layout_constraintBottom_toTopOf="parent"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/crossIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/ic_round_close_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/colorAccent" />
+
+        <TextView
+            android:id="@+id/bookASlot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="28dp"
+            android:fontFamily="@font/manrope_extra_bold"
+            android:text="Book a slot"
+            android:textColor="#4d426d"
+            android:textSize="20sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/imageCard"
+            android:layout_width="48dp"
+            android:layout_height="55dp"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="40sp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bookASlot">
+
+            <ImageView
+                android:id="@+id/expertImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@color/colorAccent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/expertNameTexView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/manrope_extra_bold"
+            android:lineSpacingExtra="24sp"
+            android:textColor="#4d426d"
+            android:textSize="14sp"
+            android:textStyle="normal"
+            app:layout_constraintBottom_toTopOf="@id/expertCategoryTextView"
+            app:layout_constraintStart_toEndOf="@id/imageCard"
+            app:layout_constraintTop_toTopOf="@id/imageCard"
+            tools:text="Swatantra" />
+
+        <TextView
+            android:id="@+id/expertCategoryTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:alpha=".7"
+            android:fontFamily="@font/manrope_medium"
+            android:lineSpacingExtra="26sp"
+            android:textColor="#4d426d"
+            android:textSize="12sp"
+            android:textStyle="normal"
+            app:layout_constraintBottom_toBottomOf="@id/imageCard"
+            app:layout_constraintStart_toEndOf="@id/imageCard"
+            app:layout_constraintTop_toBottomOf="@id/expertNameTexView"
+            tools:text="Vedic Astrologer" />
+
+        <ImageView
+            android:id="@+id/circleDotImageView"
+            android:layout_width="3dp"
+            android:layout_height="3dp"
+            android:layout_marginStart="3dp"
+            android:src="@drawable/circle_dot"
+            android:tint="@color/colorAccent"
+            app:layout_constraintBottom_toBottomOf="@id/expertCategoryTextView"
+            app:layout_constraintStart_toEndOf="@id/expertCategoryTextView"
+            app:layout_constraintTop_toTopOf="@+id/expertCategoryTextView" />
+
+        <TextView
+            android:id="@+id/expertLanguage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:alpha=".7"
+            android:fontFamily="@font/manrope_medium"
+            android:lineSpacingExtra="26sp"
+            android:textColor="#4d426d"
+            android:textSize="12sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@id/circleDotImageView"
+            app:layout_constraintTop_toTopOf="@id/expertCategoryTextView"
+            tools:text="Hindi" />
+
+        <View
+            android:id="@+id/separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="25dp"
+            android:background="#f7f7f7"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageCard" />
+
+        <TextView
+            android:id="@+id/selectADateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="25dp"
+            android:fontFamily="@font/manrope_extra_bold"
+            android:gravity="center_horizontal"
+            android:lineSpacingExtra="5sp"
+            android:text="Select a date"
+            android:textColor="#4d426d"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/separator" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/dateRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:clipToPadding="false"
+            android:orientation="horizontal"
+            android:paddingStart="22dp"
+            android:paddingEnd="16dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/selectADateTextView" />
+
+        <View
+            android:id="@+id/separatorForDate"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="33dp"
+            android:background="#f7f7f7"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dateRecyclerView" />
+
+        <TextView
+            android:id="@+id/selectTimeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="25dp"
+            android:fontFamily="@font/manrope_extra_bold"
+            android:gravity="center_horizontal"
+            android:lineSpacingExtra="5sp"
+            android:text="Select a Time"
+            android:textColor="#4d426d"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/separatorForDate" />
+
+        <TextView
+            android:id="@+id/availaibleSlotsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/manrope_medium"
+            android:gravity="center_horizontal"
+            android:lineSpacingExtra="9sp"
+            android:text="Available Time Slots"
+            android:textColor="#4d426d"
+            android:textSize="12sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toStartOf="@id/selectTimeTextView"
+            app:layout_constraintTop_toBottomOf="@id/selectTimeTextView" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/timeSlotsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/availaibleSlotsText" />
+
+        <Button
+            android:id="@+id/okayButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="27dp"
+            android:layout_marginTop="45dp"
+            android:layout_marginEnd="27dp"
+            android:layout_marginBottom="22dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="@color/colorAccent"
+            android:text="Okay"
+            android:enabled="false"
+            android:alpha=".7"
+            android:textAllCaps="false"
+            android:textColor="#ffffff"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/timeSlotsRecyclerView" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

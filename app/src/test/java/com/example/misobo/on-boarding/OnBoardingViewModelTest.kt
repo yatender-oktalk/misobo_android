@@ -56,7 +56,7 @@ class OnBoardingViewModelTest {
             RegistrationModel(deviceId = "1234abcd")
         val userResponse = User(
             data = User.Data(
-                id = 7,
+                registrationId = 7,
                 token = "ABCDtesting1234"
             )
         )

@@ -1,3 +1,5 @@
+
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
@@ -133,5 +135,8 @@ dependencies {
 
     implementation "com.google.android.material:material:$material"
 
+    implementation 'com.google.android:flexbox:2.0.1'
+
+    implementation  'com.jakewharton.rxbinding2:rxbinding:2.0.0'
 
 }
