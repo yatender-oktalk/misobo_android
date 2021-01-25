@@ -1,5 +1,6 @@
 package com.example.misobo.bmi.api
 
+import com.example.misobo.BuildConfig
 import com.example.misobo.bmi.models.BmiRequestBody
 import com.example.misobo.bmi.models.BmiResponsebody
 import com.example.misobo.utils.SharedPreferenceManager
@@ -21,12 +22,11 @@ interface BmiService {
     ): Observable<BmiResponsebody>
 
     object Creator {
-        private const val url: String = "http://143.110.176.70:4000/"
         private val token = SharedPreferenceManager.getUser()?.data?.token ?: ""
         val service: BmiService
             get() {
                 val retrofit = Retrofit.Builder()
-                    .baseUrl(url)
+                    .baseUrl(BuildConfig.MISOBO_BASE_URL)
                     .client(
                         OkHttpClient.Builder()
                             .addNetworkInterceptor(StethoInterceptor())

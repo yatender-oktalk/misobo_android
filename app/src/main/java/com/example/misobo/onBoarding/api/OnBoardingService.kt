@@ -1,5 +1,6 @@
 package com.example.misobo.onBoarding.api
 
+import com.example.misobo.BuildConfig
 import com.example.misobo.onBoarding.models.*
 import com.example.misobo.utils.SharedPreferenceManager
 import com.facebook.stetho.okhttp3.StethoInterceptor
@@ -42,12 +43,11 @@ interface OnBoardingService {
     ): Observable<ResendOtpRespnse>
 
     object Creator {
-        private const val url: String = "http://143.110.176.70:4000/"
         private val token = SharedPreferenceManager.getUser()?.data?.token ?: ""
         val service: OnBoardingService
             get() {
                 val retrofit = Retrofit.Builder()
-                    .baseUrl(url)
+                    .baseUrl(BuildConfig.MISOBO_BASE_URL)
                     .client(
                         OkHttpClient.Builder()
                             .addNetworkInterceptor(StethoInterceptor())

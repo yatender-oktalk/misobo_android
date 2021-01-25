@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import com.example.misobo.BuildConfig
 import com.example.misobo.R
 import com.example.misobo.onBoarding.models.RegistrationModel
 import com.example.misobo.onBoarding.viewModels.OnBoardingViewModel
@@ -49,7 +50,7 @@ class LoginDialog : BottomSheetDialogFragment() {
         super.onActivityCreated(savedInstanceState)
 
         terms.setOnClickListener {
-            val url = "http://143.110.176.70:4000/api/terms"
+            val url = "${BuildConfig.MISOBO_BASE_URL}api/terms"
             val builder = CustomTabsIntent.Builder();
             val customTabsIntent = builder.build();
             customTabsIntent.launchUrl(requireContext(), Uri.parse(url));
@@ -115,7 +116,7 @@ class LoginDialog : BottomSheetDialogFragment() {
             View.inflate(context, R.layout.login_bottom_sheet, null)
         dialog.setContentView(contentView)
         (contentView.parent as View).setBackgroundColor(
-            ContextCompat.getColor(requireContext(),android.R.color.transparent)
+            ContextCompat.getColor(requireContext(), android.R.color.transparent)
         )
     }
 

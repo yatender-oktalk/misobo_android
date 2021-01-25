@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import com.example.misobo.BuildConfig
 import com.example.misobo.R
 import com.example.misobo.onBoarding.LoginDialog
 import com.example.misobo.onBoarding.models.RegistrationModel
@@ -48,7 +49,7 @@ class OnBoardingFragment : Fragment() {
         val aniFade = AnimationUtils.loadAnimation(context, R.anim.mind_body_soul_anim)
 
         privacyTextView.setOnClickListener {
-            val url = "http://143.110.176.70:4000/api/terms"
+            val url = "${BuildConfig.MISOBO_BASE_URL}api/terms"
             val builder = CustomTabsIntent.Builder();
             val customTabsIntent = builder.build();
             customTabsIntent.launchUrl(requireContext(), Uri.parse(url));

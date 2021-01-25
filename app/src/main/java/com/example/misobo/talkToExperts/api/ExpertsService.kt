@@ -1,5 +1,6 @@
 package com.example.misobo.talkToExperts.api
 
+import com.example.misobo.BuildConfig
 import com.example.misobo.mind.models.OrderPayload
 import com.example.misobo.mind.models.OrderResponse
 import com.example.misobo.myProfile.ProfileResponseModel
@@ -88,12 +89,11 @@ interface ExpertsService {
     ): Observable<RatingResponse>
 
     object Creator {
-        private const val url: String = "http://143.110.176.70:4000/"
         private val token = SharedPreferenceManager.getUser()?.data?.token ?: ""
         val service: ExpertsService
             get() {
                 val retrofit = Retrofit.Builder()
-                    .baseUrl(url)
+                    .baseUrl(BuildConfig.MISOBO_BASE_URL)
                     .client(
                         OkHttpClient.Builder()
                             .addNetworkInterceptor(StethoInterceptor())

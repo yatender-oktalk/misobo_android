@@ -1,5 +1,6 @@
 package com.example.misobo.rewards
 
+import com.example.misobo.BuildConfig
 import com.example.misobo.utils.SharedPreferenceManager
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -24,12 +25,11 @@ interface RewardsService {
     fun getClaimedRewards(@Path("userId") userId: Int?): Observable<ClaimedRewardsModel>
 
     object Creator {
-        private const val url: String = "http://143.110.176.70:4000/"
         private val token = SharedPreferenceManager.getUser()?.data?.token ?: ""
         val service: RewardsService
             get() {
                 val retrofit = Retrofit.Builder()
-                    .baseUrl(url)
+                    .baseUrl(BuildConfig.MISOBO_BASE_URL)
                     .client(
                         OkHttpClient.Builder()
                             .addNetworkInterceptor(StethoInterceptor())
