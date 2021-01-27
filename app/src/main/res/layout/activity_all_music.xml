@@ -4,10 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
-    android:focusable="true"
-    android:clickable="true"
-    tools:context=".mind.view.ArticlesFragment">
+    tools:context=".mind.view.AllMusicActivity">
 
     <ImageView
         android:id="@+id/backIcon"
@@ -30,14 +27,14 @@
         android:fontFamily="@font/manrope_medium"
         android:lineSpacingExtra="16sp"
         android:maxLines="1"
-        android:text="Curated Articles"
         android:textColor="#4d426d"
         android:textSize="16sp"
         android:textStyle="normal"
         app:layout_constraintBottom_toBottomOf="@id/backIcon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/backIcon"
-        app:layout_constraintTop_toTopOf="@id/backIcon" />
+        app:layout_constraintTop_toTopOf="@id/backIcon"
+        android:text="All Music" />
 
     <View
         android:id="@+id/separator"
@@ -50,17 +47,23 @@
         app:layout_constraintTop_toBottomOf="@id/backIcon" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/articlesRecyclerView"
+        android:id="@+id/allMusicRecycler"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="1dp"
-        android:clipToPadding="false"
         android:orientation="vertical"
-        android:paddingBottom="30dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/separator" />
+
+    <FrameLayout
+        android:id="@+id/mainContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

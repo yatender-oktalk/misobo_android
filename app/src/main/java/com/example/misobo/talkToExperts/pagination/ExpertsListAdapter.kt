@@ -49,7 +49,7 @@ class ExpertsListAdapter(private val callClicked: (ExpertModel.Expert?) -> Unit)
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
         //inflateView(holder, position)
         viewHolder.itemView.expertName.text = getItem(position)?.name
-        viewHolder.itemView.coinsNeeded.text = "${getItem(position)?.karmaCoinsNeeded ?: 0}/Min"
+        viewHolder.itemView.coinsNeeded.text = "${getItem(position)?.karmaCoinsNeeded ?: 0}/30 Min"
 
         viewHolder.itemView.expertCategory.text =
             getItem(position)?.qualification ?: ""
@@ -62,11 +62,18 @@ class ExpertsListAdapter(private val callClicked: (ExpertModel.Expert?) -> Unit)
         viewHolder.itemView.customers.text = "${getItem(position)?.consultations ?: 432}"
         viewHolder.itemView.experienceTextView.text =
             "Exp ${getItem(position)?.experience ?: 12} year"
-        viewHolder.itemView.callButton.setOnClickListener {
+        viewHolder.itemView.setOnClickListener {
             callClicked.invoke(getItem(position))
         }
         Glide.with(viewHolder.itemView.context).load(getItem(position)?.image)
             .into(viewHolder.itemView.expertImage)
+
+        if (getItem(position)?.expertise != null) {
+            viewHolder.itemView.expertiseGroup.visibility = View.VISIBLE
+            viewHolder.itemView.expertise.text = getItem(position)?.expertise
+        } else {
+            viewHolder.itemView.expertiseGroup.visibility = View.GONE
+        }
     }
 
     private fun inflateView(viewHolder: RecyclerView.ViewHolder, position: Int) {

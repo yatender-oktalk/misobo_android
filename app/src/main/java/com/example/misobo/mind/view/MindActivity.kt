@@ -1,11 +1,10 @@
 package com.example.misobo.mind.view
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.misobo.R
-import com.example.misobo.blogs.BlogsViewModel
 import com.example.misobo.mind.viewModels.MindViewModel
 import com.example.misobo.talkToExperts.models.CaptureOrderPayload
 import com.example.misobo.talkToExperts.viewModels.TalkToExpertsViewModel

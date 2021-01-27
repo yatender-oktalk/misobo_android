@@ -28,8 +28,8 @@ class CongratsFragment : Fragment() {
         activity?.arc?.visibility = View.GONE
 
         karmaCoinsText.text = karmaCoin
-        youEarnedCoins.text = "You earned $karmaCoin karma coins"
-        comebackTommorowText.text = "Come back tomorrow to earn \n more $karmaCoin karma coins"
+        youEarnedCoins.text = "You earned $karmaCoin misohe coins"
+        comebackTommorowText.text = "Come back tomorrow to earn \n more $karmaCoin misohe coins"
 
         crossIcon.setOnClickListener {
             activity?.onBackPressed()

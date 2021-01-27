@@ -9,24 +9,30 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.curated_articles_item_layout.view.*
 
 class CuratedArticlesItem(
-    val blogsModel: BlogsModel,
-    val onCLick: (Int) -> Unit,
+    val onCLick: (BlogsModel.Blogs) -> Unit,
     val viewAllClicked: () -> Unit
 ) : Item() {
     val adapter = GroupAdapter<ViewHolder>()
+    lateinit var blogsModel: BlogsModel
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
 
         viewHolder.itemView.curatedArticlesRecyclerView.adapter = adapter
         adapter.clear()
         val blogSection = Section()
-        blogsModel.data?.forEachIndexed { index, model ->
-            blogSection.add(ArticlesRecyclerItem(model) {
-                onCLick.invoke(index)
-            })
-        }
+        if (this::blogsModel.isInitialized)
+            blogsModel.data?.forEachIndexed { index, model ->
+                blogSection.add(ArticlesRecyclerItem(model) {
+                    onCLick.invoke(model)
+                })
+            }
         viewHolder.itemView.viewAll.setOnClickListener { viewAllClicked.invoke() }
         adapter.add(blogSection)
+    }
+
+    fun update(blogsModel: BlogsModel) {
+        this.blogsModel = blogsModel
+        notifyChanged()
     }
 
     override fun getLayout(): Int = R.layout.curated_articles_item_layout

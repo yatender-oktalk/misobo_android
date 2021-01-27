@@ -19,6 +19,8 @@ data class ExpertModel(
         val name: String?,
         @SerializedName("experience")
         val experience: String?,
+        @SerializedName("expertise")
+        val expertise: String?,
         @SerializedName("img")
         val image: String?,
         @SerializedName("language")

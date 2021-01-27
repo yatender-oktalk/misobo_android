@@ -67,7 +67,7 @@ class CoinsBottomSheet : BottomSheetDialogFragment(), PaymentResultListener {
 
         when (type) {
             "CALL" -> {
-                needMoreCoins.text = "You need more coins to\n book this call"
+                needMoreCoins.text = "You need more coins to\n book this session"
             }
             "REWARDS" -> {
                 needMoreCoins.text = "You have less coins to\n unlock this reward"
@@ -157,7 +157,7 @@ class CoinsBottomSheet : BottomSheetDialogFragment(), PaymentResultListener {
         try {
             val options = JSONObject()
             options.put("name", "Misobo Pvt Ltd")
-            options.put("description", "Schedule a call")
+            options.put("description", "Book a session")
             //You can omit the image option to fetch the image from dashboard
             options.put("image", "https://s3.amazonaws.com/rzp-mobile/images/rzp.png")
             options.put("theme.color", "#f1ab87");

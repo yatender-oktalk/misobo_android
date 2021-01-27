@@ -2,12 +2,11 @@ package com.example.misobo.mind.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.os.bundleOf
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -18,14 +17,10 @@ import com.example.misobo.blogs.BlogDetailedFetchState
 import com.example.misobo.blogs.BlogsDetailFragment
 import com.example.misobo.blogs.BlogsFetchState
 import com.example.misobo.blogs.BlogsViewModel
-import com.example.misobo.bmi.view.BmiActivity
 import com.example.misobo.mind.items.*
 import com.example.misobo.mind.viewModels.MindViewModel
-import com.example.misobo.mind.viewModels.MusicFetchState
-import com.example.misobo.myProfile.FetchState
 import com.example.misobo.myProfile.ProfileViewModel
 import com.example.misobo.talkToExperts.view.BookASlotDialog
-import com.example.misobo.talkToExperts.view.PaymentActivity
 import com.example.misobo.talkToExperts.view.TalkToExpertActivity
 import com.example.misobo.talkToExperts.viewModels.ExpertListState
 import com.example.misobo.talkToExperts.viewModels.TalkToExpertsViewModel
@@ -44,6 +39,8 @@ class MindFragment : Fragment() {
     private val talkToExpertsViewModel: TalkToExpertsViewModel by activityViewModels()
     private val profileViewModel by lazy { ViewModelProvider(this).get(ProfileViewModel::class.java) }
     private val loadingFragment = LoadingFragment()
+    lateinit var curatedArticlesItem: CuratedArticlesItem
+    lateinit var taskForTheDayItem: TasksForTheDayItems
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,16 +65,23 @@ class MindFragment : Fragment() {
         fillName(helloSection)
 
         unlockSection.add(UnlockItems() {
-            if (it)
-                startActivity(Intent(context, BmiActivity::class.java))
-            else {
+            if (it) {
+                val jsonObject = JsonObject()
+                jsonObject.addProperty("is_body_pack_unlocked", true)
+                mindViewModel.updatePackUnlock(
+                    SharedPreferenceManager.getUser()?.data?.userId ?: 0, jsonObject
+                )
+                showSnackBar("Soul & Heal Pack Unlocked")
+
+                //startActivity(Intent(context, BmiActivity::class.java))
+            } else {
                 val jsonObject = JsonObject()
                 jsonObject.addProperty("is_mind_pack_unlocked", true)
                 mindViewModel.updatePackUnlock(
                     SharedPreferenceManager.getUser()?.data?.userId ?: 0,
                     jsonObject
                 )
-                showSnackBar()
+                showSnackBar("Mind Pack Unlocked")
             }
             adapter.remove(unlockSection)
         })
@@ -112,14 +116,23 @@ class MindFragment : Fragment() {
             }
         })
 
+        taskForTheDayItem = TasksForTheDayItems({ model ->
+            mindViewModel.playMusicLiveData.postValue(
+                model
+            )
+            activity?.supportFragmentManager?.beginTransaction()
+                ?.add(R.id.mainContainer, MusicPlayerFragment())
+                ?.addToBackStack(null)?.commit()
+        }, {
+            startActivity(Intent(activity, AllMusicActivity::class.java))
+        })
+
         mindViewModel.musicPagedList.observe(viewLifecycleOwner, Observer { pagedList ->
-            taskForTheDaySection.setHeader(TasksForTheDayItems(pagedList) { position ->
-                mindViewModel.playMusicLiveData.postValue(
-                    pagedList[position])
-                activity?.supportFragmentManager?.beginTransaction()
-                    ?.replace(R.id.mainContainer, MusicPlayerFragment())
-                    ?.addToBackStack(null)?.commit()
-            })
+            taskForTheDayItem.update(pagedList)
+        })
+
+        profileViewModel.nameToast.observe(viewLifecycleOwner, Observer {
+            Toast.makeText(context, "Name saved successfully", Toast.LENGTH_SHORT).show()
         })
 
         mindViewModel.coinsAcquiredLiveData.observe(viewLifecycleOwner, Observer { coins ->
@@ -140,23 +153,25 @@ class MindFragment : Fragment() {
 
         if (blogsViewModel.blogLiveData.value == null)
             blogsViewModel.fetchBlogs()
+
+        curatedArticlesItem = CuratedArticlesItem({
+            //curatedArticlesItem = CuratedArticlesItem()
+            blogsViewModel.detailedBlogLiveData.postValue(
+                BlogDetailedFetchState.Success(it)
+            )
+            activity?.supportFragmentManager?.beginTransaction()
+                ?.add(R.id.mainContainer, BlogsDetailFragment.newInstance(it.id ?: 0))
+                ?.addToBackStack(null)?.commit()
+        }, {
+            activity?.supportFragmentManager?.beginTransaction()
+                ?.add(R.id.mainContainer, ArticlesFragment())
+                ?.addToBackStack(null)?.commit()
+        })
+
         blogsViewModel.blogLiveData.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is BlogsFetchState.Success -> {
-                    blogsSection.add(CuratedArticlesItem(state.blogsModel, {
-                        blogsViewModel.detailedBlogLiveData.postValue(
-                            BlogDetailedFetchState.Success(
-                                state.blogsModel.data?.get(it)!!
-                            )
-                        )
-                        activity?.supportFragmentManager?.beginTransaction()
-                            ?.replace(R.id.mainContainer, BlogsDetailFragment.newInstance(it))
-                            ?.addToBackStack(null)?.commit()
-                    }, {
-                        activity?.supportFragmentManager?.beginTransaction()
-                            ?.replace(R.id.mainContainer, ArticlesFragment())
-                            ?.addToBackStack(null)?.commit()
-                    }))
+                    curatedArticlesItem.update(state.blogsModel)
                 }
                 is BlogsFetchState.Loading -> {
                 }
@@ -170,15 +185,15 @@ class MindFragment : Fragment() {
             if (SharedPreferenceManager.getUserProfile()?.data?.isMindPackUnlocked == false || SharedPreferenceManager.getUserProfile()?.data?.isBodyPackUnlocked == false)
                 add(unlockSection)
 
-            add(taskForTheDaySection)
+            add(taskForTheDayItem)
             add(talkToExpertsSection)
-            add(blogsSection)
+            add(curatedArticlesItem)
         }
     }
 
-    fun showSnackBar() {
+    fun showSnackBar(s: String) {
         val snackBar: Snackbar =
-            Snackbar.make(topLevelView, "Mind Pack Unlocked", Snackbar.LENGTH_SHORT)
+            Snackbar.make(topLevelView, s, Snackbar.LENGTH_SHORT)
         val snackBarLayout = snackBar.view
         val textView =
             snackBarLayout.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView

@@ -49,7 +49,7 @@ class OnBoardingFragment : Fragment() {
         val aniFade = AnimationUtils.loadAnimation(context, R.anim.mind_body_soul_anim)
 
         privacyTextView.setOnClickListener {
-            val url = "${BuildConfig.MISOBO_BASE_URL}api/terms"
+            val url = "${BuildConfig.MISOBO_BASE_URL}/api/terms"
             val builder = CustomTabsIntent.Builder();
             val customTabsIntent = builder.build();
             customTabsIntent.launchUrl(requireContext(), Uri.parse(url));

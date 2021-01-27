@@ -58,7 +58,7 @@ class ArticlesFragment : Fragment() {
                                     state.blogsModel.data.get(it)
                                 ))
                             activity?.supportFragmentManager?.beginTransaction()
-                                ?.replace(R.id.mainContainer, BlogsDetailFragment.newInstance(it))
+                                ?.add(R.id.mainContainer, BlogsDetailFragment.newInstance(it))
                                 ?.addToBackStack(null)?.commit()
                         })
                     }

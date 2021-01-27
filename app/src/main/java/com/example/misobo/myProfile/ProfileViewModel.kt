@@ -25,6 +25,7 @@ class ProfileViewModel() : ViewModel() {
     val resendOtp: SingleLiveEvent<Unit> = SingleLiveEvent()
     val otpVerification: SingleLiveEvent<MobileRegistration> = SingleLiveEvent()
     val updateProfile: SingleLiveEvent<Unit> = SingleLiveEvent()
+    val nameToast: SingleLiveEvent<Unit> = SingleLiveEvent()
 
     private val liveSharedPreference =
         LiveSharedPreference(SharedPreferenceManager.sharedPreferences!!)
@@ -55,7 +56,10 @@ class ProfileViewModel() : ViewModel() {
                 .map { profileResponse -> SharedPreferenceManager.setUserProfile(profileResponse) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { updateProfile.postValue(Unit) }
+                .subscribe {
+                    nameToast.postValue(Unit)
+                    updateProfile.postValue(Unit)
+                }
         )
     }
 

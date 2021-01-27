@@ -56,8 +56,7 @@
         android:layout_marginTop="8dp"
         android:alpha=".7"
         android:fontFamily="@font/manrope_medium"
-        android:text="Solve your miseries by talking to astrologer\n
-Psychologists or therapist"
+        android:text="Accelerate your wellness journey by consulting\n an expert today"
         android:textColor="#4d426d"
         android:textSize="12sp"
         android:textStyle="normal"

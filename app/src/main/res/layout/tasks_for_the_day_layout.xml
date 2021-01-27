@@ -19,7 +19,29 @@
         android:textSize="20sp"
         android:textColor="#4d426d"
         android:lineSpacingExtra="18sp"
-        android:text="Tasks for the day"
+        android:text="Your Collection"
+        />
+
+    <TextView
+        android:id="@+id/viewAll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/manrope_regular"
+        android:textStyle="bold"
+        android:textSize="12sp"
+        android:textColor="#4d426d"
+        android:lineSpacingExtra="26sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/taskForTheDay"
+        app:layout_constraintBottom_toBottomOf="@id/taskForTheDay"
+        android:layout_marginEnd="16sp"
+        android:background="@drawable/rounded_background_radius_15"
+        android:gravity="center_horizontal"
+        android:paddingStart="11dp"
+        android:paddingEnd="11dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="View All"
         />
 
     <TextView

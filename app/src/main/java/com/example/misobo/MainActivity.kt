@@ -1,12 +1,10 @@
 package com.example.misobo
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.misobo.blogs.BlogsViewModel
 import com.example.misobo.home.HomeFragment
-import com.example.misobo.mind.view.MindActivity
 import com.example.misobo.mind.view.MindFragment
 import com.example.misobo.mind.viewModels.MindViewModel
 import com.example.misobo.myProfile.MyProfileFragment
@@ -19,6 +17,7 @@ import com.example.misobo.utils.SharedPreferenceManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.razorpay.PaymentResultListener
 import kotlinx.android.synthetic.main.activity_main.*
+
 
 class MainActivity : AppCompatActivity(), PaymentResultListener {
 
@@ -100,5 +99,30 @@ class MainActivity : AppCompatActivity(), PaymentResultListener {
                 talkToExpertsViewModel.paymentAmount
             )
         )
+    }
+
+    override fun onBackPressed() {
+
+        val seletedItemId = bottomNavigationView.selectedItemId
+        if (R.id.home != seletedItemId) {
+            bottomNavigationView.selectedItemId = R.id.home
+            //setHomeItem(this@MainActivity)
+        } else {
+            super.onBackPressed()
+        }
+/*
+        MaterialDialog(this).show {
+            cornerRadius(16f)
+            title(text = "Misohe")
+            message(text = "Are you sure you want to close this app?")
+            positiveButton(text = "Yes") {
+                finish()
+            }
+            negativeButton(text = "Cancel") {
+                dismiss()
+            }
+                .onShow{ it.getActionButton(WhichButton.NEGATIVE).updateTextColor(Color.GRAY) }
+                .onShow { it.getActionButton(WhichButton.POSITIVE).updateTextColor(Color.GRAY) }
+        }*/
     }
 }

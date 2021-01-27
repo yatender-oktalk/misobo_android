@@ -274,7 +274,7 @@
                 android:layout_marginTop="31.5dp"
                 android:fontFamily="@font/manrope_extrabold"
                 android:lineSpacingExtra="-6sp"
-                android:text="Body Pack"
+                android:text="Soul &amp; Heal Pack"
                 android:textColor="#4d426d"
                 android:textSize="30sp"
                 android:textStyle="normal"

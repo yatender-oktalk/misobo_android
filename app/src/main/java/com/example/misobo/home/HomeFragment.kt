@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -53,6 +54,10 @@ class HomeFragment : Fragment() {
             false
         }
 
+        profileViewModel.nameToast.observe(viewLifecycleOwner, Observer {
+            Toast.makeText(context,"Name saved successfully",Toast.LENGTH_SHORT).show()
+        })
+
         mindViewModel.getCoinsLiveData().observe(viewLifecycleOwner, Observer { profile ->
             fillName()
         })
@@ -64,7 +69,12 @@ class HomeFragment : Fragment() {
         unlockButtonBody.setOnClickListener {
 
             val bundle = Bundle()
-            bundle.putInt("TO", 1)
+            bundle.putInt("TO", 2)
+            val jsonObject = JsonObject()
+            jsonObject.addProperty("is_body_pack_unlocked", true)
+            mindViewModel.updatePackUnlock(
+                SharedPreferenceManager.getUser()?.data?.userId ?: 0, jsonObject
+            )
             val karmaCoinsFragment = KarmaCoinsLayoutFragment()
             karmaCoinsFragment.arguments = bundle
             activity?.supportFragmentManager

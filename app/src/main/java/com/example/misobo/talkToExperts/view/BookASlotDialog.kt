@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.example.misobo.Misobo
@@ -117,6 +118,13 @@ class BookASlotDialog : BottomSheetDialogFragment() {
                     is SlotFetchState.Success -> {
                         viewModel.slotSelectedLiveData.postValue(null)
                         inflateSlotsRecycler(state.slotList, -1)
+                        if (state.slotList.isEmpty()) {
+                            Toast.makeText(
+                                context,
+                                "Please select a different date.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     }
                     is SlotFetchState.Loading -> {
 
@@ -169,11 +177,10 @@ class BookASlotDialog : BottomSheetDialogFragment() {
         }
 
         viewModel.slotSelectedLiveData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            if (it!=null) {
+            if (it != null) {
                 okayButton.isEnabled = true
                 okayButton.alpha = 1f
-            }else
-            {
+            } else {
                 okayButton.isEnabled = false
                 okayButton.alpha = 0.7f
             }

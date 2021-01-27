@@ -74,11 +74,11 @@ class PaymentActivity : AppCompatActivity(), PaymentResultListener {
         co.setImage(R.drawable.misobo_icon);
         try {
             val options = JSONObject()
-            options.put("name", "Misobo Pvt Ltd")
-            options.put("description", "Schedule a call")
+            options.put("name", "True Base Pvt Ltd")
+            options.put("description", "Book a session")
             //You can omit the image option to fetch the image from dashboard
             options.put("image", "https://s3.amazonaws.com/rzp-mobile/images/rzp.png")
-            options.put("theme.color", "#f1ab87");
+            options.put("theme.color", R.color.colorAccent);
             options.put("currency", "INR");
             options.put("order_id", paymentGatewayOrderId);
             options.put("amount", "1.00")//pass amount in currency subunits

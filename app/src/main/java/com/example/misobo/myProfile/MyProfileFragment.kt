@@ -81,6 +81,10 @@ class MyProfileFragment : Fragment() {
             false
         }
 
+        profileViewModel.nameToast.observe(viewLifecycleOwner, Observer {
+            Toast.makeText(context,"Name saved successfully",Toast.LENGTH_SHORT).show()
+        })
+
         profileViewModel.getProfileLiveData().observe(viewLifecycleOwner, Observer { model ->
             fillName()
         })

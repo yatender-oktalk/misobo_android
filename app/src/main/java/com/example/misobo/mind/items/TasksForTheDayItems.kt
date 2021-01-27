@@ -12,23 +12,31 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.tasks_for_the_day_layout.view.*
 
 class TasksForTheDayItems(
-    val musicEntries: PagedList<MusicResponseModel.MusicModel>,
-    val onClick: (Int) -> Unit
+    val onClick: (MusicResponseModel.MusicModel) -> Unit,
+    val viewAllClick: () -> Unit
 ) : Item() {
-    private lateinit var musicListAdapter: MusicListAdapter
+    //private lateinit var musicListAdapter: MusicListAdapter
+    lateinit var musicEntries: PagedList<MusicResponseModel.MusicModel>
+
+    val musicListAdapter = MusicListAdapter() { musicModel, position ->
+        musicModel?.let { onClick.invoke(it) }
+    }
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
-        musicListAdapter = MusicListAdapter() { musicModel, position ->
-            onClick.invoke(position)
-        }
-        viewHolder.itemView.musicRecycler.adapter = musicListAdapter
-        musicListAdapter.submitList(musicEntries)
 
-        /* musicEntries?.forEach { model ->
-             musicSection.add(SongsRecyclerItem(model) {
-                 onClick.invoke(it)
-             })
-         }*/
+        musicListAdapter.notifyDataSetChanged()
+        viewHolder.itemView.musicRecycler.adapter = musicListAdapter
+        if (this::musicEntries.isInitialized)
+            musicListAdapter.submitList(musicEntries)
+
+        viewHolder.itemView.viewAll.setOnClickListener {
+            viewAllClick.invoke()
+        }
+    }
+
+    fun update(musicEntries: PagedList<MusicResponseModel.MusicModel>) {
+        this.musicEntries = musicEntries
+        notifyChanged()
     }
 
     override fun getLayout(): Int = R.layout.tasks_for_the_day_layout

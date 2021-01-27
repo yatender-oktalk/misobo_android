@@ -213,6 +213,7 @@
             android:fontFamily="@font/manrope_regular"
             android:gravity="center_horizontal"
             android:lineSpacingExtra="4sp"
+            android:visibility="invisible"
             android:text="By clicking here you agree to our terms of use\n
 and privacy policy"
             android:textColor="#4d426d"
