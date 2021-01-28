@@ -37,6 +37,7 @@ class AllMusicActivity : AppCompatActivity() {
             addItemDecoration(SpacesItemDecoration(Util.convertDpToPixels(8F, context), 2));
         }
 
+        backIcon.setOnClickListener { onBackPressed() }
         mindViewModel.musicPagedList.observe(this, Observer { pagedList ->
             musicListAdapter.submitList(pagedList)
         })

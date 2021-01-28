@@ -73,12 +73,12 @@
             android:id="@+id/editIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_edit"
+            android:src="@drawable/ic_camera_icon"
+            android:layout_marginBottom="12sp"
+            android:layout_marginEnd="6dp"
+            app:layout_constraintEnd_toEndOf="@id/profileImage"
             app:layout_constraintBottom_toBottomOf="@id/profileImage"
-            app:layout_constraintStart_toEndOf="@id/profileImage"
-            android:layout_marginEnd="20dp"
-
-            />
+            app:layout_constraintStart_toEndOf="@id/profileImage" />
 
         <TextView
             android:id="@+id/nameTextView"
@@ -330,7 +330,7 @@ earn misohe points"
         <FrameLayout
             android:id="@+id/zeroStateContainer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

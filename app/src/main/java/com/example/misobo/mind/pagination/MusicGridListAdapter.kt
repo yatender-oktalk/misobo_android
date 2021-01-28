@@ -4,7 +4,6 @@ package com.example.misobo.mind.pagination
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -47,7 +46,7 @@ class MusicGridListAdapter(private val onClick: (MusicResponseModel.MusicModel?,
         viewHolder.itemView.musicNameText.text = getItem(position)?.title.toString()
         viewHolder.itemView.productionName.text = getItem(position)?.productionName.toString()
         viewHolder.itemView.musicTime.text =
-            "${getItem(position)?.duration?.div(60)}:${getItem(position)?.duration?.rem(60)}"
+            "${getItem(position)?.duration?.div(60)}:${getItem(position)?.duration?.rem(60)} mins"
         viewHolder.itemView.soul.text = "${getItem(position)?.tag}"
         Glide.with(viewHolder.itemView.context).load(getItem(position)?.image)
             .placeholder(R.drawable.music_gradient).into(viewHolder.itemView.musicCardBackground)
@@ -56,19 +55,16 @@ class MusicGridListAdapter(private val onClick: (MusicResponseModel.MusicModel?,
             onClick.invoke(getItem(position), position)
         }
 
-        if (position == 0)
-            viewHolder.itemView.rootLayout.background =
-                ContextCompat.getDrawable(viewHolder.itemView.context, R.drawable.music_gradient)
-        else if (position == 1)
-            viewHolder.itemView.rootLayout.background =
-                ContextCompat.getDrawable(viewHolder.itemView.context, R.drawable.gradient_2)
-
         val progress = getItem(position)?.progress?.toFloat()
             ?.div(getItem(position)?.duration?.toFloat() ?: 0f)?.times(100)
 
-        if (progress?.toInt()!! > 0)
-            viewHolder.itemView.progressBar.setProgress(progress?.toInt() ?: 0, true)
-        else {
+        if (progress?.toInt()!! > 0) {
+            viewHolder.itemView.progressBar.visibility = View.VISIBLE
+            viewHolder.itemView.progressBar.setProgress(
+                progress?.toInt(),
+                true
+            )
+        } else {
             viewHolder.itemView.progressBar.visibility = View.GONE
         }
     }

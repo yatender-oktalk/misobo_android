@@ -33,7 +33,8 @@ interface BmiService {
                             .addInterceptor {
                                 it.proceed(
                                     it.request().newBuilder()
-                                        .addHeader("token",
+                                        .addHeader(
+                                            "token",
                                             SharedPreferenceManager.getUser()?.data?.token ?: ""
                                         )
                                         .build()
