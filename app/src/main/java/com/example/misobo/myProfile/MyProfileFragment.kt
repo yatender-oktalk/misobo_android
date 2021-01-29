@@ -82,7 +82,7 @@ class MyProfileFragment : Fragment() {
         }
 
         profileViewModel.nameToast.observe(viewLifecycleOwner, Observer {
-            Toast.makeText(context,"Name saved successfully",Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Name saved successfully", Toast.LENGTH_SHORT).show()
         })
 
         profileViewModel.getProfileLiveData().observe(viewLifecycleOwner, Observer { model ->
@@ -100,12 +100,6 @@ class MyProfileFragment : Fragment() {
                 R.id.mainContainer,
                 BmiFullReportFragment().apply { arguments = bundle }
             )?.addToBackStack(null)?.commit()
-            /*startActivity(
-                Intent(
-                    context,
-                    BmiActivity::class.java
-                )
-            )*/
         }
 
         rewardsTextView.setOnClickListener {
@@ -122,6 +116,10 @@ class MyProfileFragment : Fragment() {
                 ?.add(EditProfileBottomSheet(), null)?.commit()
         }
 
+        userBookingsTextView.setOnClickListener {
+            val intent = Intent(activity, UserBookingsActivity::class.java)
+            startActivity(intent)
+        }
 
         profileViewModel.profileLiveData.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
@@ -192,10 +190,6 @@ class MyProfileFragment : Fragment() {
 
                 }
                 is ProfileResponseAction.Error -> {
-                   /* if (!NetworkUtils.isConnected(requireContext())) {
-                        activity?.supportFragmentManager?.beginTransaction()
-                            ?.add(R.id.zeroStateContainer, ZeroStatesFragment())?.commit()
-                    }*/
                     Toast.makeText(context, state.error, Toast.LENGTH_SHORT).show()
                 }
             }

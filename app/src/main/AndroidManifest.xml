@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".mind.view.AllMusicActivity"></activity>
+        <activity android:name=".myProfile.UserBookingsActivity"></activity>
+        <activity android:name=".mind.view.AllMusicActivity" />
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,7 +34,7 @@
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
-        <activity android:name=".onBoarding.view.OnBoardingActivity"></activity>
+        <activity android:name=".onBoarding.view.OnBoardingActivity" />
 
         <service
             android:name=".utils.MyFirebaseMessagingService"

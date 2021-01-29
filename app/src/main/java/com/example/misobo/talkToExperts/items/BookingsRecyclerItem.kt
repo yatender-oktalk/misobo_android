@@ -1,21 +1,19 @@
 package com.example.misobo.talkToExperts.items
 
-import android.os.Bundle
 import androidx.paging.PagedList
 import com.example.misobo.R
 import com.example.misobo.talkToExperts.models.ExpertModel
 import com.example.misobo.talkToExperts.models.RatingPayload
 import com.example.misobo.talkToExperts.models.UserBookings
 import com.example.misobo.talkToExperts.pagination.BookingsListAdapter
-import com.example.misobo.talkToExperts.view.BookASlotDialog
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.user_bookings_recycler.view.*
 
 class BookingsRecyclerItem(
-    val submitRating: (RatingPayload) -> Unit,
-    val openSlot: (ExpertModel.Expert?) -> Unit,
-    val needHelpClicked: () -> Unit
+    private val submitRating: (RatingPayload) -> Unit,
+    private val openSlot: (ExpertModel.Expert?) -> Unit,
+    private val needHelpClicked: () -> Unit
 
 ) : Item() {
     //private lateinit var bookingsListAdapter: BookingsListAdapter
@@ -40,8 +38,8 @@ class BookingsRecyclerItem(
         }
     }
 
-    fun update(state: PagedList<UserBookings.Entry?>) {
-        pagedList = state
+    fun update(list: PagedList<UserBookings.Entry?>) {
+        pagedList = list
         notifyChanged()
     }
 

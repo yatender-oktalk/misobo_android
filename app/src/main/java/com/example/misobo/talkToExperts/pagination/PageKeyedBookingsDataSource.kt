@@ -37,7 +37,7 @@ class PageKeyedBookingsDataSource(
         entries.forEach {
             val callCompleted =
                 currentDateTime.compareTo(dateFormat.parse(it?.endTime).time)
-            if (!(callCompleted == 1 && it.isRated == true)) {
+            if ((callCompleted != 1)) {
                 filteredEntries.add(it)
             }
         }
@@ -54,10 +54,9 @@ class PageKeyedBookingsDataSource(
         )
             .subscribe { bookings ->
                 callback.onResult(
-                    bookings.data?.entries!!,
+                    getFilteredList(bookings.data?.entries!!),
                     if (bookings.data.pageNumber!! < bookings.data.totalPages!!) params.key + 1 else null
                 )
-                //userBookingsLiveData.postValue(it)
             })
     }
 

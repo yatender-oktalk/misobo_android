@@ -36,7 +36,6 @@ class TalktoExpertsHomeFragment : Fragment() {
     private lateinit var bookingsListAdapter: BookingsListAdapter
     private lateinit var userBookingsSection: BookingsRecyclerItem
     private lateinit var expertsViewPagerItem: ExpertsViewPagerItem
-
     private lateinit var userBookingsToggle: ToggleGroup
 
     override fun onCreateView(
@@ -84,9 +83,7 @@ class TalktoExpertsHomeFragment : Fragment() {
                     ?.add(slotDialog, null)?.commit()
             }
         }, {
-
-        }
-        )
+        })
 
         //User Bookings
         userBookingsSection = BookingsRecyclerItem({ ratingPayload ->
@@ -100,20 +97,15 @@ class TalktoExpertsHomeFragment : Fragment() {
             slotDialog.arguments = bundle
             activity?.supportFragmentManager?.beginTransaction()
                 ?.add(slotDialog, null)?.commit()
-        },{
+        }, {
             val sendIntent = Intent("android.intent.action.MAIN")
             sendIntent.component = ComponentName("com.whatsapp", "com.whatsapp.Conversation")
-            sendIntent.putExtra("jid", PhoneNumberUtils.stripSeparators("9809740740") + "@s.whatsapp.net")
+            sendIntent.putExtra(
+                "jid",
+                PhoneNumberUtils.stripSeparators("+919809740740") + "@s.whatsapp.net"
+            )
             context?.startActivity(sendIntent)
-
-           /* val url = "https://api.whatsapp.com/send?phone=9809740740"
-            val i = Intent(Intent.ACTION_VIEW)
-            i.setPackage("com.whatsapp")
-            i.putExtra(Intent.EXTRA_TEXT, "YOUR TEXT");
-            i.data = Uri.parse(url)
-            startActivity(i)*/
         })
-
 
         userBookingsToggle = ToggleGroup()
         userBookingsToggle.add(userBookingsSection)
@@ -126,8 +118,6 @@ class TalktoExpertsHomeFragment : Fragment() {
                     "stateSize2",
                     userBookingsSection.bookingsListAdapter.currentList?.size.toString()
                 )
-
-                //viewModel.userBookingsLiveData.value.
             } else {
                 userBookingsToggle.hide()
             }

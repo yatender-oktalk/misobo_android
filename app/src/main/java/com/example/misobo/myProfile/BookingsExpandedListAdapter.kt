@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.user_bookings_layout.view.expertNameTextVi
 import java.text.SimpleDateFormat
 import java.util.*
 
-class BookingsListAdapter(
+class BookingsExpandedListAdapter(
     private val submitRating: (UserBookings.Entry?, Int) -> Unit,
     private val needHelpClicked: () -> Unit
 ) :
@@ -52,7 +52,7 @@ class BookingsListAdapter(
             RATING_VIEW_TYPE -> {
                 RatingViewHolder(
                     layoutInflator.inflate(
-                        R.layout.submit_ratings_item,
+                        R.layout.submit_ratings_expanded,
                         parent,
                         false
                     )
@@ -61,7 +61,7 @@ class BookingsListAdapter(
             BOOKINGS_VIEW_TYPE -> {
                 BookingViewHolder(
                     layoutInflator.inflate(
-                        R.layout.user_bookings_layout,
+                        R.layout.user_bookings_layout_expanded,
                         parent,
                         false
                     )
