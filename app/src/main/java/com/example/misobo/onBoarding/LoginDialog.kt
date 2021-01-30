@@ -24,6 +24,7 @@ import com.example.misobo.talkToExperts.viewModels.MobileRegistration
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.jakewharton.rxbinding2.widget.RxTextView
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.login_bottom_sheet.*
@@ -90,6 +91,11 @@ class LoginDialog : BottomSheetDialogFragment() {
         })
 
         sendOtpButton.setOnClickListener {
+            val firebaseAnalytics = FirebaseAnalytics.getInstance(requireContext())
+            val  bundle =  Bundle();
+            bundle.putString("otp", "");
+            firebaseAnalytics.logEvent("login_register_tap", bundle);
+
             if (!otpText.text.isNullOrEmpty() || !otpText.text.isNullOrBlank()) {
                 viewModel.mobileNumber.postValue(otpText.text.toString())
                 val registrationModel =

@@ -26,6 +26,7 @@ import com.example.misobo.talkToExperts.viewModels.ExpertListState
 import com.example.misobo.talkToExperts.viewModels.TalkToExpertsViewModel
 import com.example.misobo.utils.SharedPreferenceManager
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.gson.JsonObject
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
@@ -52,6 +53,10 @@ class MindFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        val firebaseAnalytics = FirebaseAnalytics.getInstance(requireContext())
+
+       // firebaseAnalytics.logEvent("checking" , null)
 
         val adapter = GroupAdapter<ViewHolder>()
         val helloSection = Section()
@@ -96,6 +101,10 @@ class MindFragment : Fragment() {
             when (state) {
                 is ExpertListState.Success -> {
                     talkToExpertsSection.add(TalkToTherapistItem(state.expertList, {
+                        val bundle = Bundle();
+                        bundle.putString("explore", "");
+                        firebaseAnalytics.logEvent("talk_to_expert", bundle);
+
                         startActivity(Intent(requireContext(), TalkToExpertActivity::class.java))
                     }, {
                         talkToExpertsViewModel.selectedExpertLiveDate.postValue(it)
@@ -117,13 +126,13 @@ class MindFragment : Fragment() {
         })
 
         taskForTheDayItem = TasksForTheDayItems({ model ->
-            mindViewModel.playMusicLiveData.postValue(
-                model
-            )
+            mindViewModel.playMusicLiveData.postValue(model)
             activity?.supportFragmentManager?.beginTransaction()
                 ?.add(R.id.mainContainer, MusicPlayerFragment())
                 ?.addToBackStack(null)?.commit()
         }, {
+            val firebaseAnalytics = FirebaseAnalytics.getInstance(requireContext())
+            firebaseAnalytics.logEvent("view_task", null);
             startActivity(Intent(activity, AllMusicActivity::class.java))
         })
 

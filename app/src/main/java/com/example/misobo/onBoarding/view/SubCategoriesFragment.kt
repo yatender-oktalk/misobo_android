@@ -14,6 +14,7 @@ import com.example.misobo.onBoarding.models.CategoriesModel
 import com.example.misobo.onBoarding.models.CategoriesRequestModel
 import com.example.misobo.onBoarding.viewModels.OnBoardingViewModel
 import com.example.misobo.onBoarding.viewModels.ResponseAction
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
@@ -72,6 +73,20 @@ class SubCategoriesFragment : Fragment() {
 
         subCategoriesContinueButton.setOnClickListener {
             if (onBoardingViewModel.subCategorySelectedPosition.value != -1) {
+                val firebaseAnalytics = FirebaseAnalytics.getInstance(requireContext())
+                val bundle = Bundle()
+                val category = onBoardingViewModel.categories.value?.data?.get(
+                    onBoardingViewModel.categorySelectedPosition.value ?: -1
+                )?.name
+
+                val selectedSubCategory =
+                    subCategory?.get(onBoardingViewModel.subCategorySelectedPosition.value ?: 0)
+                bundle.putString(
+                    category.toString().replace("\\s+", "_").toLowerCase(),
+                    selectedSubCategory.toString().replace("\\s+", "_").toLowerCase()
+                )
+
+                firebaseAnalytics.logEvent("user_interest", bundle);
                 onBoardingViewModel.saveSubCategories(
                     CategoriesRequestModel(
                         subCategories = listOf(

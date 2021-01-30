@@ -15,6 +15,7 @@ import com.example.misobo.talkToExperts.models.CaptureOrderPayload
 import com.example.misobo.talkToExperts.viewModels.TalkToExpertsViewModel
 import com.example.misobo.utils.SharedPreferenceManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.razorpay.PaymentResultListener
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -64,6 +65,8 @@ class MainActivity : AppCompatActivity(), PaymentResultListener {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.rewards -> {
+                    val firebaseAnalytics = FirebaseAnalytics.getInstance(this)
+                    firebaseAnalytics.logEvent("rewards_tap", null);
                     val fragment = RewardsFragment()
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.mainContainer, fragment, fragment.javaClass.simpleName)
@@ -71,6 +74,8 @@ class MainActivity : AppCompatActivity(), PaymentResultListener {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.profile -> {
+                    val firebaseAnalytics = FirebaseAnalytics.getInstance(this)
+                    firebaseAnalytics.logEvent("profile_tap", null);
                     val fragment = MyProfileFragment()
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.mainContainer, fragment, fragment.javaClass.simpleName)

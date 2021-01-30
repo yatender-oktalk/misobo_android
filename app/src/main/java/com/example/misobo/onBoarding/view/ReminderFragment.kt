@@ -16,6 +16,7 @@ import com.example.misobo.utils.Util
 import com.example.misobo.onBoarding.viewModels.OnBoardingViewModel
 import com.example.misobo.onBoarding.viewModels.ReminderTime
 import com.example.misobo.utils.SharedPreferenceManager
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.fragment_reminder.*
 
@@ -41,6 +42,11 @@ class ReminderFragment : Fragment() {
         reminderBackIcon.setOnClickListener { activity?.onBackPressed() }
 
         saveReminderButton.setOnClickListener {
+            val firebaseAnalytics = FirebaseAnalytics.getInstance(requireContext())
+            val bundle = Bundle();
+            bundle.putString("save_reminder", "");
+            firebaseAnalytics.logEvent("reminder", bundle);
+
             onBoardingViewModel.reminderTime.postValue(
                 ReminderTime.SelectedTime(
                     String.format("%02d", hourPicker.value),
@@ -66,6 +72,11 @@ class ReminderFragment : Fragment() {
         })
 
         laterTextView.setOnClickListener {
+            val firebaseAnalytics = FirebaseAnalytics.getInstance(requireContext())
+            val bundle = Bundle();
+            bundle.putString("do_later", "");
+            firebaseAnalytics.logEvent("reminder", bundle);
+
             SharedPreferenceManager.setOnBoarded(true)
             startActivity(Intent(context, MainActivity::class.java))
             activity?.finish()

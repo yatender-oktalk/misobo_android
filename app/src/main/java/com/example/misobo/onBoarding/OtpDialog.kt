@@ -235,9 +235,9 @@ class OtpDialog : BottomSheetDialogFragment() {
                     Misobo.instance.sendFcmToken()
                     if (state.profileResponseModel.isNewUser != true) {
                         startActivity(Intent(context, MisoboMembersActivity::class.java))
-                        activity?.finish()
+
                         //startActivity(Intent(context, MainActivity::class.java))
-                        //activity?.finish()
+                        activity?.finish()
                     } else {
                         startActivity(Intent(context, MisoboMembersActivity::class.java))
                         activity?.finish()

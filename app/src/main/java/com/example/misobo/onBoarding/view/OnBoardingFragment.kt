@@ -72,6 +72,10 @@ class OnBoardingFragment : Fragment() {
         }
 
         registerText.setOnClickListener {
+            val firebaseAnalytics = FirebaseAnalytics.getInstance(requireContext())
+            val  bundle =  Bundle();
+            bundle.putString("source", "home");
+            firebaseAnalytics.logEvent("login_register_tap_main", bundle);
 
             val loginDialog =
                 LoginDialog()
