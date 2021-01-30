@@ -37,10 +37,20 @@ class SubCategoriesFragment : Fragment() {
 
         subCategoriesRecyclerView.adapter = groupAdapter
         val subCategory = onBoardingViewModel.getSubCategory()
-        categoryNameTextView.text =
-            onBoardingViewModel.categories.value?.data?.get(
-                onBoardingViewModel.categorySelectedPosition.value ?: -1
-            )?.name ?: ""
+        categoryNameTextView.text = when (onBoardingViewModel.categories.value?.data?.get(
+            onBoardingViewModel.categorySelectedPosition.value ?: -1
+        )?.name) {
+            "Reduce Stress" -> "What stresses you the most?"
+            "Reduce Anxiety " -> "What makes you anxious?"
+            "Negativity " -> "What brings in negativity?"
+            "Depression " -> "Which area of life brings sadness for you?"
+            "Sound Sleep" -> "What bothers your sleep the most?"
+            "Feel Empowered " -> "Feel Empowered"
+            "Parent Concerns" -> "I am a Parent"
+            "Teen Concerns" -> "I am a teen"
+            else -> ""
+        }
+
         inflateSubCategory(subCategory, onBoardingViewModel.subCategorySelectedPosition.value ?: -1)
 
         subCategoriesBackIcon.setOnClickListener {

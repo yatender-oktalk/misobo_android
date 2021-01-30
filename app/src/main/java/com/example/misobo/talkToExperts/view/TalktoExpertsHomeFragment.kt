@@ -134,9 +134,9 @@ class TalktoExpertsHomeFragment : Fragment() {
             }
         })
 
+        viewModel.getSlotsEncrypted()
+
         val expertsSection = Section()
-
-
         viewModel.categoriesExpertLiveData.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is CategoriesState.Success -> {

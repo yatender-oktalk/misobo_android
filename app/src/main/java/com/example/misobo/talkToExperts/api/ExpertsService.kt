@@ -25,7 +25,10 @@ interface ExpertsService {
 
     @Headers("Accept: application/json", "Content-Type: application/json")
     @GET("api/category_experts/{category_id}")
-    fun getCategoryExpertsList(@Path(value = "category_id") catgId: Int?,@Query("page") pageNo: Int): Observable<ExpertModel>
+    fun getCategoryExpertsList(
+        @Path(value = "category_id") catgId: Int?,
+        @Query("page") pageNo: Int
+    ): Observable<ExpertModel>
 
     @Headers("Accept: application/json", "Content-Type: application/json")
     @GET("api/experts")
@@ -79,7 +82,7 @@ interface ExpertsService {
     @GET("api/user/{userId}/expert_bookings")
     fun fetchBookings(
         @Path(value = "userId") userId: String,
-        @Query(value = "page") pageNumber:Int
+        @Query(value = "page") pageNumber: Int
     ): Observable<UserBookings>
 
     @Headers("Accept: application/json", "Content-Type: application/json")
@@ -88,8 +91,11 @@ interface ExpertsService {
         @Body payload: RatingPayload
     ): Observable<RatingResponse>
 
+    @Headers("Accept: application/json", "Content-Type: application/json")
+    @GET(".")
+    fun slotList(@Query(value = "param") payload: String): Observable<Unit>
+
     object Creator {
-        private val token = SharedPreferenceManager.getUser()?.data?.token ?: ""
         val service: ExpertsService
             get() {
                 val retrofit = Retrofit.Builder()
@@ -107,6 +113,21 @@ interface ExpertsService {
                                         .build()
                                 )
                             }
+                            .build()
+                    )
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .build()
+                return retrofit.create(ExpertsService::class.java)
+            }
+
+        val encryptService: ExpertsService
+            get() {
+                val retrofit = Retrofit.Builder()
+                    .baseUrl(BuildConfig.MANGALPOOJAN_BASE_URL)
+                    .client(
+                        OkHttpClient.Builder()
+                            .addNetworkInterceptor(StethoInterceptor())
                             .build()
                     )
                     .addConverterFactory(GsonConverterFactory.create())

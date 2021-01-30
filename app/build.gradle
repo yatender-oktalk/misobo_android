@@ -5,14 +5,13 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
-
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
 
     defaultConfig {
         applicationId "com.example.misobo"
-        minSdkVersion 24
+        minSdkVersion 26
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -26,8 +25,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 
             buildConfigField "String", "MISOBO_BASE_URL", "\"http://13.233.135.37:4000\""
-
-
+            buildConfigField "String", "MANGALPOOJAN_BASE_URL", "\"https://mangalpoojan.com/mp/batched/api/\""
         }
         release {
             minifyEnabled false
@@ -35,7 +33,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 
             buildConfigField "String", "MISOBO_BASE_URL", "\"http://13.233.135.37:4000/\""
-
+            buildConfigField "String", "MANGALPOOJAN_BASE_URL", "\"https://mangalpoojan.com/mp/batched/api/\""
         }
     }
 
@@ -175,7 +173,4 @@ dependencies {
     //Auto sms verification
     implementation "com.google.android.gms:play-services-auth:17.0.0"
     implementation "com.google.android.gms:play-services-auth-api-phone:17.1.0"
-
-
-
 }

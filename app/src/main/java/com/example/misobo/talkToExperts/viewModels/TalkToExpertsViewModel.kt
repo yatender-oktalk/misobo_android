@@ -1,5 +1,6 @@
 package com.example.misobo.talkToExperts.viewModels
 
+import android.util.Base64
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,13 +15,15 @@ import com.example.misobo.talkToExperts.api.ExpertsService
 import com.example.misobo.talkToExperts.models.*
 import com.example.misobo.talkToExperts.pagination.BookingsDataSourceFactory
 import com.example.misobo.talkToExperts.pagination.ExpertsDataSourceFactory
-import com.example.misobo.utils.ErrorHandler
-import com.example.misobo.utils.LiveSharedPreference
-import com.example.misobo.utils.SharedPreferenceManager
-import com.example.misobo.utils.SingleLiveEvent
+import com.example.misobo.utils.*
+import com.example.misobo.utils.Crypt.encodeKey
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import javax.crypto.Cipher
+import javax.crypto.spec.IvParameterSpec
+import javax.crypto.spec.SecretKeySpec
+
 
 class TalkToExpertsViewModel : ViewModel() {
 
@@ -67,17 +70,70 @@ class TalkToExpertsViewModel : ViewModel() {
             .subscribe { categoriesExpertLiveData.postValue(it) })
     }
 
+    fun getSlotsEncrypted() {
+        /* val secretKey = byteArrayOf(
+             'q'.toByte(),
+             'J'.toByte(),
+             'P'.toByte(),
+             'A'.toByte(),
+             'i'.toByte(),
+             'W'.toByte(),
+             'm'.toByte(),
+             'y'.toByte(),
+             'E'.toByte(),
+             'W'.toByte(),
+             'h'.toByte(),
+             'B'.toByte(),
+             'R'.toByte(),
+             '3'.toByte(),
+             'n'.toByte(),
+             'T'.toByte()
+         )
+ */
+        //"qJPAiWmyEWhBR3nT"
+        val secretKey = "qJPAiWmyEWhBR3nT"
+        val encodedBase64Key = encodeKey(secretKey)
+        val toEncrypt = "getExpertSlotsByDate&expert_id=32&date=2021-02-01"
+        val payload = AESUtils.encrypt("action=getExpertSlotsByDate&expert_id=32&date=2021-02-01")
+
+        //encodedBase64Key.
+        val encrStr = Crypt.encrypt(toEncrypt, encodedBase64Key);
+        //System.out.println(“Cipher Text: Encryption of str = “ + encrStr);
+        compositeDisposable.add(
+            ExpertsService.Creator.encryptService.slotList(encrStr)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({}, {})
+        )
+    }
+
+    fun encrypt(params: String): String {
+        val secretKeySpec = SecretKeySpec(params.toByteArray(), "AES")
+        val iv = params.toByteArray(charset("UTF8"))
+        /*val charArray = params.toCharArray()
+        for (i in 0 until charArray.size) {
+            iv[i] = charArray[i-1].toByte()
+        }*/
+        val ivParameterSpec = IvParameterSpec(iv)
+
+        val cipher = Cipher.getInstance("AES/GCM/NoPadding")
+        cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, ivParameterSpec)
+
+        val encryptedValue = cipher.doFinal(params.toByteArray())
+        return Base64.encodeToString(encryptedValue, Base64.DEFAULT)
+    }
+
     fun getCategoryExpertsList(id: Int) {
-       /* compositeDisposable.add(expertsService.getCategoryExpertsList(id)
-            .subscribeOn(Schedulers.io())
-            .map {
-                ExpertListState.Success(
-                    it
-                ) as ExpertListState
-            }
-            .startWith(ExpertListState.Loading)
-            .onErrorReturn { ExpertListState.Fail }
-            .subscribe { expertListLiveData.postValue(it) })*/
+        /* compositeDisposable.add(expertsService.getCategoryExpertsList(id)
+             .subscribeOn(Schedulers.io())
+             .map {
+                 ExpertListState.Success(
+                     it
+                 ) as ExpertListState
+             }
+             .startWith(ExpertListState.Loading)
+             .onErrorReturn { ExpertListState.Fail }
+             .subscribe { expertListLiveData.postValue(it) })*/
     }
 
     fun getAllExpertsList() {
