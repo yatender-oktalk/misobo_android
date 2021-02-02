@@ -1,5 +1,6 @@
 package com.example.misobo.mind.items
 
+import android.view.View
 import androidx.paging.PagedList
 import com.example.misobo.R
 import com.example.misobo.mind.models.MusicResponseModel
@@ -24,10 +25,16 @@ class TasksForTheDayItems(
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
 
-        musicListAdapter.notifyDataSetChanged()
         viewHolder.itemView.musicRecycler.adapter = musicListAdapter
-        if (this::musicEntries.isInitialized)
+        if (this::musicEntries.isInitialized) {
             musicListAdapter.submitList(musicEntries)
+
+            /* if (musicEntries.isNullOrEmpty()) {
+                 viewHolder.itemView.root.visibility = View.GONE
+             } else {
+                 viewHolder.itemView.root.visibility = View.VISIBLE
+             }*/
+        }
 
         viewHolder.itemView.viewAll.setOnClickListener {
             viewAllClick.invoke()

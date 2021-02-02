@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.misobo.R
 import com.example.misobo.talkToExperts.models.UserBookings
+import com.example.misobo.utils.Util
 import kotlinx.android.synthetic.main.submit_ratings_item.view.*
 import kotlinx.android.synthetic.main.user_bookings_layout.view.*
 import kotlinx.android.synthetic.main.user_bookings_layout.view.coinsNeeded
@@ -85,7 +86,7 @@ class BookingsListAdapter(
                 inflateView(holder, position)
             }
             is BookingViewHolder -> {
-                holder.itemView.expertNameTextView.text = getItem(position)?.expert?.name
+                holder.itemView.expertNameTextView.text = Util.toTitleCase(getItem(position)?.expert?.name?:"")
                 holder.itemView.expertCategory.text =
                     getItem(position)?.expert?.qualification ?: ""
 
@@ -128,7 +129,7 @@ class BookingsListAdapter(
 
     private fun inflateView(viewHolder: RecyclerView.ViewHolder, position: Int) {
         var userRating = 0
-        viewHolder.itemView.expertNameTextView.text = getItem(position)?.expert?.name
+        viewHolder.itemView.expertNameTextView.text = Util.toTitleCase(getItem(position)?.expert?.name?:"")
 
         viewHolder.itemView.submitRatingText.setOnClickListener {
             submitRating.invoke(getItem(position), userRating)

@@ -52,7 +52,7 @@
             android:alpha=".7"
             android:fontFamily="@font/manrope_medium"
             android:lineSpacingExtra="14sp"
-            android:text="to start your misobo journey"
+            android:text="to start your misohe journey"
             android:textColor="#4d426d"
             android:textSize="16sp"
             android:textStyle="normal"

@@ -44,7 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/manrope_extrabold"
-        android:text="Without Misohe"
+        android:text="Without misohe"
         android:textColor="@color/colorAccent"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@id/normalUsersCloud"
@@ -66,7 +66,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/manrope_extrabold"
-        android:text="With Misohe "
+        android:text="With misohe "
         android:textColor="@color/colorAccent"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@id/normalUsersTextView"
@@ -117,7 +117,7 @@
         android:layout_marginBottom="49dp"
         android:gravity="center"
         android:visibility="invisible"
-        android:text="Astrology &amp; science backed wellness program"
+        android:text="Science backed wellness program"
         android:textColor="@color/colorAccent"
         app:layout_constraintBottom_toTopOf="@id/continueButton" />
 

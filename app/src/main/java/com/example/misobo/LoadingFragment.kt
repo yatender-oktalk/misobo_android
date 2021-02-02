@@ -21,7 +21,7 @@ class LoadingFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        activity?.bottomNavigationView?.visibility = View.GONE
+        activity?.bottomNavGroup?.visibility = View.GONE
         activity?.arcSeparator?.visibility = View.GONE
         activity?.arc?.visibility = View.GONE
 
@@ -36,7 +36,7 @@ class LoadingFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        activity?.bottomNavigationView?.visibility = View.VISIBLE
+        activity?.bottomNavGroup?.visibility = View.VISIBLE
         activity?.arcSeparator?.visibility = View.VISIBLE
         activity?.arc?.visibility = View.VISIBLE
     }

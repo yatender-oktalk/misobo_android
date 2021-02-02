@@ -16,6 +16,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+
+        <meta-data android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_misobo_cloud"/>
+
         <activity android:name=".myProfile.UserBookingsActivity"></activity>
         <activity android:name=".mind.view.AllMusicActivity" />
         <activity android:name=".SplashActivity">

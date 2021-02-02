@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnTouchListener
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -25,10 +26,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.custom_exo_player_controls.view.*
-import kotlinx.android.synthetic.main.custom_exo_player_controls.view.progressBar
 import kotlinx.android.synthetic.main.fragment_music_player.*
-import kotlinx.android.synthetic.main.music_recycler_item.view.*
 import java.util.concurrent.TimeUnit
+
 
 class MusicPlayerFragment : Fragment() {
 
@@ -48,11 +48,13 @@ class MusicPlayerFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        activity?.bottomNavigationView?.visibility = View.GONE
+        activity?.bottomNavGroup?.visibility = View.GONE
         activity?.arcSeparator?.visibility = View.GONE
         activity?.arc?.visibility = View.GONE
 
         mindViewModel.playMusicLiveData.observe(viewLifecycleOwner, Observer { musicModel ->
+
+
 
             Glide.with(requireContext()).load(musicModel.image)
                 .placeholder(R.drawable.music_gradient).into(backgroundImage)
@@ -88,6 +90,7 @@ class MusicPlayerFragment : Fragment() {
             breatheAnimation.playAnimation()
             simpleExoPlayer.clearVideoSurface()
             simpleExoPlayer.playWhenReady = true
+            exoPlayer.player!!.seekTo(musicModel.progress?.toLong()?:0 * simpleExoPlayer.duration / 100)
             simpleExoPlayer.addListener(object : Player.DefaultEventListener() {
                 override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
                     if (playWhenReady && playbackState == Player.STATE_READY) {
@@ -141,7 +144,7 @@ class MusicPlayerFragment : Fragment() {
             exoPlayer.progressBar.onStopTrackingTouch = stopTrackingListener
             exoPlayer.progressBar.onStartTrackingTouch = startTrackingListener
             exoPlayer.progressBar.onProgressChangedListener = progressChangedListener
-        })
+            exoPlayer.progressBar.setOnTouchListener(OnTouchListener { v, event -> true })        })
         crossIcon.setOnClickListener {
             activity?.onBackPressed()
         }
@@ -157,7 +160,7 @@ class MusicPlayerFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        activity?.bottomNavigationView?.visibility = View.VISIBLE
+        activity?.bottomNavGroup?.visibility = View.VISIBLE
         activity?.arcSeparator?.visibility = View.VISIBLE
         activity?.arc?.visibility = View.VISIBLE
     }

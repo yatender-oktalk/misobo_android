@@ -2,7 +2,7 @@
     <!-- Large red circle -->
     <item>
         <shape android:shape="oval">
-            <solid android:color="@color/colorAccent" />
+            <solid android:color="#ffffff" />
             <size
                 android:width="10dp"
                 android:height="10dp" />

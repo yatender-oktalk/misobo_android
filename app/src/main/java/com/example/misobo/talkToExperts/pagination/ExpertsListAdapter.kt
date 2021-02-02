@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.misobo.R
 import com.example.misobo.talkToExperts.models.ExpertModel
+import com.example.misobo.utils.Util
 import kotlinx.android.synthetic.main.experts_recycler_item.view.*
 
 class ExpertsListAdapter(private val callClicked: (ExpertModel.Expert?) -> Unit) :
@@ -48,7 +49,7 @@ class ExpertsListAdapter(private val callClicked: (ExpertModel.Expert?) -> Unit)
 
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
         //inflateView(holder, position)
-        viewHolder.itemView.expertName.text = getItem(position)?.name
+        viewHolder.itemView.expertName.text = Util.toTitleCase(getItem(position)?.name?:"")
         viewHolder.itemView.coinsNeeded.text = "${getItem(position)?.karmaCoinsNeeded ?: 0}/30 Min"
 
         viewHolder.itemView.expertCategory.text =

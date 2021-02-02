@@ -23,8 +23,6 @@ class Misobo : Application() {
     companion object {
         lateinit var instance: Misobo
         var authRelay: BehaviorSubject<AuthState> = BehaviorSubject.create()
-
-
     }
 
 
@@ -71,7 +69,8 @@ class Misobo : Application() {
                         }
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe({},{}))
+                        .subscribe({}, {})
+                    )
                 })
         }
     }

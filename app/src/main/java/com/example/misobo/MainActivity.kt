@@ -1,14 +1,24 @@
 package com.example.misobo
 
+import android.graphics.Color
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.WhichButton
+import com.afollestad.materialdialogs.actions.getActionButton
+import com.afollestad.materialdialogs.callbacks.onShow
+import com.example.misobo.blogs.BlogsDetailFragment
 import com.example.misobo.blogs.BlogsViewModel
 import com.example.misobo.home.HomeFragment
+import com.example.misobo.mind.view.ArticlesFragment
 import com.example.misobo.mind.view.MindFragment
 import com.example.misobo.mind.viewModels.MindViewModel
 import com.example.misobo.myProfile.MyProfileFragment
 import com.example.misobo.myProfile.ProfileViewModel
+import com.example.misobo.rewards.ClaimedRewardsFragment
 import com.example.misobo.rewards.RewardsFragment
 import com.example.misobo.rewards.RewardsViewModel
 import com.example.misobo.talkToExperts.models.CaptureOrderPayload
@@ -46,6 +56,7 @@ class MainActivity : AppCompatActivity(), PaymentResultListener {
     }
 
     private fun showHome() {
+        bottomNavGroup.visibility = View.VISIBLE
         if (SharedPreferenceManager.getUserProfile()?.data?.isBodyPackUnlocked == true || SharedPreferenceManager.getUserProfile()?.data?.isMindPackUnlocked == true) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.mainContainer, MindFragment()).commit()
@@ -107,27 +118,28 @@ class MainActivity : AppCompatActivity(), PaymentResultListener {
     }
 
     override fun onBackPressed() {
-
         val seletedItemId = bottomNavigationView.selectedItemId
-        if (R.id.home != seletedItemId) {
+        val frag = supportFragmentManager.findFragmentById(R.id.mainContainer)
+        if (R.id.home != seletedItemId && frag !is ClaimedRewardsFragment && frag !is ArticlesFragment && frag !is BlogsDetailFragment) {
             bottomNavigationView.selectedItemId = R.id.home
+            bottomNavGroup.visibility = View.VISIBLE
             //setHomeItem(this@MainActivity)
+        } else if (R.id.home == seletedItemId && bottomNavigationView.isVisible) {
+            MaterialDialog(this).show {
+                cornerRadius(16f)
+                title(text = "misohe")
+                message(text = "Are you sure you want to close this app?")
+                positiveButton(text = "Yes") {
+                    super.onBackPressed()
+                }
+                negativeButton(text = "Cancel") {
+                    dismiss()
+                }
+                    .onShow { it.getActionButton(WhichButton.NEGATIVE).updateTextColor(Color.GRAY) }
+                    .onShow { it.getActionButton(WhichButton.POSITIVE).updateTextColor(Color.GRAY) }
+            }
         } else {
             super.onBackPressed()
         }
-/*
-        MaterialDialog(this).show {
-            cornerRadius(16f)
-            title(text = "Misohe")
-            message(text = "Are you sure you want to close this app?")
-            positiveButton(text = "Yes") {
-                finish()
-            }
-            negativeButton(text = "Cancel") {
-                dismiss()
-            }
-                .onShow{ it.getActionButton(WhichButton.NEGATIVE).updateTextColor(Color.GRAY) }
-                .onShow { it.getActionButton(WhichButton.POSITIVE).updateTextColor(Color.GRAY) }
-        }*/
     }
 }

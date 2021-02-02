@@ -234,9 +234,9 @@ class OtpDialog : BottomSheetDialogFragment() {
                     SharedPreferenceManager.setUserProfile(state.profileResponseModel)
                     Misobo.instance.sendFcmToken()
                     if (state.profileResponseModel.isNewUser != true) {
-                        startActivity(Intent(context, MisoboMembersActivity::class.java))
+                        //startActivity(Intent(context, MisoboMembersActivity::class.java))
 
-                        //startActivity(Intent(context, MainActivity::class.java))
+                        startActivity(Intent(context, MainActivity::class.java))
                         activity?.finish()
                     } else {
                         startActivity(Intent(context, MisoboMembersActivity::class.java))

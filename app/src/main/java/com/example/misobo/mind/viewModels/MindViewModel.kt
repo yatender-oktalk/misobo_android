@@ -33,6 +33,8 @@ class MindViewModel : ViewModel() {
     private val liveSharedPreference =
         LiveSharedPreference(SharedPreferenceManager.sharedPreferences!!)
     lateinit var musicPagedList: LiveData<PagedList<MusicResponseModel.MusicModel>>
+    val packUnlockLiveData: MutableLiveData<Unit> = MutableLiveData()
+
 
     init {
         fetchAllMusic()
@@ -40,18 +42,17 @@ class MindViewModel : ViewModel() {
 
     fun getCoinsLiveData() = liveSharedPreference
 
-    private fun fetchAllMusic() {
+    fun fetchAllMusic() {
 
         val musicDataSourceFactory = MusicDataSourceFactory(
             compositeDisposable = compositeDisposable,
             networkService = mindService,
-            userId = SharedPreferenceManager.getUserProfile()?.data?.id.toString()
-        )
+            userId = SharedPreferenceManager.getUserProfile()?.data?.id.toString())
 
         val config = PagedList.Config.Builder()
-            .setPageSize(20)
-            .setInitialLoadSizeHint(5)
-            .setEnablePlaceholders(false)
+            .setPageSize(55)
+            .setInitialLoadSizeHint(55)
+            .setEnablePlaceholders(true)
             .build()
 
         musicPagedList = LivePagedListBuilder(musicDataSourceFactory, config).build()
@@ -61,10 +62,12 @@ class MindViewModel : ViewModel() {
         compositeDisposable.add(
             ProfileService.Creator.service.updatePack(userId, jsonObject)
                 .switchMap { ProfileService.Creator.service.getProfile(userId) }
-                .map { profileResponse -> SharedPreferenceManager.setUserProfile(profileResponse) }
+                .map { profileResponse -> SharedPreferenceManager.setUserProfile(profileResponse)
+                    packUnlockLiveData.postValue(Unit) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe()
+                .subscribe({
+                },{})
         )
     }
 

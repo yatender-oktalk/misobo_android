@@ -9,11 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.misobo.R
 import com.example.misobo.talkToExperts.models.UserBookings
-import kotlinx.android.synthetic.main.submit_ratings_item.view.*
-import kotlinx.android.synthetic.main.user_bookings_layout.view.*
+import com.example.misobo.utils.Util
+import kotlinx.android.synthetic.main.submit_ratings_expanded.view.*
 import kotlinx.android.synthetic.main.user_bookings_layout.view.coinsNeeded
 import kotlinx.android.synthetic.main.user_bookings_layout.view.expertCategory
 import kotlinx.android.synthetic.main.user_bookings_layout.view.expertNameTextView
+import kotlinx.android.synthetic.main.user_bookings_layout_expanded.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -68,9 +69,9 @@ class BookingsExpandedListAdapter(
                 )
             }
             else -> {
-                return EmptyViewHolder(
+                return SubmittedRatingsViewHolder(
                     layoutInflator.inflate(
-                        R.layout.empty_layout,
+                        R.layout.submitted_ratings_layout,
                         parent,
                         false
                     )
@@ -85,15 +86,15 @@ class BookingsExpandedListAdapter(
                 inflateView(holder, position)
             }
             is BookingViewHolder -> {
-                holder.itemView.expertNameTextView.text = getItem(position)?.expert?.name
+                holder.itemView.expertNameTextView.text =
+                    Util.toTitleCase(getItem(position)?.expert?.name ?: "")
                 holder.itemView.expertCategory.text =
                     getItem(position)?.expert?.qualification ?: ""
 
-                if (getItem(position)?.expert?.qualification?.length ?: 0 > 10) {
+                if (getItem(position)?.expert?.qualification?.length ?: 0 > 20) {
                     holder.itemView.expertCategory.text =
-                        getItem(position)?.expert?.qualification?.substring(0, 10) + "...";
+                        getItem(position)?.expert?.qualification?.substring(0, 20) + "...";
                 }
-
                 holder.itemView.expertsLanguage.text = getItem(position)?.expert?.language
                 holder.itemView.coinsNeeded.text =
                     getItem(position)?.expert?.karmaCoinsNeeded.toString()
@@ -105,7 +106,7 @@ class BookingsExpandedListAdapter(
                     .placeholder(R.color.colorAccent)
                     .into(holder.itemView.expertImages)
             }
-            is EmptyViewHolder -> {
+            is SubmittedRatingsViewHolder -> {
             }
         }
     }
@@ -122,13 +123,14 @@ class BookingsExpandedListAdapter(
         } else if (callCompleted != 1 && getItem(position)?.isRated == false) {
             return BOOKINGS_VIEW_TYPE
         } else {
-            return -1
+            return BOOKINGS_VIEW_TYPE
         }
     }
 
     private fun inflateView(viewHolder: RecyclerView.ViewHolder, position: Int) {
         var userRating = 0
-        viewHolder.itemView.expertNameTextView.text = getItem(position)?.expert?.name
+        viewHolder.itemView.expertNameTextView.text =
+            Util.toTitleCase(getItem(position)?.expert?.name ?: "")
 
         viewHolder.itemView.submitRatingText.setOnClickListener {
             submitRating.invoke(getItem(position), userRating)
@@ -139,84 +141,97 @@ class BookingsExpandedListAdapter(
             }
         }
 
+        Glide.with(viewHolder.itemView.context).load(getItem(position)?.expert?.image)
+            .placeholder(R.color.colorAccent)
+            .into(viewHolder.itemView.expertImage)
+
         viewHolder.itemView.star1.setOnClickListener {
             userRating = 1
             viewHolder.itemView.submitRatingText.text = "Submit Rating"
-            Glide.with(viewHolder.itemView.context).load(R.drawable.ratings_rated_star)
-                .into(viewHolder.itemView.star1)
-            Glide.with(viewHolder.itemView.context).load(R.drawable.rating_unrated)
-                .into(viewHolder.itemView.star2)
-            Glide.with(viewHolder.itemView.context).load(R.drawable.rating_unrated)
-                .into(viewHolder.itemView.star3)
-            Glide.with(viewHolder.itemView.context).load(R.drawable.rating_unrated)
-                .into(viewHolder.itemView.star4)
-            Glide.with(viewHolder.itemView.context).load(R.drawable.rating_unrated)
-                .into(viewHolder.itemView.star5)
+            inflateStarView(
+                viewHolder,
+                R.drawable.ratings_rated_star,
+                R.drawable.rating_unrated,
+                R.drawable.rating_unrated,
+                R.drawable.rating_unrated,
+                R.drawable.rating_unrated
+            )
         }
         viewHolder.itemView.star2.setOnClickListener {
             userRating = 2
             viewHolder.itemView.submitRatingText.text = "Submit Rating"
-            Glide.with(viewHolder.itemView.context).load(R.drawable.ratings_rated_star)
-                .into(viewHolder.itemView.star1)
-            Glide.with(viewHolder.itemView.context).load(R.drawable.ratings_rated_star)
-                .into(viewHolder.itemView.star2)
-            Glide.with(viewHolder.itemView.context).load(R.drawable.rating_unrated)
-                .into(viewHolder.itemView.star3)
-            Glide.with(viewHolder.itemView.context).load(R.drawable.rating_unrated)
-                .into(viewHolder.itemView.star4)
-            Glide.with(viewHolder.itemView.context).load(R.drawable.rating_unrated)
-                .into(viewHolder.itemView.star5)
-
+            inflateStarView(
+                viewHolder,
+                R.drawable.ratings_rated_star,
+                R.drawable.ratings_rated_star,
+                R.drawable.rating_unrated,
+                R.drawable.rating_unrated,
+                R.drawable.rating_unrated
+            )
         }
         viewHolder.itemView.star3.setOnClickListener {
             userRating = 3
             viewHolder.itemView.submitRatingText.text = "Submit Rating"
-            Glide.with(viewHolder.itemView.context).load(R.drawable.ratings_rated_star)
-                .into(viewHolder.itemView.star1)
-            Glide.with(viewHolder.itemView.context).load(R.drawable.ratings_rated_star)
-                .into(viewHolder.itemView.star2)
-            Glide.with(viewHolder.itemView.context).load(R.drawable.ratings_rated_star)
-                .into(viewHolder.itemView.star3)
-            Glide.with(viewHolder.itemView.context).load(R.drawable.rating_unrated)
-                .into(viewHolder.itemView.star4)
-            Glide.with(viewHolder.itemView.context).load(R.drawable.rating_unrated)
-                .into(viewHolder.itemView.star5)
+            inflateStarView(
+                viewHolder,
+                R.drawable.ratings_rated_star,
+                R.drawable.ratings_rated_star,
+                R.drawable.ratings_rated_star,
+                R.drawable.rating_unrated,
+                R.drawable.rating_unrated
+            )
         }
 
         viewHolder.itemView.star4.setOnClickListener {
             userRating = 4
             viewHolder.itemView.submitRatingText.text = "Submit Rating"
-            Glide.with(viewHolder.itemView.context).load(R.drawable.ratings_rated_star)
-                .into(viewHolder.itemView.star1)
-            Glide.with(viewHolder.itemView.context).load(R.drawable.ratings_rated_star)
-                .into(viewHolder.itemView.star2)
-            Glide.with(viewHolder.itemView.context).load(R.drawable.ratings_rated_star)
-                .into(viewHolder.itemView.star3)
-            Glide.with(viewHolder.itemView.context).load(R.drawable.ratings_rated_star)
-                .into(viewHolder.itemView.star4)
-            Glide.with(viewHolder.itemView.context).load(R.drawable.rating_unrated)
-                .into(viewHolder.itemView.star5)
+            inflateStarView(
+                viewHolder,
+                R.drawable.ratings_rated_star,
+                R.drawable.ratings_rated_star,
+                R.drawable.ratings_rated_star,
+                R.drawable.ratings_rated_star,
+                R.drawable.rating_unrated
+            )
         }
         viewHolder.itemView.star5.setOnClickListener {
             userRating = 5
             viewHolder.itemView.submitRatingText.text = "Submit Rating"
-            Glide.with(viewHolder.itemView.context).load(R.drawable.ratings_rated_star)
-                .into(viewHolder.itemView.star1)
-            Glide.with(viewHolder.itemView.context).load(R.drawable.ratings_rated_star)
-                .into(viewHolder.itemView.star2)
-            Glide.with(viewHolder.itemView.context).load(R.drawable.ratings_rated_star)
-                .into(viewHolder.itemView.star3)
-            Glide.with(viewHolder.itemView.context).load(R.drawable.ratings_rated_star)
-                .into(viewHolder.itemView.star4)
-            Glide.with(viewHolder.itemView.context).load(R.drawable.ratings_rated_star)
-                .into(viewHolder.itemView.star5)
+            inflateStarView(
+                viewHolder,
+                R.drawable.ratings_rated_star,
+                R.drawable.ratings_rated_star,
+                R.drawable.ratings_rated_star,
+                R.drawable.ratings_rated_star,
+                R.drawable.ratings_rated_star
+            )
         }
+    }
+
+    private fun inflateStarView(
+        viewHolder: RecyclerView.ViewHolder,
+        star1: Int,
+        star2: Int,
+        star3: Int,
+        star4: Int,
+        star5: Int
+    ) {
+        Glide.with(viewHolder.itemView.context).load(star1)
+            .into(viewHolder.itemView.star1)
+        Glide.with(viewHolder.itemView.context).load(star2)
+            .into(viewHolder.itemView.star2)
+        Glide.with(viewHolder.itemView.context).load(star3)
+            .into(viewHolder.itemView.star3)
+        Glide.with(viewHolder.itemView.context).load(star4)
+            .into(viewHolder.itemView.star4)
+        Glide.with(viewHolder.itemView.context).load(star5)
+            .into(viewHolder.itemView.star5)
     }
 
     inner class RatingViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
     inner class BookingViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
-    inner class EmptyViewHolder(view: View) : RecyclerView.ViewHolder(view)
+    inner class SubmittedRatingsViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
 }

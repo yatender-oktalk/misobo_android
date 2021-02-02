@@ -34,7 +34,7 @@ class ArticlesFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        activity?.bottomNavigationView?.visibility = View.GONE
+        activity?.bottomNavGroup?.visibility = View.GONE
         activity?.arcSeparator?.visibility = View.GONE
         activity?.arc?.visibility = View.GONE
 
@@ -58,7 +58,7 @@ class ArticlesFragment : Fragment() {
                                     state.blogsModel.data.get(it)
                                 ))
                             activity?.supportFragmentManager?.beginTransaction()
-                                ?.add(R.id.mainContainer, BlogsDetailFragment.newInstance(it))
+                                ?.replace(R.id.mainContainer, BlogsDetailFragment.newInstance(it))
                                 ?.addToBackStack(null)?.commit()
                         })
                     }
@@ -75,7 +75,7 @@ class ArticlesFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        activity?.bottomNavigationView?.visibility = View.VISIBLE
+        activity?.bottomNavGroup?.visibility = View.VISIBLE
         activity?.arcSeparator?.visibility = View.VISIBLE
         activity?.arc?.visibility = View.VISIBLE
     }

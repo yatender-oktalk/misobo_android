@@ -10,7 +10,8 @@ import java.util.*
 class PageKeyedBookingsDataSource(
     private val compositeDisposable: CompositeDisposable,
     private val networkService: ExpertsService,
-    private val userId: String
+    private val userId: String,
+    private val showAllBookings: Boolean
 ) : PageKeyedDataSource<Int, UserBookings.Entry>() {
 
     override fun loadInitial(
@@ -22,7 +23,9 @@ class PageKeyedBookingsDataSource(
             networkService.fetchBookings(pageNumber = 1, userId = userId)
                 .subscribe({ bookings ->
                     callback.onResult(
-                        getFilteredList(bookings.data?.entries!!),
+                        if (showAllBookings) bookings.data?.entries!!
+                        else
+                            getFilteredList(bookings.data?.entries!!),
                         null,
                         if (bookings.data.pageNumber!! < bookings.data.totalPages!!) 2 else null
                     )
@@ -54,7 +57,10 @@ class PageKeyedBookingsDataSource(
         )
             .subscribe { bookings ->
                 callback.onResult(
-                    getFilteredList(bookings.data?.entries!!),
+                    getFilteredList(
+                        if (showAllBookings) bookings.data?.entries!!
+                        else bookings.data?.entries!!
+                    ),
                     if (bookings.data.pageNumber!! < bookings.data.totalPages!!) params.key + 1 else null
                 )
             })

@@ -16,9 +16,11 @@ import com.example.misobo.R
 import com.example.misobo.myProfile.ProfileViewModel
 import com.example.misobo.talkToExperts.viewModels.TalkToExpertsViewModel
 import com.example.misobo.utils.SharedPreferenceManager
+import com.example.misobo.utils.Util
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.firebase.analytics.FirebaseAnalytics
 import kotlinx.android.synthetic.main.book_success_dialog.*
 
 class BookSuccessDialog : BottomSheetDialogFragment() {
@@ -72,11 +74,18 @@ class BookSuccessDialog : BottomSheetDialogFragment() {
         )
 
         viewModel.selectedExpertLiveDate.observe(viewLifecycleOwner, Observer { response ->
-            nameTextView.text = response.name
+            nameTextView.text = Util.toTitleCase(response.name?:"")
             expertLanguage.text = response.language
             Glide.with(requireContext()).load(response.image).placeholder(R.color.colorAccent)
                 .into(dailyCheckinStatusImage)
-            expertCategory.text = response.qualification?:""
+            expertCategory.text = response.qualification ?: ""
+
+            if (context != null) {
+                val firebaseAnalytics = FirebaseAnalytics.getInstance(requireContext())
+                val bundle = Bundle()
+                bundle.putString(response.qualification?.toLowerCase()?.replace(" ","_"),"")
+                firebaseAnalytics.logEvent("booking", bundle);
+            }
         })
 
         okayButton.setOnClickListener {

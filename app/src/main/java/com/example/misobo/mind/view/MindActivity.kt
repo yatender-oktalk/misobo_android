@@ -12,7 +12,7 @@ import com.razorpay.PaymentResultListener
 
 class MindActivity : AppCompatActivity(), PaymentResultListener {
 
-    val talkToExpertsViewModel: TalkToExpertsViewModel by lazy {
+    private val talkToExpertsViewModel: TalkToExpertsViewModel by lazy {
         ViewModelProvider(this).get(
             TalkToExpertsViewModel::class.java
         )

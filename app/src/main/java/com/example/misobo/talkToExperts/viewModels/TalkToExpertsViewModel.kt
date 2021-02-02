@@ -239,11 +239,12 @@ class TalkToExpertsViewModel : ViewModel() {
             })
     }
 
-    fun getUserBookings(userId: String) {
+    fun getUserBookings(userId: String,showAllBookings: Boolean = false) {
         val bookingsDataSourceFactory = BookingsDataSourceFactory(
             compositeDisposable = compositeDisposable,
             networkService = expertsService,
-            userId = userId
+            userId = userId,
+            showAllBookings = showAllBookings
         )
 
         val config = PagedList.Config.Builder()

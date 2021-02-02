@@ -1,5 +1,6 @@
 package com.example.misobo.utils
 
+import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -18,7 +19,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             val notification = NotificationCompat.Builder(this)
                 .setContentTitle(remoteMessage.from)
                 .setContentText(it.body)
-                .setSmallIcon(R.drawable.misobo_icon)
+                .setLargeIcon(BitmapFactory.decodeResource(resources,R.drawable.ic_misobo_cloud))
+                .setSmallIcon(R.drawable.ic_misobo_cloud)
                 .build()
             val manager = NotificationManagerCompat.from(applicationContext)
             manager.notify(/*notification id*/0, notification)

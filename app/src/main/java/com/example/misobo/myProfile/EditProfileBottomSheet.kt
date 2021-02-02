@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
@@ -26,7 +27,9 @@ import com.google.gson.JsonObject
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.edit_profile_dialog.*
+import kotlinx.android.synthetic.main.edit_profile_dialog.editIcon
 import kotlinx.android.synthetic.main.edit_profile_dialog.profileImage
+import kotlinx.android.synthetic.main.fragment_my_profile.*
 
 class EditProfileBottomSheet : BottomSheetDialogFragment() {
 
@@ -50,8 +53,7 @@ class EditProfileBottomSheet : BottomSheetDialogFragment() {
             View.inflate(context, R.layout.edit_profile_dialog, null)
         dialog.setContentView(contentView)
         (contentView.parent as View).setBackgroundColor(
-            ContextCompat.getColor(requireContext(), android.R.color.transparent)
-        )
+            ContextCompat.getColor(requireContext(), android.R.color.transparent))
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -85,10 +87,11 @@ class EditProfileBottomSheet : BottomSheetDialogFragment() {
         crossButton.setOnClickListener { this.dismiss() }
 
         profileImage.setOnClickListener {
-            CropImage.activity()
-                .setGuidelines(CropImageView.Guidelines.ON)
-                .setCropShape(CropImageView.CropShape.OVAL)
-                .start(requireContext(), this)
+            openImageChooser()
+        }
+
+        editIcon.setOnClickListener {
+            openImageChooser()
         }
 
         editPencil.setOnClickListener {
@@ -102,14 +105,18 @@ class EditProfileBottomSheet : BottomSheetDialogFragment() {
         }
 
         saveChangesButton.setOnClickListener {
-            if (!nameEditText.text.isNullOrEmpty() && emailEditText.text.isNullOrEmpty()) {
+            if (!nameEditText.text.isNullOrEmpty() && !emailEditText.text.isNullOrEmpty()) {
                 val jsonObject = JsonObject()
                 jsonObject.addProperty("name", nameEditText.text.toString())
                 jsonObject.addProperty("email", emailEditText.text.toString())
                 profileViewModel.updateName(
-                    SharedPreferenceManager.getUserProfile()?.data?.id ?: 0,
-                    jsonObject
+                    SharedPreferenceManager.getUserProfile()?.data?.id ?: 0, jsonObject
                 )
+            } else {
+                if (nameEditText.text.isNullOrEmpty())
+                    Toast.makeText(context, "Please enter your name", Toast.LENGTH_SHORT).show()
+                if (emailEditText.text.isNullOrEmpty())
+                    Toast.makeText(context, "Please enter your email", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -118,6 +125,13 @@ class EditProfileBottomSheet : BottomSheetDialogFragment() {
                 .takeIf { it?.isNotEmpty() ?: false }
                 ?.map { (it as? BottomSheetDialogFragment)?.dismiss() }
         })
+    }
+
+    private fun openImageChooser() {
+        CropImage.activity()
+            .setGuidelines(CropImageView.Guidelines.ON)
+            .setCropShape(CropImageView.CropShape.OVAL)
+            .start(requireContext(), this);
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

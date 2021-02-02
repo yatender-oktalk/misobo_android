@@ -102,7 +102,7 @@ class TalktoExpertsHomeFragment : Fragment() {
             sendIntent.component = ComponentName("com.whatsapp", "com.whatsapp.Conversation")
             sendIntent.putExtra(
                 "jid",
-                PhoneNumberUtils.stripSeparators("+919809740740") + "@s.whatsapp.net"
+                PhoneNumberUtils.stripSeparators("919809740740") + "@s.whatsapp.net"
             )
             context?.startActivity(sendIntent)
         })

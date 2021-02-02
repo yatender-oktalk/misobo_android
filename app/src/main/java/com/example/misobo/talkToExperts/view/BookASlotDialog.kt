@@ -24,6 +24,7 @@ import com.example.misobo.talkToExperts.viewModels.SlotFetchState
 import com.example.misobo.talkToExperts.viewModels.TalkToExpertsViewModel
 import com.example.misobo.utils.AuthState
 import com.example.misobo.utils.SharedPreferenceManager
+import com.example.misobo.utils.Util
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -104,7 +105,7 @@ class BookASlotDialog : BottomSheetDialogFragment() {
         viewModel.selectedExpertLiveDate.observe(
             viewLifecycleOwner,
             androidx.lifecycle.Observer { expert ->
-                expertNameTexView.text = expert.name
+                expertNameTexView.text = Util.toTitleCase(expert.name ?: "")
                 expertLanguage.text = expert.language
                 expertCategoryTextView.text = expert.qualification ?: ""
                 Glide.with(requireContext()).load(expert.image).placeholder(R.color.colorAccent)
@@ -118,13 +119,6 @@ class BookASlotDialog : BottomSheetDialogFragment() {
                     is SlotFetchState.Success -> {
                         viewModel.slotSelectedLiveData.postValue(null)
                         inflateSlotsRecycler(state.slotList, -1)
-                        if (state.slotList.isEmpty()) {
-                            Toast.makeText(
-                                context,
-                                "Please select a different date.",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
                     }
                     is SlotFetchState.Loading -> {
 
@@ -199,6 +193,13 @@ class BookASlotDialog : BottomSheetDialogFragment() {
                     viewModel.slotSelectedLiveData.postValue(unixTime)
                     inflateSlotsRecycler(slotList, selPosition)
                 })
+        }
+        if (slotList.filter { it.isBooked?.not() ?: false }.isEmpty()) {
+            Toast.makeText(
+                context,
+                "All slots are Booked.Please select a different date.",
+                Toast.LENGTH_SHORT
+            ).show()
         }
         slotAdapter.add(section)
     }

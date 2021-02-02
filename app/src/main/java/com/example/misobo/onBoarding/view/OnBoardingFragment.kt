@@ -45,7 +45,7 @@ class OnBoardingFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val textList = listOf("mind", "body", "soul")
+        val textList = listOf("mind", "soul", "heal")
         val aniFade = AnimationUtils.loadAnimation(context, R.anim.mind_body_soul_anim)
 
         privacyTextView.setOnClickListener {

@@ -1,6 +1,7 @@
 package com.example.misobo.home
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.KeyEvent
 import androidx.fragment.app.Fragment
@@ -12,18 +13,26 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.WhichButton
+import com.afollestad.materialdialogs.actions.getActionButton
+import com.afollestad.materialdialogs.callbacks.onShow
+import com.example.misobo.Misobo
 import com.example.misobo.R
 import com.example.misobo.bmi.view.BmiActivity
 import com.example.misobo.mind.view.MindFragment
 import com.example.misobo.mind.viewModels.MindViewModel
 import com.example.misobo.myProfile.ProfileViewModel
 import com.example.misobo.onBoarding.KarmaCoinsLayoutFragment
+import com.example.misobo.utils.AuthState
 import com.example.misobo.utils.SharedPreferenceManager
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
+import io.reactivex.Observable
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.json.JSONObject
+import java.util.concurrent.TimeUnit
 
 class HomeFragment : Fragment() {
 
@@ -54,15 +63,28 @@ class HomeFragment : Fragment() {
             false
         }
 
+        /*val dialog = MaterialDialog(requireContext()).show {
+            cornerRadius(16f)
+            title(text = "Misohe")
+            message(text = "Congratulation.You have received 501 misohe coins as signup bonus.")
+        }
+
+        dialog.show()
+
+        Observable.timer(3, TimeUnit.SECONDS)
+            .subscribe {
+                dialog.hide()
+            }
+*/
         profileViewModel.nameToast.observe(viewLifecycleOwner, Observer {
-            Toast.makeText(context,"Name saved successfully",Toast.LENGTH_SHORT).show()
-        })
+                Toast.makeText(context, "Name saved successfully", Toast.LENGTH_SHORT).show()
+            })
 
         mindViewModel.getCoinsLiveData().observe(viewLifecycleOwner, Observer { profile ->
             fillName()
         })
 
-        activity?.bottomNavigationView?.visibility = View.VISIBLE
+        activity?.bottomNavGroup?.visibility = View.VISIBLE
         activity?.arcSeparator?.visibility = View.VISIBLE
         activity?.arc?.visibility = View.VISIBLE
 

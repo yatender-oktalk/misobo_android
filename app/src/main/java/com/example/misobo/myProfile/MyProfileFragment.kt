@@ -2,6 +2,7 @@ package com.example.misobo.myProfile
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.text.format.DateFormat
@@ -15,6 +16,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.WhichButton
+import com.afollestad.materialdialogs.actions.getActionButton
+import com.afollestad.materialdialogs.callbacks.onShow
 import com.bumptech.glide.Glide
 import com.example.misobo.Misobo
 import com.example.misobo.R
@@ -82,7 +87,7 @@ class MyProfileFragment : Fragment() {
         }
 
         profileViewModel.nameToast.observe(viewLifecycleOwner, Observer {
-            Toast.makeText(context, "Name saved successfully", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Profile saved successfully", Toast.LENGTH_SHORT).show()
         })
 
         profileViewModel.getProfileLiveData().observe(viewLifecycleOwner, Observer { model ->
@@ -107,8 +112,20 @@ class MyProfileFragment : Fragment() {
         }
 
         logoutTextView.setOnClickListener {
-            SharedPreferenceManager.clear()
-            Misobo.authRelay.onNext(AuthState.FAILED)
+            MaterialDialog(requireContext()).show {
+                cornerRadius(16f)
+                title(text = "Misohe")
+                message(text = "Are you sure you want to logout?")
+                positiveButton(text = "Yes") {
+                    SharedPreferenceManager.clear()
+                    Misobo.authRelay.onNext(AuthState.FAILED)
+                }
+                negativeButton(text = "Cancel") {
+                    dismiss()
+                }
+                    .onShow { it.getActionButton(WhichButton.NEGATIVE).updateTextColor(Color.GRAY) }
+                    .onShow { it.getActionButton(WhichButton.POSITIVE).updateTextColor(Color.GRAY) }
+            }
         }
 
         editProfileTextView.setOnClickListener {
@@ -196,11 +213,19 @@ class MyProfileFragment : Fragment() {
         })
 
         profileImage.setOnClickListener {
-            CropImage.activity()
-                .setGuidelines(CropImageView.Guidelines.ON)
-                .setCropShape(CropImageView.CropShape.OVAL)
-                .start(requireContext(), this);
+            openImageChooser()
         }
+
+        editIcon.setOnClickListener {
+            openImageChooser()
+        }
+    }
+
+    private fun openImageChooser() {
+        CropImage.activity()
+            .setGuidelines(CropImageView.Guidelines.ON)
+            .setCropShape(CropImageView.CropShape.OVAL)
+            .start(requireContext(), this);
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

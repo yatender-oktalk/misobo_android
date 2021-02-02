@@ -4,6 +4,7 @@ import android.view.View
 import com.bumptech.glide.Glide
 import com.example.misobo.R
 import com.example.misobo.talkToExperts.models.UserBookings
+import com.example.misobo.utils.Util
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.submit_ratings_item.view.*
@@ -11,7 +12,7 @@ import kotlinx.android.synthetic.main.submit_ratings_item.view.*
 class SubmitRatingItems(val it: UserBookings.Entry, val submitRating: (Int) -> Unit) : Item() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
         var userRating = 0
-        viewHolder.itemView.expertNameTextView.text = it.expert?.name
+        viewHolder.itemView.expertNameTextView.text = Util.toTitleCase(it.expert?.name ?: "")
 
         viewHolder.itemView.submitRatingText.setOnClickListener {
             submitRating.invoke(userRating)

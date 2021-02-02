@@ -22,7 +22,7 @@ class BmiHomeFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        activity?.bottomNavigationView?.visibility = View.GONE
+        activity?.bottomNavGroup?.visibility = View.GONE
         activity?.arcSeparator?.visibility = View.GONE
         activity?.arc?.visibility = View.GONE
 

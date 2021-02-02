@@ -77,8 +77,9 @@ class RewardsFragment : Fragment() {
                         ) {
                             rewardsViewModel.claimedRewardsList.postValue(state.claimedRewardsModel.data)
                             activity?.supportFragmentManager?.beginTransaction()
-                                ?.replace(R.id.mainContainer, ClaimedRewardsFragment())
-                                ?.addToBackStack(null)?.commit()
+                                ?.add(R.id.mainContainer, ClaimedRewardsFragment())
+                                ?.addToBackStack(null)?.commitAllowingStateLoss()
+
                         }
                     )
                 }

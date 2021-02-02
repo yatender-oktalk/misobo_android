@@ -12,7 +12,7 @@ class UnlockItems(val navigateToBody: (Boolean) -> Unit) : Item() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
         when (SharedPreferenceManager.getUserProfile()?.data?.isMindPackUnlocked) {
             true -> {
-                viewHolder.itemView.packTitle.text = "Body pack"
+                viewHolder.itemView.packTitle.text = "Soul & Heal Pack"
                 viewHolder.itemView.detailsText.text = "Daily Wellness Reminders"
                 viewHolder.itemView.rootLayout.background = ContextCompat.getDrawable(
                     viewHolder.containerView.context,

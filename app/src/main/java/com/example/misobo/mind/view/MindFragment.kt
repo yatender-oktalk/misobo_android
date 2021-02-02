@@ -25,6 +25,7 @@ import com.example.misobo.talkToExperts.view.TalkToExpertActivity
 import com.example.misobo.talkToExperts.viewModels.ExpertListState
 import com.example.misobo.talkToExperts.viewModels.TalkToExpertsViewModel
 import com.example.misobo.utils.SharedPreferenceManager
+import com.example.misobo.utils.ToggleGroup
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.gson.JsonObject
@@ -42,6 +43,7 @@ class MindFragment : Fragment() {
     private val loadingFragment = LoadingFragment()
     lateinit var curatedArticlesItem: CuratedArticlesItem
     lateinit var taskForTheDayItem: TasksForTheDayItems
+    private lateinit var taskForTheDayToggle: ToggleGroup
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -77,6 +79,7 @@ class MindFragment : Fragment() {
                     SharedPreferenceManager.getUser()?.data?.userId ?: 0, jsonObject
                 )
                 showSnackBar("Soul & Heal Pack Unlocked")
+                //talkToExpertsViewModel.getAllExpertsList()
 
                 //startActivity(Intent(context, BmiActivity::class.java))
             } else {
@@ -89,6 +92,10 @@ class MindFragment : Fragment() {
                 showSnackBar("Mind Pack Unlocked")
             }
             adapter.remove(unlockSection)
+        })
+
+        mindViewModel.packUnlockLiveData.observe(viewLifecycleOwner, Observer {
+            mindViewModel.musicPagedList.value?.dataSource?.invalidate()
         })
 
         mindViewModel.getCoinsLiveData().observe(viewLifecycleOwner, Observer { response ->
@@ -125,6 +132,7 @@ class MindFragment : Fragment() {
             }
         })
 
+        taskForTheDayToggle = ToggleGroup()
         taskForTheDayItem = TasksForTheDayItems({ model ->
             mindViewModel.playMusicLiveData.postValue(model)
             activity?.supportFragmentManager?.beginTransaction()
@@ -135,9 +143,14 @@ class MindFragment : Fragment() {
             firebaseAnalytics.logEvent("view_task", null);
             startActivity(Intent(activity, AllMusicActivity::class.java))
         })
+        taskForTheDayToggle.add(taskForTheDayItem)
 
         mindViewModel.musicPagedList.observe(viewLifecycleOwner, Observer { pagedList ->
             taskForTheDayItem.update(pagedList)
+            if (pagedList.isEmpty())
+                taskForTheDayToggle.hide()
+            else
+                taskForTheDayToggle.show()
         })
 
         profileViewModel.nameToast.observe(viewLifecycleOwner, Observer {
@@ -194,7 +207,7 @@ class MindFragment : Fragment() {
             if (SharedPreferenceManager.getUserProfile()?.data?.isMindPackUnlocked == false || SharedPreferenceManager.getUserProfile()?.data?.isBodyPackUnlocked == false)
                 add(unlockSection)
 
-            add(taskForTheDayItem)
+            add(taskForTheDayToggle)
             add(talkToExpertsSection)
             add(curatedArticlesItem)
         }
