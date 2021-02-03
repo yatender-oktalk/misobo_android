@@ -43,7 +43,7 @@
             app:layout_constraintTop_toTopOf="@id/progressBar"
             />
 
-        <com.example.misobo.arcseekbar.ArcSeekBar
+        <com.example.misohe.arcseekbar.ArcSeekBar
             android:id="@+id/progressBar"
             android:layout_width="match_parent"
             app:layout_constraintStart_toStartOf="parent"

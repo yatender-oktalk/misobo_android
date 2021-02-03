@@ -24,7 +24,7 @@
         app:tabTextAppearance="@style/CustomTextAppearanceTab"
         app:tabTextColor="#c9c9c9" />
 
-    <com.example.misobo.utils.DynamicViewPager
+    <com.example.misohe.utils.DynamicViewPager
         android:id="@+id/expertViewPager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
