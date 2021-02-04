@@ -66,12 +66,18 @@ class MusicListAdapter(private val onClick: (MusicResponseModel.MusicModel?, Int
         val progress = getItem(position)?.progress?.toFloat()
             ?.div(getItem(position)?.duration?.toFloat() ?: 0f)?.times(100)
 
-        if (progress?.toInt()!! > 0) {
+        if (progress?.toInt() ?: 0 > 0) {
             viewHolder.itemView.progressBar.visibility = View.VISIBLE
             viewHolder.itemView.progressBar.setProgress(progress?.toInt() ?: 0, true)
         } else {
             viewHolder.itemView.progressBar.visibility = View.GONE
         }
+
+        if (progress?.toInt() ?: 0 > 95) {
+            viewHolder.itemView.earnTextView.text = "Earned"
+        } else
+            viewHolder.itemView.earnTextView.text = "Earn"
+
     }
 
     inner class MusicViewHolder(view: View) : RecyclerView.ViewHolder(view)

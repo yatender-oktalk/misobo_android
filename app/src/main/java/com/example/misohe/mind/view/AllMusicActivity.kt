@@ -37,6 +37,22 @@ class AllMusicActivity : AppCompatActivity() {
             addItemDecoration(SpacesItemDecoration(Util.convertDpToPixels(8F, context), 2));
         }
 
+        mindViewModel.coinsAcquiredLiveData.observe(this, Observer { coins ->
+            if (coins.first) {
+                val bundle = Bundle()
+                bundle.putString("COINS", coins.second.toString())
+                val congratsFragment = CongratsFragment()
+                congratsFragment.arguments = bundle
+                supportFragmentManager.beginTransaction()
+                    .add(
+                        R.id.mainContainer,
+                        congratsFragment
+                    )
+                    .addToBackStack(null)
+                    .commit()
+            }
+        })
+
         backIcon.setOnClickListener { onBackPressed() }
         mindViewModel.musicPagedList.observe(this, Observer { pagedList ->
             musicListAdapter.submitList(pagedList)

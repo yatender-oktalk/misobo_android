@@ -157,7 +157,7 @@ class MusicPlayerFragment : Fragment() {
             exoPlayer.progressBar.onStopTrackingTouch = stopTrackingListener
             exoPlayer.progressBar.onStartTrackingTouch = startTrackingListener
             exoPlayer.progressBar.onProgressChangedListener = progressChangedListener
-            exoPlayer.progressBar.setOnTouchListener(OnTouchListener { v, event -> true })
+            //exoPlayer.progressBar.setOnTouchListener(OnTouchListener { v, event -> true })
         })
         crossIcon.setOnClickListener {
             activity?.onBackPressed()
