@@ -84,7 +84,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/karmaCoinsText"
-        tools:text="You earned 500 karma coins" />
+        tools:text="You earned 500 misohe coins" />
 
     <TextView
         android:id="@+id/comebackTommorowText"
@@ -101,7 +101,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:text="Come back tomorrow to earn \n
-more 500 karma coins" />
+more 500 misohe coins" />
 
     <Button
         android:id="@+id/okayButton"

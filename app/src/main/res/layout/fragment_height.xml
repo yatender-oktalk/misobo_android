@@ -94,7 +94,7 @@
         app:layout_constraintStart_toStartOf="@id/inchValue"
         app:layout_constraintTop_toBottomOf="@id/inchValue" />
 
-    <com.example.misobo.utils.RuleView
+    <com.misohe.misohe.utils.RuleView
         android:id="@+id/ruleView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

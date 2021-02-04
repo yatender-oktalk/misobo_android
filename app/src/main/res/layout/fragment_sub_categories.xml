@@ -5,87 +5,100 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    android:layoutAnimation="@anim/layout_animation_fade_enter"
-    android:clickable="true"
-    >
+    android:clickable="true">
 
     <ImageView
         android:id="@+id/waveImage"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_wave"
         android:scaleType="fitXY"
-        />
+        android:src="@drawable/ic_wave"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
-    <ImageView
-        android:id="@+id/subCategoriesBackIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="17dp"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/ic_arrow_back_24px"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/colorAccent" />
-
-    <ImageView
-        android:id="@+id/subCategoriesMisoboImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12.6dp"
-        android:src="@drawable/ic_misobo_cloud"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/subCategoriesBackIcon" />
-
-    <TextView
-        android:id="@+id/categoryNameTextView"
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24.9dp"
-        tools:text="Reduce Stress"
-        android:textSize="26sp"
-        android:textColor="@color/colorAccent"
-        android:fontFamily="@font/manrope_extrabold"
-        android:layout_marginStart="60dp"
-        android:layout_marginEnd="60dp"
-        android:gravity="center_horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/subCategoriesMisoboImage" />
+        android:layout_height="match_parent"
+        android:layoutAnimation="@anim/layout_animation_fade_enter">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/subCategoriesRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/categoryNameTextView"
-        app:layout_constraintBottom_toTopOf="@id/subCategoriesContinueButton"
-        />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Continue"
-        android:id="@+id/subCategoriesContinueButton"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:background="@drawable/rounded_button"
-        android:paddingTop="15dp"
-        android:gravity="center"
-        android:backgroundTint="@color/colorAccent"
-        android:paddingBottom="15dp"
-        android:textColor="#ffffff"
-        android:alpha="0.7"
-        android:enabled="false"
-        android:layout_marginStart="27dp"
-        android:layout_marginEnd="27dp"
-        android:layout_marginBottom="24dp"
-        />
+            <ImageView
+                android:id="@+id/subCategoriesBackIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="17dp"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/ic_arrow_back_24px"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/colorAccent" />
+
+            <ImageView
+                android:id="@+id/subCategoriesMisoboImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12.6dp"
+                android:src="@drawable/ic_misobo_cloud"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/subCategoriesBackIcon" />
+
+            <TextView
+                android:id="@+id/categoryNameTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="60dp"
+                android:layout_marginTop="24.9dp"
+                android:layout_marginEnd="60dp"
+                android:fontFamily="@font/manrope_extrabold"
+                android:gravity="center_horizontal"
+                android:textColor="@color/colorAccent"
+                android:textSize="26sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/subCategoriesMisoboImage"
+                tools:text="Reduce Stress" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/subCategoriesRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="49dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toTopOf="@id/subCategoriesContinueButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/categoryNameTextView" />
+
+            <TextView
+                android:id="@+id/subCategoriesContinueButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="27dp"
+                android:layout_marginEnd="27dp"
+                android:layout_marginBottom="24dp"
+                android:alpha="0.7"
+                android:background="@drawable/rounded_button"
+                android:backgroundTint="@color/colorAccent"
+                android:enabled="false"
+                android:gravity="center"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:text="Continue"
+                android:textColor="#ffffff"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
