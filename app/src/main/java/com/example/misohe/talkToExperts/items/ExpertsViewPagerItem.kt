@@ -1,5 +1,7 @@
 package com.example.misohe.talkToExperts.items
 
+import android.os.Bundle
+import android.util.Log
 import android.view.ViewGroup
 import com.example.misohe.R
 import com.example.misohe.talkToExperts.models.ExpertCategoriesModel
@@ -7,6 +9,8 @@ import com.example.misohe.talkToExperts.view.ExpertPagerAdapter
 import com.example.misohe.talkToExperts.view.TalktoExpertsHomeFragment
 import com.example.misohe.talkToExperts.viewModels.CategoriesState
 import com.example.misohe.utils.Util
+import com.google.android.material.tabs.TabLayout
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.experts_recycler_list_item_layout.view.*
@@ -20,7 +24,9 @@ class ExpertsViewPagerItem(
         val expertList = mutableListOf(
             ExpertCategoriesModel(
                 -1,
-                "All"))
+                "All"
+            )
+        )
 
         viewHolder.itemView.tabLayout.setupWithViewPager(viewHolder.itemView.expertViewPager)
         viewHolder.itemView.tabLayout.tabRippleColor = null
@@ -47,11 +53,27 @@ class ExpertsViewPagerItem(
             tab.requestLayout()
         }
 
+        viewHolder.itemView.tabLayout.addOnTabSelectedListener(object :
+            TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                val firebaseAnalytics = FirebaseAnalytics.getInstance(viewHolder.itemView.context)
+                val bundle = Bundle();
+                bundle.putString(Util.convertToSnakeCase(tab?.text.toString()), "");
+                firebaseAnalytics.logEvent("talk_to_expert", bundle);
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+
+            }
+        })
     }
 
-    fun update(){
+    fun update() {
         notifyChanged()
-
     }
 
     override fun getLayout(): Int = R.layout.experts_recycler_list_item_layout

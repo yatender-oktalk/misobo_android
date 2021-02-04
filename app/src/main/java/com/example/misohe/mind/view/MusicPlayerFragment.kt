@@ -54,8 +54,6 @@ class MusicPlayerFragment : Fragment() {
 
         mindViewModel.playMusicLiveData.observe(viewLifecycleOwner, Observer { musicModel ->
 
-
-
             Glide.with(requireContext()).load(musicModel.image)
                 .placeholder(R.drawable.music_gradient).into(backgroundImage)
 
@@ -63,6 +61,7 @@ class MusicPlayerFragment : Fragment() {
             musicModel.title?.let {
                 songTitle.text = it
             }
+
             musicModel.productionName?.let { name ->
                 productionName.text = name
             }
@@ -86,13 +85,27 @@ class MusicPlayerFragment : Fragment() {
                             .parse(musicModel.url)
                     )
 
+            /*simpleExoPlayer.seekTo(
+                musicModel.progress?.toLong() ?: 0 * simpleExoPlayer.duration / 100
+            )*/
             simpleExoPlayer.prepare(audioSource)
+
+            //val haveResumePosition = true
+            /*  if (haveResumePosition) {
+                  simpleExoPlayer.seekTo(musicModel.progress?.toLong()?:0 * simpleExoPlayer.duration / 100)
+              }
+              simpleExoPlayer.prepare(audioSource, haveResumePosition, false)
+  */
+            //exoPlayer.progressBar.progress = musicModel.progress?:0
             breatheAnimation.playAnimation()
             simpleExoPlayer.clearVideoSurface()
+            simpleExoPlayer.seekTo(
+                musicModel.progress?.times(1000)?.toLong()?:0
+            )
             simpleExoPlayer.playWhenReady = true
-            exoPlayer.player!!.seekTo(musicModel.progress?.toLong()?:0 * simpleExoPlayer.duration / 100)
             simpleExoPlayer.addListener(object : Player.DefaultEventListener() {
                 override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+
                     if (playWhenReady && playbackState == Player.STATE_READY) {
                         breatheAnimation.resumeAnimation()
                         // media actually playing
@@ -144,7 +157,8 @@ class MusicPlayerFragment : Fragment() {
             exoPlayer.progressBar.onStopTrackingTouch = stopTrackingListener
             exoPlayer.progressBar.onStartTrackingTouch = startTrackingListener
             exoPlayer.progressBar.onProgressChangedListener = progressChangedListener
-            exoPlayer.progressBar.setOnTouchListener(OnTouchListener { v, event -> true })        })
+            exoPlayer.progressBar.setOnTouchListener(OnTouchListener { v, event -> true })
+        })
         crossIcon.setOnClickListener {
             activity?.onBackPressed()
         }
@@ -176,9 +190,9 @@ class MusicPlayerFragment : Fragment() {
             ProgressPayload(
                 userId = SharedPreferenceManager.getUser()?.data?.userId,
                 progress = TimeUnit.MILLISECONDS.toSeconds(progressToMilli)
-            ),mindViewModel.playMusicLiveData.value?.karma
+            ), mindViewModel.playMusicLiveData.value?.karma
         )
         //if (progress > 95)
-            //mindViewModel.congratsListenerLiveData.postValue(mindViewModel.playMusicLiveData.value?.karma)
+        //mindViewModel.congratsListenerLiveData.postValue(mindViewModel.playMusicLiveData.value?.karma)
     }
 }

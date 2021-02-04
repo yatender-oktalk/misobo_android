@@ -14,6 +14,7 @@ import com.example.misohe.onBoarding.models.CategoriesModel
 import com.example.misohe.onBoarding.models.CategoriesRequestModel
 import com.example.misohe.onBoarding.viewModels.OnBoardingViewModel
 import com.example.misohe.onBoarding.viewModels.ResponseAction
+import com.example.misohe.utils.Util
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
@@ -82,8 +83,8 @@ class SubCategoriesFragment : Fragment() {
                 val selectedSubCategory =
                     subCategory?.get(onBoardingViewModel.subCategorySelectedPosition.value ?: 0)
                 bundle.putString(
-                    category.toString().replace("\\s+", "_").toLowerCase(),
-                    selectedSubCategory.toString().replace("\\s+", "_").toLowerCase()
+                    Util.convertToSnakeCase(category.toString()),
+                    Util.convertToSnakeCase(selectedSubCategory.toString())
                 )
 
                 firebaseAnalytics.logEvent("user_interest", bundle);

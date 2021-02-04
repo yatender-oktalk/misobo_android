@@ -12,9 +12,9 @@ class Util {
         }
 
         fun toTitleCase(givenString: String): String? {
-            val arr = givenString.trim().replace("\\s+" , " ").split(" ".toRegex()).toTypedArray()
+            val arr = givenString.trim().replace("\\s+", " ").split(" ".toRegex()).toTypedArray()
             val sb = StringBuffer()
-            if(arr.isNotEmpty()) {
+            if (arr.isNotEmpty()) {
                 for (i in arr.indices) {
                     sb.append(Character.toUpperCase(arr[i][0]))
                         .append(arr[i].substring(1)).append(" ")
@@ -22,7 +22,17 @@ class Util {
             }
             return sb.toString().trim { it <= ' ' }
         }
+
+        fun convertToSnakeCase(event: String): String {
+            val length = event.replace("\\s+", "_").length.toInt()
+            var str = ""
+            for (i in 0..length - 1) {
+                if (event[i] == ' ')
+                    str += '_';
+                else
+                    str += Character.toLowerCase(event.get(i))
+            }
+            return str
+        }
     }
-
-
 }

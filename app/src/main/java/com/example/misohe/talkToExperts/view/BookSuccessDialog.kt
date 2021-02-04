@@ -83,7 +83,7 @@ class BookSuccessDialog : BottomSheetDialogFragment() {
             if (context != null) {
                 val firebaseAnalytics = FirebaseAnalytics.getInstance(requireContext())
                 val bundle = Bundle()
-                bundle.putString(response.qualification?.toLowerCase()?.replace(" ","_"),"")
+                bundle.putString(Util.convertToSnakeCase(response.qualification.toString()),"")
                 firebaseAnalytics.logEvent("booking", bundle);
             }
         })

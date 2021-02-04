@@ -1,24 +1,31 @@
 package com.example.misohe.home
 
+import android.content.DialogInterface
 import android.os.Bundle
+import android.os.Handler
 import android.view.KeyEvent
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.afollestad.materialdialogs.MaterialDialog
 import com.example.misohe.R
 import com.example.misohe.mind.viewModels.MindViewModel
 import com.example.misohe.myProfile.ProfileViewModel
 import com.example.misohe.onBoarding.KarmaCoinsLayoutFragment
 import com.example.misohe.utils.SharedPreferenceManager
 import com.google.gson.JsonObject
+import io.reactivex.Observable
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import java.util.concurrent.TimeUnit
+
 
 class HomeFragment : Fragment() {
 
@@ -49,22 +56,35 @@ class HomeFragment : Fragment() {
             false
         }
 
-        /*val dialog = MaterialDialog(requireContext()).show {
-            cornerRadius(16f)
-            title(text = "Misohe")
-            message(text = "Congratulation.You have received 501 misohe coins as signup bonus.")
+        val dialog: AlertDialog.Builder =
+            androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                .setTitle("Misohe")
+                .setMessage("Congratulations! You just earned 501 misohe coins for becoming a member")
+        val alert: AlertDialog = dialog.create()
+        alert.show()
+        alert.window?.setLayout(alert.window?.attributes?.width!!, 500)
+
+// Hide after some seconds
+
+// Hide after some seconds
+        val handler = Handler()
+        val runnable = Runnable {
+            if (alert.isShowing()) {
+                alert.dismiss()
+            }
         }
 
-        dialog.show()
+        alert.setOnDismissListener(DialogInterface.OnDismissListener {
+            handler.removeCallbacks(
+                runnable
+            )
+        })
 
-        Observable.timer(3, TimeUnit.SECONDS)
-            .subscribe {
-                dialog.hide()
-            }
-*/
+        handler.postDelayed(runnable, 3000)
+
         profileViewModel.nameToast.observe(viewLifecycleOwner, Observer {
-                Toast.makeText(context, "Name saved successfully", Toast.LENGTH_SHORT).show()
-            })
+            Toast.makeText(context, "Name saved successfully", Toast.LENGTH_SHORT).show()
+        })
 
         mindViewModel.getCoinsLiveData().observe(viewLifecycleOwner, Observer { profile ->
             fillName()
