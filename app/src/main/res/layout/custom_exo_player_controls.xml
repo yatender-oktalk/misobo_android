@@ -43,7 +43,7 @@
             app:layout_constraintTop_toTopOf="@id/progressBar"
             />
 
-        <com.example.misohe.arcseekbar.ArcSeekBar
+        <com.misohe.misohe.arcseekbar.ArcSeekBar
             android:id="@+id/progressBar"
             android:layout_width="match_parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -60,7 +60,6 @@
             app:progressBackgroundWidth="4dp"
             app:progressColor="#ffffff"
             app:progressBackgroundColor="#15000000"
-            app:layout_constraintBottom_toTopOf="@id/exo_play"
             android:layout_marginBottom="8dp"
             android:layout_height="40dp"/>
 

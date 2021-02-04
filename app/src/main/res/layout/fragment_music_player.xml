@@ -39,7 +39,7 @@
         android:textColor="#ffffff"
         android:lineSpacingExtra="16sp"
         android:gravity="center_horizontal"
-        android:text="Daily meditation dose"
+        android:text="Daily mindfulness dose"
         />
 
     <com.airbnb.lottie.LottieAnimationView
